@@ -63,7 +63,7 @@
             ```
 ---
 
-- ## Section 2: Requirements before running Code:
+- ## Section 3: Requirements before running Code:
 
   - Install an `IDE` that compiles and runs C++ codes.
     - 1st Recommendation: `VS Code`
