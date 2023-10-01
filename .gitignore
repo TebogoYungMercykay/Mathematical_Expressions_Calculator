@@ -1,0 +1,6 @@
+# Files Here
+
+coverage_report
+*.info
+*.gcda
+*.gcno
