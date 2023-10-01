@@ -2,6 +2,9 @@
 #include "circle.h"
 
 // Implement circle class member functions here
+bool circle::isCircle() const {
+    return false;
+}
 
 // Constructor
 circle::circle(char c1, char c2) : bivariate(2, c1, c2) {
@@ -19,9 +22,18 @@ circle::circle(const char* input) : bivariate(input) {
 }
 
 // Copy constructor
-circle::circle(const circle& other) : bivariate(other) {
+circle::circle(const circle& other) : bivariate(other.getTerms(), other.getNumTerms()) {
     // Implement copy constructor
 }
 
-// Other member function implementations...
+circle::circle(const polynomial &other) : bivariate(other.getTerms(), other.getNumTerms())  {
 
+}
+
+circle::circle(term t) : bivariate(t)  {
+
+}
+
+void circle::printStats() const {
+
+}

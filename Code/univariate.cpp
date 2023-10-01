@@ -23,10 +23,51 @@ univariate::univariate(const univariate& other) {
     // Implement copy constructor
 }
 
+univariate::univariate(const polynomial& other) {
+    
+}
+univariate::univariate(term t) {
+    
+}
+
 // Assignment operator
 univariate& univariate::operator=(const univariate& other) {
     // Implement assignment operator
+    return *this;
 }
 
-// Other member function implementations...
+polynomial* univariate::operator!() const {
+    return new univariate(2,'r');
+}
 
+polynomial* univariate::operator()(char* vars, int* vals, int numVals) const {
+    return new univariate(2,'r');
+}
+
+polynomial* univariate::operator()(string inp) const {
+    return new univariate(2,'r');
+}
+
+polynomial* univariate::operator+(const polynomial& other) const {
+    return new univariate(2,'r');
+}
+
+polynomial& univariate::operator+=(const polynomial& other) {
+    return *(new univariate(2,'r'));
+}
+
+polynomial* univariate::operator-(const polynomial& other) const {
+    return new univariate(2,'r');
+}
+
+polynomial& univariate::operator-=(const polynomial& other) {
+    return *(new univariate(2,'r'));
+}
+
+polynomial* univariate::operator*(const polynomial& other) const {
+    return new univariate(2,'r');
+}
+
+polynomial& univariate::operator*=(const polynomial& other) {
+    return *(new univariate(2,'r'));
+}

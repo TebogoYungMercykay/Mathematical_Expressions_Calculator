@@ -19,9 +19,18 @@ ellipse::ellipse(const char* input) : bivariate(input) {
 }
 
 // Copy constructor
-ellipse::ellipse(const ellipse& other) : bivariate(other) {
+ellipse::ellipse(const ellipse& other) : bivariate(other.getTerms(), other.getNumTerms()) {
     // Implement copy constructor
 }
 
-// Other member function implementations...
+ellipse::ellipse(const polynomial& other) : bivariate(other.getTerms(), other.getNumTerms()) {
 
+}
+
+ellipse::ellipse(term t) : bivariate(t) {
+
+}
+
+void ellipse::printStats() const {
+
+}

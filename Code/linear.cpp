@@ -23,5 +23,15 @@ linear::linear(const linear& other) : univariate(other) {
     // Implement copy constructor
 }
 
-// Other member function implementations...
+linear::linear(const polynomial& other) : univariate(other) {
+    
+}
+
+linear::linear(term t) : univariate(t) {
+    
+}
+
+void linear::printRoots() const {
+    
+}
 
