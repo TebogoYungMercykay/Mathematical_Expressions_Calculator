@@ -3,11 +3,9 @@
 - Polynomials are mathematical objects which are expressions of variables and coefficients added to-gether. These polynomials can use operator overloading in a very intuitive manner since most of the operators that we can overload are mathematical operators, which can also be applied to polynomials.
 - In this implementation I will create a polynomial class, as well as a few derived classes, which will inherit some of the basic functionality of polynomials but add their own restrictions.
 
-    <img src="./Images/UML_Diagram.png" alt="UML Random" width="1000" height="auto">
-
 ---
 
-- ## Section 1: Polynomial Calculator
+- ## Section 1: Polynomial Calculator Classes
 
     - ##### `term`:
         - This class will be used as the terms inside polynomials.  A term in a polynomial consists of a coefficient, which for simplicity reasons, will be an integer value. A term will also contain a number of variables. Every variable will have a positive power.
@@ -45,6 +43,7 @@
         - Ellipse inherits publicly from bivariate. This is a specialised version of bivariate. In this class, the degree variable is set to 2. Additionally, we will only be using ellipses centred around the origin.
         - Thus only three terms are allowed. The first and second terms must have a degree of 2, and the last term must have a degree of 0.
 
+        <img src="./Images/UML_Diagram.png" alt="UML Random" width="1000" height="auto">
 - ## Section 2: Memory Management
 
     - As memory management is a core part of C++, the aim is to  ensure, at all times, that the code correctly de-allocates all the memory that was allocated.
