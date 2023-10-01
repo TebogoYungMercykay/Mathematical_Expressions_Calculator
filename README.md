@@ -83,39 +83,41 @@
 
   - ###### NB: The makefile is included to compile and run the code on the terminal.
     - ###### `Commands:=`
-        - make (to build the main executable).
-        - make clean (to clean up generated files).
-        - make run (to run the program with valgrind (assuming you have installed valgrind)).
-        - make tar (to create a tarball of your project).
-        - make untar (to extract the contents of the tarball).
-        - make coverage (to generate coverage reports (assuming you have installed lcov)).
+        - `make` (to build the main executable).
+        - `make clean` (to clean up generated files).
+        - `make run` (to run the program with valgrind (assuming you have installed `valgrind`)).
+        - `make tar` (to create a tarball of your project).
+        - `make untar` (to extract the contents of the `tarball`).
+        - `make coverage` (to generate coverage reports (assuming you have installed `lcov`)).
 
-    ```C++
-    main:
-        g++ -g *.cpp -std=c++98 -pedantic -o main
+        ---
 
-    clean:
-        rm -f *.o *.tar.gz main
-        reset
-        clear
+        ```C++
+        main:
+            g++ -g *.cpp -std=c++98 -pedantic -o main
 
-    run:
-        valgrind --leak-check=full ./main
+        clean:
+            rm -f *.o *.tar.gz main
+            reset
+            clear
 
-    tar:
-        tar -cvz *.* -f Code.tar.gz
+        run:
+            valgrind --leak-check=full ./main
 
-    untar:
-        tar -zxvf *.tar.gz
+        tar:
+            tar -cvz *.* -f Code.tar.gz
 
-    test:
-        g++ --coverage *.cpp -o main
-        gcov -f -m -r -j term polynomial univariate bivariate linear quadratic circle ellipse
-        ./main
-        lcov -c -d . -o coverage.info
-        genhtml coverage.info -o coverage_report
+        untar:
+            tar -zxvf *.tar.gz
 
-    ```
+        test:
+            g++ --coverage *.cpp -o main
+            gcov -f -m -r -j term polynomial univariate bivariate linear quadratic circle ellipse
+            ./main
+            lcov -c -d . -o coverage.info
+            genhtml coverage.info -o coverage_report
+
+        ```
 
 ---
 
