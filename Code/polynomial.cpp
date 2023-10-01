@@ -11,8 +11,6 @@ polynomial::polynomial(term** t, int n) : numTerms(n) {
 }
 
 polynomial::polynomial(const char* input) : numTerms(0), terms(NULL) {
-    // Parse the input string to create terms and initialize the polynomial.
-    // You need to implement this part based on your input format.
 }
 
 polynomial::polynomial(const polynomial& other) : numTerms(other.numTerms) {
@@ -29,13 +27,11 @@ polynomial::polynomial(term t) : numTerms(1) {
 
 polynomial& polynomial::operator=(const polynomial& other) {
     if (this != &other) {
-        // Delete existing terms
         for (int i = 0; i < numTerms; ++i) {
             delete terms[i];
         }
         delete[] terms;
 
-        // Copy terms from the other polynomial
         numTerms = other.numTerms;
         terms = new term*[numTerms];
         for (int i = 0; i < numTerms; ++i) {
@@ -46,7 +42,6 @@ polynomial& polynomial::operator=(const polynomial& other) {
 }
 
 polynomial::~polynomial() {
-    // Delete all terms
     for (int i = 0; i < numTerms; ++i) {
         delete terms[i];
     }
@@ -62,7 +57,6 @@ int polynomial::getNumTerms() const {
 }
 
 ostream& operator<<(ostream& os, const polynomial& p) {
-    // Implement how you want to print the polynomial
     for (int i = 0; i < p.numTerms; ++i) {
         os << *p.terms[i];
         if (i < p.numTerms - 1) {
@@ -76,7 +70,6 @@ term* polynomial::operator[](int idx) const {
     if (idx >= 0 && idx < numTerms) {
         return terms[idx];
     } else {
-        // Handle out-of-bounds index, for example, return NULL or throw an exception.
         return NULL;
     }
 }
@@ -85,7 +78,6 @@ term* polynomial::operator[](int idx) {
     if (idx >= 0 && idx < numTerms) {
         return terms[idx];
     } else {
-        // Handle out-of-bounds index, for example, return NULL or throw an exception.
         return NULL;
     }
 }

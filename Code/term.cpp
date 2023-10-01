@@ -28,7 +28,6 @@
 // Private Members
 void term::addVariable(char var, int pow) {
     if (this->numVariables == 0) {
-        // Create arrays with one element
         this->variables = new char[1];
         this->powers = new int[1];
         this->variables[0] = var;
@@ -36,16 +35,13 @@ void term::addVariable(char var, int pow) {
         this->numVariables = 1;
     }
     else {
-        // Check if the variable is already in the term
         for (int i = 0; i < this->numVariables; i++) {
             if (this->variables[i] == var) {
-                // Variable already exists, increase the power
                 this->powers[i] += pow;
                 return; // Exit the function
             }
         }
 
-        // Variable doesn't exist, add it to the term
         char* newVariables = new char[this->numVariables + 1];
         int* newPowers = new int[this->numVariables + 1];
         for (int i = 0; i < this->numVariables; i++) {
@@ -75,17 +71,14 @@ void term::removeVariable(char var) {
     }
 
     if (indexToRemove != -1) {
-        // Shift elements to the left to remove the variable
         for (int j = indexToRemove; j < this->numVariables - 1; j++) {
             this->variables[j] = this->variables[j + 1];
             this->powers[j] = this->powers[j + 1];
         }
-        // Clear the last element
         this->variables[this->numVariables - 1] = '\0';
         this->powers[this->numVariables - 1] = 0;
         this->numVariables--;
 
-        // Resize the arrays to the new size
         char* newVariables = new char[this->numVariables];
         int* newPowers = new int[this->numVariables];
         for (int i = 0; i < this->numVariables; i++) {
@@ -101,18 +94,16 @@ void term::removeVariable(char var) {
     }
 }
 
-// term constructor
+// Public Members
+
 term::term() {
-    // Implement constructor
     this->coefficient = 1;
     this->numVariables = 0;
     this->variables = new char[this->numVariables];
     this->powers = new int[this->numVariables];
 }
 
-// Copy constructor
 term::term(const term& other) {
-    // Implement copy constructor
     this->coefficient = other.coefficient;
     this->numVariables = other.numVariables;
     this->variables = new char[this->numVariables];
@@ -123,9 +114,7 @@ term::term(const term& other) {
     }
 }
 
-// Parameterized constructor
 term::term(int c, int n, char* v, int* p) {
-    // Implement parameterized constructor
     this->coefficient = c;
     this->numVariables = n;
     this->variables = new char[this->numVariables];
@@ -136,20 +125,14 @@ term::term(int c, int n, char* v, int* p) {
     }
 }
 
-// Constructor from input string
 term::term(const char* input) {
-    // Implement constructor from input string
 }
 
-// Assignment operator
 term& term::operator=(const term& other) {
-    // Implement assignment operator
     return *(new term());
 }
 
-// Destructor
 term::~term() {
-    // Implement destructor
 }
 
 char* term::getVariables() const {
