@@ -92,27 +92,16 @@
         - make coverage (to generate coverage reports (assuming you have installed lcov)).
 
     ```C++
-    CXX = g++
-    CXXFLAGS = -std=c++98 -pedantic
-    LDFLAGS = --coverage
-
-    SRC_FILES = *.cpp
-    EXECUTABLE = main
-
-    .PHONY: all clean run tar untar coverage
-
-    all: $(EXECUTABLE)
-
-    $(EXECUTABLE): $(SRC_FILES)
-        $(CXX) $(CXXFLAGS) $(LDFLAGS) $^ -o $@
+    main:
+        g++ -g *.cpp -std=c++98 -pedantic -o main
 
     clean:
-        rm -f *.o *.tar.gz $(EXECUTABLE)
+        rm -f *.o *.tar.gz main
         reset
         clear
 
-    run: $(EXECUTABLE)
-        valgrind --leak-check=full ./$(EXECUTABLE)
+    run:
+        valgrind --leak-check=full ./main
 
     tar:
         tar -cvz *.* -f Code.tar.gz
@@ -120,9 +109,10 @@
     untar:
         tar -zxvf *.tar.gz
 
-    coverage: $(EXECUTABLE)
-        ./$(EXECUTABLE)
-        gcov -f -m -r -j term $(SRC_FILES)
+    test:
+        g++ --coverage *.cpp -o main
+        gcov -f -m -r -j term polynomial univariate bivariate linear quadratic circle ellipse
+        ./main
         lcov -c -d . -o coverage.info
         genhtml coverage.info -o coverage_report
 
