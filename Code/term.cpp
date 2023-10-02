@@ -307,7 +307,25 @@ const term term::operator()(char* vars, int* vals, int numVals) const {
 }
 
 const term term::operator()(string inp) const {
-    return NULL;
+    term temp(*this);
+    std::stringstream ss(inp);
+    string substitution;
+    int equalsCount = std::count(inp.begin(), inp.end(), '=');
+    char* vars = new char[equalsCount];
+    int* vals = new int[equalsCount];
+    int i = 0;
+    while (getline(ss, substitution, ' ')) {
+        int equalsPos = substitution.find('=');
+        if (equalsPos != string::npos) {
+            vars[i] = substitution[0];
+            vals[i] = stoi(substitution.substr(equalsPos + 1));
+            i++;
+        }
+    }
+    temp = temp(vars, vals, equalsCount);
+    delete[] vars;
+    delete[] vals;
+    return temp;
 }
 
 bool term::operator==(const term& other) const {
