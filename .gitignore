@@ -1,5 +1,5 @@
 # Files Here
-main.o
+main
 coverage_report
 *.info
 *.gcda

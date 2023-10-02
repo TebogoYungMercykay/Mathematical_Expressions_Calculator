@@ -103,6 +103,10 @@ void testTermConstructors() {
     tr5 = tr6(varss2, valss2, 3);
     std::cout << tr6 << std::endl;
     std::cout << tr5 << std::endl;
+
+    tr5 = tr6("x=2 a=1 y=2 z=4");
+    std::cout << "Original: " << tr6 << std::endl;
+    std::cout << "Converted: " << tr5 << std::endl;
 }
 
 void testTerm() {
