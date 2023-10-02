@@ -27,39 +27,48 @@
 */
 // Private Members
 void term::addVariable(char var, int pow) {
-    if (this->numVariables == 0) {
-        this->variables = new char[1];
-        this->powers = new int[1];
-        this->variables[0] = var;
-        this->powers[0] = pow;
-        this->numVariables = 1;
-    }
-    else {
-        for (int i = 0; i < this->numVariables; i++) {
+    if (this->coefficient != 0 && pow > 0) {
+        int i;
+        for (i = 0; i < this->numVariables; i++) {
             if (this->variables[i] == var) {
                 this->powers[i] += pow;
                 return; // Exit the function
+            }
+            if (this->variables[i] > var) {
+                break;
             }
         }
 
         char* newVariables = new char[this->numVariables + 1];
         int* newPowers = new int[this->numVariables + 1];
-        for (int i = 0; i < this->numVariables; i++) {
-            newVariables[i] = this->variables[i];
-            newPowers[i] = this->powers[i];
+        for (int j = 0; j < i; j++) {
+            newVariables[j] = this->variables[j];
+            newPowers[j] = this->powers[j];
         }
 
-        newVariables[this->numVariables] = var;
-        newPowers[this->numVariables] = pow;
+        newVariables[i] = var;
+        newPowers[i] = pow;
 
-        delete[] variables;
-        delete[] powers;
+        for (int j = i+1; j < this->numVariables + 1; j++) {
+            newVariables[j] = this->variables[j-1];
+            newPowers[j] = this->powers[j-1];
+        }
+
+        if (this->variables != NULL) {
+            delete [] this->variables;
+            this->variables = NULL;
+        }
+        if (this->powers != NULL) {
+            delete[] this->powers;
+            this->powers = NULL;
+        }
 
         this->variables = newVariables;
         this->powers = newPowers;
         this->numVariables++;
     }
 }
+
 
 void term::removeVariable(char var) {
     int indexToRemove = -1;
@@ -126,69 +135,80 @@ term::term(int c, int n, char* v, int* p) {
 }
 
 term::term(const char* input) {
-    std::string str(input);
-    int pos = 0;
-    if (str[0] == '-') {
-        this->coefficient = -1;
-        pos++;
-    } else if (str[0] == '+') {
-        this->coefficient = 1;
-        pos++;
-    } else {
-        this->coefficient = 1;
-    }
-
-    while (pos < str.length() && isdigit(str[pos])) {
-        this->coefficient = this->coefficient * 10 + (str[pos] - '0');
-        pos++;
-    }
-
+    this->coefficient = 1;
     this->numVariables = 0;
-    this->variables = new char[26];
-    this->powers = new int[26];
-
-    while (pos < str.length()) {
-        if (str[pos] == '*') {
-            pos++;
-            continue;
+    this->variables = new char[this->numVariables];
+    this->powers = new int[this->numVariables];
+    std::string input_string(input);
+    if (input_string.length() > 0) {
+        if (input_string[0] == '-') {
+            this->coefficient *= -1;
+            input_string = input_string.substr(1);
+        } else if (input_string[0] == '+') {
+            input_string = input_string.substr(1);
         }
 
-        char var = str[pos];
-        int pow = 0;
-        pos++;
-
-        if (pos < str.length() && str[pos] == '^') {
-            pos++;
-            while (pos < str.length() && isdigit(str[pos])) {
-                pow = pow * 10 + (str[pos] - '0');
-                pos++;
+        stringstream coeff_full (input_string);
+        string general_use_string = "";
+        getline(coeff_full, general_use_string, '*');
+        if (isdigit(general_use_string[0])) {
+            stringstream coeff (general_use_string);
+            int coeff_conv = 0;
+            coeff >> coeff_conv;
+            this->coefficient *= coeff_conv;
+            input_string = input_string.substr(general_use_string.length() + 1);
+        }
+        // std::cout << "Coeff: " << this->coefficient << " Other: " << input_string << std::endl;
+        if (this->coefficient != 0 && input_string.length() > 1) {
+            general_use_string = "";
+            stringstream variables_and_powers (input_string);
+            while(getline(variables_and_powers, general_use_string, '*')) {
+                // std::cout << "Printing: " << general_use_string << std::endl;
+                if (general_use_string.length() >= 3) {
+                    stringstream variable_n_power (general_use_string);
+                    general_use_string = "";
+                    getline(variable_n_power, general_use_string, '^');
+                    char variable = general_use_string[0];
+                    general_use_string = "";
+                    getline(variable_n_power, general_use_string);
+                    stringstream conv (general_use_string);
+                    int power = 0;
+                    conv >> power;
+                    this->addVariable(variable, power);
+                } else if (general_use_string.length() == 1) {
+                    char variable = general_use_string[0];
+                    this->addVariable(variable, 1);
+                }
             }
-        } else {
-            pow = 1;
-        }
-
-        for (int i = 0; i < this->numVariables; i++) {
-            if (this->variables[i] == var) {
-                this->powers[i] += pow;
-                var = '\0';
-                break;
-            }
-        }
-
-        if (var != '\0') {
-            this->variables[this->numVariables] = var;
-            this->powers[this->numVariables] = pow;
-            this->numVariables++;
         }
     }
 }
 
 term& term::operator=(const term& other) {
-    return *(new term());
+    if (this != &other) {
+        delete[] this->variables;
+        delete[] this->powers;
+
+        this->coefficient = other.coefficient;
+        this->numVariables = other.numVariables;
+        this->variables = new char[this->numVariables];
+        this->powers = new int[this->numVariables];
+
+        for (int i = 0; i < this->numVariables; i++) {
+            this->variables[i] = other.variables[i];
+            this->powers[i] = other.powers[i];
+        }
+    }
+    return *this;
 }
 
 term::~term() {
+    delete[] this->variables;
+    this->variables = NULL;
+    delete[] this->powers;
+    this->powers = NULL;
 }
+
 
 char* term::getVariables() const {
     return this->variables;
@@ -224,15 +244,19 @@ std::string term::operator~() const {
     }
 
     for (int i = 0; i < this->numVariables; i++) {
-        os << "*" << this->variables[i];
-        if (this->powers[i] != 1) {
-            os << "^" << this->powers[i];
+        if (this->powers[i] != 0) {
+            os << "*" << this->variables[i];
+            if (this->powers[i] != 1) {
+                os << "^" << this->powers[i];
+            }
         }
     }
 
     std::string str = os.str();
     if (str[0] == '*') {
         str.erase(0, 1);
+    } else if (str[0] == '-' && str[1] == '*') {
+        str.erase(1, 1);
     }
 
     return str;
@@ -244,19 +268,42 @@ std::ostream& operator<<(std::ostream& os, const term& t) {
 }
 
 istream& operator>>(istream& is, term& t) {
+    std::string input = "";
+    is >> input;
+    t = term(input.c_str());
+    // std::cout << t << std::endl;
     return is;
 }
 
 const term term::operator*(const term& other) const {
-    return other;
+    term newTerm(*this);
+    newTerm.coefficient *= other.coefficient;
+    for (int i = 0; i < other.numVariables; i++) {
+        newTerm.addVariable(other.variables[i], other.powers[i]);
+    }
+    return newTerm;
 }
 
 term& term::operator*=(const term& other) {
-    return *(new term());
+    this->coefficient *= other.coefficient;
+    for (int i = 0; i < other.numVariables; i++) {
+        this->addVariable(other.variables[i], other.powers[i]);
+    }
+    return *this;
 }
 
 const term term::operator()(char* vars, int* vals, int numVals) const {
-    return NULL;
+    term temp(*this);
+    for (int i = 0; i < numVals; i++) {
+        int index = temp.getVarIndex(vars[i]);
+        if (index != -1) {
+            int power = temp.powers[index];
+            power -= vals[i];
+            temp.removeVariable(variables[index]);
+            temp.addVariable(vars[i], power);
+        }
+    }
+    return temp;
 }
 
 const term term::operator()(string inp) const {
@@ -276,9 +323,15 @@ bool term::operator>(const term& other) const {
 }
 
 int& term::operator[](int idx) {
-    return *(new int(0));
+    if (idx >= 0 && idx < this->numVariables) {
+        return this->powers[idx];
+    } else {
+        return this->coefficient;
+    }
 }
 
 const term term::operator!() const {
-    return NULL;
+    term negated = *this;
+    negated.coefficient *= -1;
+    return negated;
 }
