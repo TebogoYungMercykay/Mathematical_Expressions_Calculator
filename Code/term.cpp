@@ -299,7 +299,7 @@ const term term::operator()(char* vars, int* vals, int numVals) const {
         if (index != -1) {
             int power = temp.powers[index];
             power -= vals[i];
-            temp.removeVariable(variables[index]);
+            temp.removeVariable(temp.variables[index]);
             temp.addVariable(vars[i], power);
         }
     }
@@ -307,21 +307,28 @@ const term term::operator()(char* vars, int* vals, int numVals) const {
 }
 
 const term term::operator()(string inp) const {
-    term temp(*this);
     std::stringstream ss(inp);
     string substitution;
-    int equalsCount = std::count(inp.begin(), inp.end(), '=');
+    int equalsCount = 0;
+    for (int k = 0; k < inp.length(); k++) {
+        if (inp[k] == '=') {
+            equalsCount += 1;
+        }
+    }
     char* vars = new char[equalsCount];
     int* vals = new int[equalsCount];
     int i = 0;
-    while (getline(ss, substitution, ' ')) {
-        int equalsPos = substitution.find('=');
-        if (equalsPos != string::npos) {
-            vars[i] = substitution[0];
-            vals[i] = stoi(substitution.substr(equalsPos + 1));
-            i++;
+    for (int k = 0; k < equalsCount; k++) {
+        if (getline(ss, substitution, ' ')) {
+            stringstream get_values (substitution);
+            getline(get_values, substitution, '=');
+            vars[k] = substitution[0];
+            getline(get_values, substitution);
+            stringstream conv (substitution);
+            conv >> vals[k];
         }
     }
+    term temp(*this);
     temp = temp(vars, vals, equalsCount);
     delete[] vars;
     delete[] vals;
@@ -329,15 +336,66 @@ const term term::operator()(string inp) const {
 }
 
 bool term::operator==(const term& other) const {
+    if (this->numVariables == other.numVariables) {
+        for (int i = 0; i < this->numVariables; i++) {
+            if (this->variables[i] != other.variables[i] || this->powers[i] != other.powers[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
     return false;
 }
 
+
 bool term::operator<(const term& other) const {
-    return false;
+    if (*this == other) {
+        return false;
+    }
+    if (this->numVariables == 0) {
+        return false;
+    }
+    if (other.numVariables == 0) {
+        return true;
+    }
+
+    int minimum = std::min(this->numVariables, other.numVariables);
+    for (int i = 0; i < minimum; i++) {
+        if (this->variables[i] == other.variables[i]) {
+            if (this->powers[i] != other.powers[i]) {
+                return this->powers[i] > other.powers[i];
+            }
+        } else {
+            return !(this->variables[i] > other.variables[i]);
+        }
+    }
+
+    return (this->numVariables < other.numVariables);
 }
 
 bool term::operator>(const term& other) const {
-    return false;
+    if (*this == other) {
+        return false;
+    }
+    if (this->numVariables == 0) {
+        return !false;
+    }
+    if (other.numVariables == 0) {
+        return !true;
+    }
+
+    int minimum = std::min(this->numVariables, other.numVariables);
+    for (int i = 0; i < minimum; i++) {
+        if (this->variables[i] == other.variables[i]) {
+            if (this->powers[i] != other.powers[i]) {
+                return !(this->powers[i] > other.powers[i]);
+            }
+        } else {
+            return (this->variables[i] > other.variables[i]);
+        }
+    }
+
+    return !(this->numVariables < other.numVariables);
 }
 
 int& term::operator[](int idx) {
