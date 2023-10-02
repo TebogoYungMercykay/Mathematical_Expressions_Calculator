@@ -336,8 +336,17 @@ const term term::operator()(string inp) const {
 }
 
 bool term::operator==(const term& other) const {
+    if (this->powers.size() == other.powers.size()) {
+        for (int i = 0; i < this->powers.size(); i++) {
+            if (this->variables[i] != other.variables[i] || this->powers[i] != other.powers[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
     return false;
 }
+
 
 bool term::operator<(const term& other) const {
     return false;
