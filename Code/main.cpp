@@ -5,6 +5,28 @@ using namespace std;
 
 void testTermClass();
 void testPolynomialClass() {
+    cout << "\n\nTesting Inputs Constructor\n";
+    const char* inputs[] = {
+        "x^2*y^2 + 2*x*y + 1 + x^-3",
+        "- -a^2*y^2 - -2*a*y - -1",
+        "-x^2*b^1 - 2*x*b^5 - 1 + b^-5",
+        "- +c*y^2 - +2*c^3*y - +1",
+        "+ -c^2*y^2 + -2*c*y + -1",
+        "e^-3 + f^-2"
+    };
+
+    // string s = "";
+    // polynomial tempTerm11(s.c_str());
+    // cout << tempTerm11;
+
+    std::string myS = "-x";
+    term tr(myS.c_str());
+    std::cout << tr;
+
+    // for (int k = 0; k < 6; k++) {
+    //     polynomial tempTerm12(inputs[k]);
+    //     cout << tempTerm12;
+    // }
 
 }
 

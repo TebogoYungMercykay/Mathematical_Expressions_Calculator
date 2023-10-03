@@ -34,15 +34,15 @@ class polynomial {
         term* operator[](int idx) const;
         term* operator[](int idx);
 
-        virtual polynomial* operator+(const polynomial& other) const = 0;
-        virtual polynomial& operator+=(const polynomial& other) = 0;
-        virtual polynomial* operator-(const polynomial& other) const = 0;
-        virtual polynomial& operator-=(const polynomial& other) = 0;
-        virtual polynomial* operator*(const polynomial& other) const = 0;
-        virtual polynomial& operator*=(const polynomial& other) = 0;
+        // virtual polynomial* operator+(const polynomial& other) const = 0;
+        // virtual polynomial& operator+=(const polynomial& other) = 0;
+        // virtual polynomial* operator-(const polynomial& other) const = 0;
+        // virtual polynomial& operator-=(const polynomial& other) = 0;
+        // virtual polynomial* operator*(const polynomial& other) const = 0;
+        // virtual polynomial& operator*=(const polynomial& other) = 0;
 
-        virtual polynomial* operator!() const = 0;
-        virtual polynomial* operator()(char* vars, int* vals, int numVals) const = 0;
-        virtual polynomial* operator()(string inp) const = 0;
+        // virtual polynomial* operator!() const = 0;
+        // virtual polynomial* operator()(char* vars, int* vals, int numVals) const = 0;
+        // virtual polynomial* operator()(string inp) const = 0;
 };
 #endif

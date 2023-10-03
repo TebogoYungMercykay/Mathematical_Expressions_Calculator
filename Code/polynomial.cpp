@@ -73,8 +73,64 @@ polynomial::polynomial(term** t, int n) {
     }
 }
 
-polynomial::polynomial(const char* input) : numTerms(0), terms(NULL) {
-    // TODO: nhj
+polynomial::polynomial(const char* input) {
+    this->numTerms = 0;
+    this->terms = new term*[this->numTerms];
+    if (input != NULL && input[0] != '\0') {
+        std::string input_string(input);
+        string general_use_string = "", general_use_string2 = "";
+        for (int i = 0; i < input_string.length(); i++) {
+            if (input_string[i] == ' ') {
+                continue;
+            } else {
+                general_use_string += input_string[i];
+            }
+        }
+        for (int i = 0; i < general_use_string.length(); i++) {
+            if (general_use_string[i] == '+' && (i < general_use_string.length() - 2 && general_use_string[i + 1] == '-')) {
+                general_use_string2 += '-';
+                i += 1;
+            }
+            else if (general_use_string[i] == '-' && (i < general_use_string.length() - 2 && general_use_string[i + 1] == '+')) {
+                general_use_string2 += '-';
+                i += 1;
+            }
+            else if (general_use_string[i] == '-' && (i < general_use_string.length() - 2 && general_use_string[i + 1] == '-')) {
+                general_use_string2 += '+';
+                i += 1;
+            }
+            else if (general_use_string[i] == '+' && (i < general_use_string.length() - 2 && general_use_string[i + 1] == '+')) {
+                general_use_string2 += '+';
+                i += 1;
+            }
+            else {
+                general_use_string2 += general_use_string[i];
+            }
+        }
+        std::string delimiter = "";
+        size_t pos = 0;
+        while ((pos = general_use_string2.find_first_of("+-", pos)) != std::string::npos) {
+            if (pos > 0 && general_use_string2[pos - 1] == '^') {
+                pos++;
+            } else {
+                std::string sign(1, general_use_string2[pos]);  // Extract the sign character
+                general_use_string2.insert(pos, ",");
+                pos += 2;
+            }
+        }
+        if (general_use_string2[0] == ',') {
+            general_use_string2 = general_use_string2.substr(1);
+        }
+        stringstream separate (general_use_string2);
+        general_use_string = "";
+        while (getline(separate, general_use_string, ',')) {
+            std::cout << general_use_string << std::endl;
+            term* t = new term(general_use_string.c_str());
+            std::cout << ~(*t);
+            // this->addOrRemoveTerm(t);
+            general_use_string = "";
+        }
+    }
 }
 
 polynomial::polynomial(const polynomial& other) {
@@ -126,7 +182,7 @@ int polynomial::getNumTerms() const {
 
 ostream& operator<<(ostream& os, const polynomial& p) {
     if (p.numTerms == 0) {
-        os << "0";
+        os << "0" << std::endl;
         return os;
     } else {
         for (int i = 0; i < p.numTerms; i++) {
@@ -135,6 +191,7 @@ ostream& operator<<(ostream& os, const polynomial& p) {
                 os << " + ";
             }
         }
+        os << std::endl;
         return os;
     }
 }

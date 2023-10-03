@@ -136,49 +136,74 @@ term::term(int c, int n, char* v, int* p) {
 }
 
 term::term(const char* input) {
-    this->coefficient = 1;
-    this->numVariables = 0;
-    this->variables = new char[this->numVariables];
-    this->powers = new int[this->numVariables];
-    std::string input_string(input);
-    if (input_string.length() > 0) {
-        if (input_string[0] == '-') {
-            this->coefficient *= -1;
-            input_string = input_string.substr(1);
-        } else if (input_string[0] == '+') {
-            input_string = input_string.substr(1);
-        }
+    if (input != NULL && input[0] != '\0') {
+        this->coefficient = 1;
+        this->numVariables = 0;
+        this->variables = new char[this->numVariables];
+        this->powers = new int[this->numVariables];
+        std::string input_string(input);
+        if (input_string.length() == 1) {
+            if (isdigit(input_string[0])) {
+                stringstream coeff (input_string);
+                int coeff_conv = 0;
+                coeff >> coeff_conv;
+                this->coefficient *= coeff_conv;
+            } else {
+                char variable = input_string[0];
+                this->addVariable(variable, 1);
+            }
+        } else if (input_string.length() == 2 && (input_string[0] == '-' || input_string[0] == '+')) {
+            if (isdigit(input_string[1])) {
+                stringstream coeff (input_string);
+                int coeff_conv = 0;
+                coeff >> coeff_conv;
+                this->coefficient *= coeff_conv;
+            } else {
+                if (input_string[0] == '-') {
+                    this->coefficient = -1;
+                }
+                char variable = input_string[1];
+                this->addVariable(variable, 1);
+            }
+        } else if (input_string.length() > 1) {
+            if (input_string[0] == '-') {
+                this->coefficient *= -1;
+                input_string = input_string.substr(1);
+            } else if (input_string[0] == '+') {
+                input_string = input_string.substr(1);
+            }
 
-        stringstream coeff_full (input_string);
-        string general_use_string = "";
-        getline(coeff_full, general_use_string, '*');
-        if (isdigit(general_use_string[0])) {
-            stringstream coeff (general_use_string);
-            int coeff_conv = 0;
-            coeff >> coeff_conv;
-            this->coefficient *= coeff_conv;
-            input_string = input_string.substr(general_use_string.length() + 1);
-        }
-        // std::cout << "Coeff: " << this->coefficient << " Other: " << input_string << std::endl;
-        if (this->coefficient != 0 && input_string.length() > 1) {
-            general_use_string = "";
-            stringstream variables_and_powers (input_string);
-            while(getline(variables_and_powers, general_use_string, '*')) {
-                // std::cout << "Printing: " << general_use_string << std::endl;
-                if (general_use_string.length() >= 3) {
-                    stringstream variable_n_power (general_use_string);
-                    general_use_string = "";
-                    getline(variable_n_power, general_use_string, '^');
-                    char variable = general_use_string[0];
-                    general_use_string = "";
-                    getline(variable_n_power, general_use_string);
-                    stringstream conv (general_use_string);
-                    int power = 0;
-                    conv >> power;
-                    this->addVariable(variable, power);
-                } else if (general_use_string.length() == 1) {
-                    char variable = general_use_string[0];
-                    this->addVariable(variable, 1);
+            stringstream coeff_full (input_string);
+            string general_use_string = "";
+            getline(coeff_full, general_use_string, '*');
+            if (isdigit(general_use_string[0])) {
+                stringstream coeff (general_use_string);
+                int coeff_conv = 0;
+                coeff >> coeff_conv;
+                this->coefficient *= coeff_conv;
+                input_string = input_string.substr(general_use_string.length() + 1);
+            }
+            // std::cout << "Coeff: " << this->coefficient << " Other: " << input_string << std::endl;
+            if (this->coefficient != 0 && input_string.length() > 1) {
+                general_use_string = "";
+                stringstream variables_and_powers (input_string);
+                while(getline(variables_and_powers, general_use_string, '*')) {
+                    // std::cout << "Printing: " << general_use_string << std::endl;
+                    if (general_use_string.length() >= 3) {
+                        stringstream variable_n_power (general_use_string);
+                        general_use_string = "";
+                        getline(variable_n_power, general_use_string, '^');
+                        char variable = general_use_string[0];
+                        general_use_string = "";
+                        getline(variable_n_power, general_use_string);
+                        stringstream conv (general_use_string);
+                        int power = 0;
+                        conv >> power;
+                        this->addVariable(variable, power);
+                    } else if (general_use_string.length() == 1) {
+                        char variable = general_use_string[0];
+                        this->addVariable(variable, 1);
+                    }
                 }
             }
         }
@@ -237,30 +262,34 @@ int term::getVarIndex(char var) const {
 }
 
 std::string term::operator~() const {
-    std::ostringstream os;
-    if (this->coefficient == -1) {
-        os << "-";
-    } else if (this->coefficient != 1) {
-        os << this->coefficient;
-    }
-
-    for (int i = 0; i < this->numVariables; i++) {
-        if (this->powers[i] != 0) {
-            os << "*" << this->variables[i];
-            if (this->powers[i] != 1) {
-                os << "^" << this->powers[i];
+    std::stringstream int_to_string;
+    int_to_string << this->coefficient;
+    std::string myStr = int_to_string.str();
+    if (this->numVariables > 0) {
+        if (this->coefficient == 1) {
+            myStr = "";
+        } else if (this->coefficient == -1) {
+            myStr = "-";
+        }
+        std::ostringstream os;
+        for (int i = 0; i < this->numVariables; i++) {
+            if (this->powers[i] != 0) {
+                os << "*" << this->variables[i];
+                if (this->powers[i] != 1) {
+                    os << "^" << this->powers[i];
+                }
             }
         }
-    }
 
-    std::string str = os.str();
-    if (str[0] == '*') {
-        str.erase(0, 1);
-    } else if (str[0] == '-' && str[1] == '*') {
-        str.erase(1, 1);
+        std::string str = os.str();
+        if (str[0] == '*') {
+            str.erase(0, 1);
+        } else if (str[0] == '-' && str[1] == '*') {
+            str.erase(1, 1);
+        }
+        myStr += str;
     }
-
-    return str;
+    return myStr;
 }
 
 std::ostream& operator<<(std::ostream& os, const term& t) {
