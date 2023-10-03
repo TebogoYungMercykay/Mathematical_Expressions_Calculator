@@ -95,8 +95,8 @@ void term::removeVariable(char var) {
             newPowers[i] = this->powers[i];
         }
 
-        delete[] variables;
-        delete[] powers;
+        delete[] this->variables;
+        delete[] this->powers;
 
         this->variables = newVariables;
         this->powers = newPowers;

@@ -3,16 +3,49 @@
 
 // Private
 void polynomial::addOrRemoveTerm(term* t) {
-    // for (i = 0; i < this->numVariables; i++) {
-    //     if (this->variables[i] == var) {
-    //         this->powers[i] += pow;
-    //         return; // Exit the function
-    //     }
-    //     if (this->variables[i] > var) {
-    //         break;
-    //     }
-    // }
-    // operator*=
+    int i = 0;
+    for (i = 0; i < this->numTerms; i++) {
+        if ((*this->terms[i]) == *t) {
+            // operator*=
+            (*this->terms[i]) *= (*t);
+            if (this->terms[i][this->terms[i]->getNumVariables() + 2] == 0) {
+                for (int j = i; j < this->numTerms - 1; j++) {
+                    this->terms[j] = this->terms[j + 1];
+                }
+                delete this->terms[this->numTerms - 1];
+                this->terms[this->numTerms - 1] = NULL;
+                this->numTerms--;
+                term** newTerm = new term*[this->numTerms];
+                for (int p = 0; p < this->numTerms; p++) {
+                    newTerm[p] = this->terms[p];
+                }
+                delete[] this->terms;
+                this->terms = newTerm;
+            }
+            return; // Exit the function
+        }
+        if ((*this->terms[i]) > *t) {
+            break;
+        }
+    }
+    term** newTerm1 = new term*[this->numTerms + 1];
+    for (int p = 0; p < i; p++) {
+        newTerm1[p] = this->terms[p];
+    }
+
+    // Adding
+    newTerm1[i] = t;
+
+    for (int p = i + 1; p < this->numTerms + 1; p++) {
+        newTerm1[p] = this->terms[p - 1];
+    }
+
+    if (this->terms != NULL) {
+        delete[] this->terms;
+        this->terms = NULL;
+    }
+    this->terms = newTerm1;
+    this->numTerms++;
 }
 
 int polynomial::termIndex(term* t) const {
