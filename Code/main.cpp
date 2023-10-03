@@ -13,15 +13,16 @@ void testPolynomialClass();
 
 int main() {
     cout << "Testing Term class:" << endl;
-    // testTermClass();
-    cout << "Testing Polynomial class:" << endl;
+    testTermClass();
+
+    // cout << "Testing Polynomial class:" << endl;
     // testPolynomialClass();
 
-    cout << "Testing univariate class:" << endl;
-    testUnivariateClass();
+    // cout << "Testing univariate class:" << endl;
+    // testUnivariateClass();
 
-    cout << "\nTesting bivariate class:" << endl;
-    testBivariateClass();
+    // cout << "\nTesting bivariate class:" << endl;
+    // testBivariateClass();
 
     cout << "\n\nTests Complete!" << endl;
     return 0;
