@@ -1,6 +1,14 @@
 // polynomial.cpp
 #include "polynomial.h"
 
+// - numTerms: int
+//     - This is the number of terms in the polynomial.
+//     - The default value for this is 0.
+// - terms: term**
+//     - This is a 1D dynamic array of dynamic term objects of size numTerms.
+//     - This will store the terms in the polynomial.
+//     - This array will always be sorted ascending using the term relational operators.
+//     - The default value for this is an array of size 0.
 // Private
 void polynomial::addOrRemoveTerm(term* t) {
     int i = 0;
