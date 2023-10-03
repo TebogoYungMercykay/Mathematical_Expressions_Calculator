@@ -11,6 +11,7 @@
 // - variable: char
 //     - This is the only variable allowed in this univariate.
 
+// Private
 bool univariate::isUnivariate() const {
     // - If the 2 restrictions mentioned at the start of this subsection are true, then return true. If there are any invalid terms, return false.
     for (int i = 0; i < this->getNumTerms(); i++) {
@@ -40,6 +41,7 @@ void univariate::clearTerms() {
     return true;
 }
 
+// Private
 univariate::univariate(int d, char c) : polynomial() {
     // - This is a parameterized constructor.
     // - Call the default polynomial constructor, and then set the degree and variable to the passed-in parameter.
@@ -52,7 +54,7 @@ univariate::univariate(term** t, int n) : polynomial(t, n) {
     // - Call the corresponding polynomial constructor.
     // - Set variable equal to x, and degree to 2.
     // - If the univariate has terms, then set degree to the degree of the first term.
-    // - If the first term contains a variable, set this object’s variable to the first variable of the first term.
+    // - If the first term contains a variable, set this object's variable to the first variable of the first term.
     // - Use the isUnivariate() function to check if the current object is a valid univariate. If it is not a valid univariate, then call clearTerms.
     this->degree = 2; // Default degree
     this->variable = 'x';
@@ -139,7 +141,7 @@ istream& operator>>(istream& is, univariate& u) {
 }
 
 polynomial* univariate::operator!() const {
-    // - This is the negation operator. This won’t change the current object.
+    // - This is the negation operator. This won't change the current object.
     // - The returned univariate, should be made up of all the negated terms.
     term** negatedTerms = new term*[this->getNumTerms()];
     for (int i = 0; i < this->getNumTerms(); i++) {

@@ -13,11 +13,13 @@
 void bivariate::clearTerms() {
     // If the 2 restrictions mentioned at the start of this subsection are true, then return true. If there are any invalid terms, return false.
 }
+
 bool bivariate::isBivariate() const {
     // - This should set the polynomial parameters to their default values.
-    // - Don’t change the degree or variables.
+    // - Don't change the degree or variables.
 }
 
+// Public
 bivariate::bivariate(int d, char c1, char c2) {
     // - This is a parameterized constructor.
     // - Call the default polynomial constructor, and then set the degree and variables to the passed-in parameters.
@@ -28,7 +30,7 @@ bivariate::bivariate(term** t, int n) {
     // - Call the corresponding polynomial constructor.
     // - Set the v1 to x, v2 to y, and the degree to 2.
     // - If the bivariate has terms, then set degree to the degree of the first term.
-    // - If the first term has a variable, set this object’s v1 to the first variable of the first term.
+    // - If the first term has a variable, set this object's v1 to the first variable of the first term.
     // - Loop through all the variables in the polynomial and set v2 to the first variable which is not v1.
     // - Use the isBivariate() function to check if the current object is a valid bivariate. If it is not a valid bivariate, then call clearTerms.
 }
