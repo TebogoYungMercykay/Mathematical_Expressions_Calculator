@@ -5,6 +5,7 @@ using namespace std;
 
 void testTermClass();
 void testPolynomialClass() {
+    // TODO: Make sure you Remove all the Pure Virtual methods before Doing This.
     cout << "\n\nTesting Inputs Constructor\n";
     const char* inputs[] = {
         "x^2*y^2 + 2*x*y + 1 + x^-3",
@@ -19,15 +20,34 @@ void testPolynomialClass() {
     // polynomial tempTerm11(s.c_str());
     // cout << tempTerm11;
 
-    std::string myS = "-x";
-    term tr(myS.c_str());
-    std::cout << tr;
+    // std::string myS = "-x";
+    // term tr(myS.c_str());
+    // std::cout << tr;
 
-    // for (int k = 0; k < 6; k++) {
-    //     polynomial tempTerm12(inputs[k]);
-    //     cout << tempTerm12;
-    // }
+    polynomial tempTerm14;
+    for (int k = 0; k < 6; k++) {
+        polynomial tempTerm12(inputs[k]);
+        if (k == 2) {
+            tempTerm14 = tempTerm12;
+        }
+        cout << tempTerm12;
+        cout << endl;
+    }
 
+    cout << "\n\nTesting Operator=\n";
+    cout << tempTerm14;
+
+    cout << "\n\nTesting Copy Constructor\n";
+    polynomial tempTerm15(tempTerm14);
+    cout << tempTerm15;
+
+    cout << "\n\nTesting Param Constructor\n";
+    polynomial tempTerm16(tempTerm14.getTerms(), tempTerm14.getNumTerms());
+    cout << tempTerm16;
+
+    // cout << "\n\nTesting termIndex\n";
+    // int ti = tempTerm16.termIndex(tempTerm14[2]);
+    // cout << ti << endl;
 }
 
 int main() {

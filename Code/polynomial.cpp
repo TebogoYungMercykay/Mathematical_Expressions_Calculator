@@ -6,45 +6,39 @@ void polynomial::addOrRemoveTerm(term* t) {
     int i = 0;
     for (i = 0; i < this->numTerms; i++) {
         if ((*this->terms[i]) == *t) {
-            // operator*=
-            (*this->terms[i]) *= (*t);
-            if (this->terms[i][this->terms[i]->getNumVariables() + 2] == 0) {
+            int& coeffLHS = (*this->terms[i])[(this->terms[i])->getNumVariables()];
+            int coeffRHS = (*t)[t->getNumVariables()];
+
+            coeffLHS += coeffRHS;
+            if (coeffLHS == 0) {
+                delete this->terms[i];
+                this->terms[i] = NULL;
                 for (int j = i; j < this->numTerms - 1; j++) {
                     this->terms[j] = this->terms[j + 1];
                 }
-                delete this->terms[this->numTerms - 1];
-                this->terms[this->numTerms - 1] = NULL;
                 this->numTerms--;
-                term** newTerm = new term*[this->numTerms];
-                for (int p = 0; p < this->numTerms; p++) {
-                    newTerm[p] = this->terms[p];
-                }
-                delete[] this->terms;
-                this->terms = newTerm;
+                return;
             }
+
             return; // Exit the function
         }
         if ((*this->terms[i]) > *t) {
             break;
         }
     }
-    term** newTerm1 = new term*[this->numTerms + 1];
+    term** newTerms = new term*[this->numTerms + 1];
+
     for (int p = 0; p < i; p++) {
-        newTerm1[p] = this->terms[p];
+        newTerms[p] = this->terms[p];
     }
 
-    // Adding
-    newTerm1[i] = t;
-
-    for (int p = i + 1; p < this->numTerms + 1; p++) {
-        newTerm1[p] = this->terms[p - 1];
+    newTerms[i] = new term(*t);
+    for (int p = i; p < this->numTerms; p++) {
+        newTerms[p + 1] = this->terms[p];
     }
 
-    if (this->terms != NULL) {
-        delete[] this->terms;
-        this->terms = NULL;
-    }
-    this->terms = newTerm1;
+    delete[] this->terms;
+    this->terms = newTerms;
     this->numTerms++;
 }
 
@@ -124,10 +118,9 @@ polynomial::polynomial(const char* input) {
         stringstream separate (general_use_string2);
         general_use_string = "";
         while (getline(separate, general_use_string, ',')) {
-            std::cout << general_use_string << std::endl;
             term* t = new term(general_use_string.c_str());
-            std::cout << ~(*t);
-            // this->addOrRemoveTerm(t);
+            this->addOrRemoveTerm(t);
+            delete t;
             general_use_string = "";
         }
     }
@@ -151,13 +144,24 @@ polynomial& polynomial::operator=(const polynomial& other) {
     if (this != &other) {
         for (int i = 0; i < this->numTerms; i++) {
             delete this->terms[i];
+            this->terms[i] = NULL;
         }
         delete[] this->terms;
 
         this->numTerms = other.numTerms;
         this->terms = new term*[this->numTerms];
-        for (int i = 0; i < this->numTerms; i++) {
-            this->terms[i] = new term(*other.terms[i]);
+        try {
+            for (int i = 0; i < this->numTerms; i++) {
+                this->terms[i] = new term(*other.terms[i]);
+            }
+        } catch (...) {
+            for (int i = 0; i < this->numTerms; i++) {
+                delete this->terms[i];
+            }
+            delete[] this->terms;
+            this->terms = NULL;
+            this->numTerms = 0;
+            throw;
         }
     }
     return *this;

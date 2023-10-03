@@ -270,6 +270,8 @@ std::string term::operator~() const {
             myStr = "";
         } else if (this->coefficient == -1) {
             myStr = "-";
+        } else {
+            myStr += "*";
         }
         std::ostringstream os;
         for (int i = 0; i < this->numVariables; i++) {
