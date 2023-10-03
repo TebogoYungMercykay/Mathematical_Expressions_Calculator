@@ -11,7 +11,7 @@
 // - variable: char
 //     - This is the only variable allowed in this univariate.
 
-bool isUnivariate() const {
+bool univariate::isUnivariate() const {
     // - If the 2 restrictions mentioned at the start of this subsection are true, then return true. If there are any invalid terms, return false.
     for (int i = 0; i < this->getNumTerms(); i++) {
         term* t = (*this)[i];
@@ -25,7 +25,7 @@ bool isUnivariate() const {
     return true;
 }
 
-void clearTerms() {
+void univariate::clearTerms() {
     // - This should set the polynomial parameters to their default values.
     // - Don't change the degree or variable
     for (int i = 0; i < this->getNumTerms(); i++) {
