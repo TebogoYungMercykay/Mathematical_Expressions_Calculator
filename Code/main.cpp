@@ -1,5 +1,6 @@
 #include <iostream>
 #include "term.h"
+#include "polynomial.h"
 using namespace std;
 
 void testTermClass();

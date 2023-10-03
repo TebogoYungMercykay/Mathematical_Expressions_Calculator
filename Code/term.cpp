@@ -125,12 +125,13 @@ term::term(const term& other) {
 
 term::term(int c, int n, char* v, int* p) {
     this->coefficient = c;
-    this->numVariables = n;
+    this->numVariables = 0;
     this->variables = new char[this->numVariables];
     this->powers = new int[this->numVariables];
-    for (int i = 0; i < this->numVariables; i++) {
-        this->variables[i] = v[i];
-        this->powers[i] = p[i];
+    if (v != NULL && p != NULL) {
+        for (int i = 0; i < n; i++) {
+            this->addVariable(v[i], p[i]);
+        }
     }
 }
 

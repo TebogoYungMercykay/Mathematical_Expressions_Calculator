@@ -1,82 +1,122 @@
 // polynomial.cpp
 #include "polynomial.h"
 
-polynomial::polynomial() : numTerms(0), terms(NULL) {}
+// Private
+void polynomial::addOrRemoveTerm(term* t) {
+    // for (i = 0; i < this->numVariables; i++) {
+    //     if (this->variables[i] == var) {
+    //         this->powers[i] += pow;
+    //         return; // Exit the function
+    //     }
+    //     if (this->variables[i] > var) {
+    //         break;
+    //     }
+    // }
+    // operator*=
+}
 
-polynomial::polynomial(term** t, int n) : numTerms(n) {
-    terms = new term*[numTerms];
-    for (int i = 0; i < numTerms; ++i) {
-        terms[i] = new term(*t[i]);
+int polynomial::termIndex(term* t) const {
+    for (int i = 0; i < this->numTerms; i++) {
+        if (*t == *(this->terms[i])) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+// Public
+polynomial::polynomial() {
+    this->numTerms = 0;
+    this->terms = new term*[this->numTerms];
+}
+
+polynomial::polynomial(term** t, int n) {
+    this->numTerms = 0;
+    this->terms = new term*[this->numTerms];
+    if (t != NULL) {
+        for (int i = 0; i < n; i++) {
+            this->addOrRemoveTerm(t[i]);
+        }
     }
 }
 
 polynomial::polynomial(const char* input) : numTerms(0), terms(NULL) {
+    // TODO: nhj
 }
 
-polynomial::polynomial(const polynomial& other) : numTerms(other.numTerms) {
-    terms = new term*[numTerms];
-    for (int i = 0; i < numTerms; ++i) {
-        terms[i] = new term(*other.terms[i]);
+polynomial::polynomial(const polynomial& other) {
+    this->numTerms = other.numTerms;
+    this->terms = new term*[this->numTerms];
+    for (int i = 0; i < this->numTerms; i++) {
+        this->terms[i] = new term(*other.terms[i]);
     }
 }
 
-polynomial::polynomial(term t) : numTerms(1) {
-    terms = new term*[1];
-    terms[0] = new term(t);
+polynomial::polynomial(term t) {
+    this->numTerms = 1;
+    this->terms = new term*[1];
+    this->terms[0] = new term(t);
 }
 
 polynomial& polynomial::operator=(const polynomial& other) {
     if (this != &other) {
-        for (int i = 0; i < numTerms; ++i) {
-            delete terms[i];
+        for (int i = 0; i < this->numTerms; i++) {
+            delete this->terms[i];
         }
-        delete[] terms;
+        delete[] this->terms;
 
-        numTerms = other.numTerms;
-        terms = new term*[numTerms];
-        for (int i = 0; i < numTerms; ++i) {
-            terms[i] = new term(*other.terms[i]);
+        this->numTerms = other.numTerms;
+        this->terms = new term*[this->numTerms];
+        for (int i = 0; i < this->numTerms; i++) {
+            this->terms[i] = new term(*other.terms[i]);
         }
     }
     return *this;
 }
 
 polynomial::~polynomial() {
-    for (int i = 0; i < numTerms; ++i) {
-        delete terms[i];
+    for (int i = 0; i < this->numTerms; i++) {
+        delete this->terms[i];
+        this->terms[i] = NULL;
     }
-    delete[] terms;
+    delete[] this->terms;
+    this->terms = NULL;
 }
 
 term** polynomial::getTerms() const {
-    return terms;
+    return this->terms;
 }
 
 int polynomial::getNumTerms() const {
-    return numTerms;
+    return this->numTerms;
 }
 
 ostream& operator<<(ostream& os, const polynomial& p) {
-    for (int i = 0; i < p.numTerms; ++i) {
-        os << *p.terms[i];
-        if (i < p.numTerms - 1) {
-            os << " + ";
+    if (p.numTerms == 0) {
+        os << "0";
+        return os;
+    } else {
+        for (int i = 0; i < p.numTerms; i++) {
+            os << ~(*p.terms[i]);
+            if (i < p.numTerms - 1) {
+                os << " + ";
+            }
         }
+        return os;
     }
-    return os;
 }
 
 term* polynomial::operator[](int idx) const {
-    if (idx >= 0 && idx < numTerms) {
-        return terms[idx];
+    if (idx >= 0 && idx < this->numTerms) {
+        return this->terms[idx];
     } else {
         return NULL;
     }
 }
 
 term* polynomial::operator[](int idx) {
-    if (idx >= 0 && idx < numTerms) {
-        return terms[idx];
+    if (idx >= 0 && idx < this->numTerms) {
+        return this->terms[idx];
     } else {
         return NULL;
     }
