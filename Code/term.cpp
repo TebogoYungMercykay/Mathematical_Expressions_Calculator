@@ -326,16 +326,20 @@ term& term::operator*=(const term& other) {
 
 const term term::operator()(char* vars, int* vals, int numVals) const {
     term temp(*this);
-    for (int i = 0; i < numVals; i++) {
-        int index = temp.getVarIndex(vars[i]);
-        if (index != -1) {
-            int power = temp.powers[index];
-            power -= vals[i];
-            temp.removeVariable(temp.variables[index]);
-            temp.addVariable(vars[i], power);
+    if (vars == NULL || vals == NULL or numVals == 0) {
+        return temp;
+    } else {
+        for (int i = 0; i < numVals; i++) {
+            int index = temp.getVarIndex(vars[i]);
+            if (index != -1) {
+                int power = temp.powers[index];
+                power -= vals[i];
+                temp.removeVariable(temp.variables[index]);
+                temp.addVariable(vars[i], power);
+            }
         }
+        return temp;
     }
-    return temp;
 }
 
 const term term::operator()(string inp) const {

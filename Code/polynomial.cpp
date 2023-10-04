@@ -167,7 +167,7 @@ polynomial& polynomial::operator=(const polynomial& other) {
                 delete this->terms[i];
             }
             delete[] this->terms;
-            this->terms = NULL;
+            this->terms = new term*[0];
             this->numTerms = 0;
             throw;
         }
