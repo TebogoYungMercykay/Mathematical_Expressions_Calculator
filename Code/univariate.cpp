@@ -15,7 +15,7 @@
 bool univariate::isUnivariate() const {
     for (int i = 0; i < this->getNumTerms(); i++) {
         term* t = (*this)[i];
-        if (t->getVarIndex(this->variable) == -1 || t->getDegree() > this->degree) {
+        if (t->getVarIndex(this->variable) == -1 || t->getDegree() > this->degree || t->getNumVariables != 1) {
             return false;
         }
     }
@@ -207,6 +207,8 @@ polynomial& univariate::operator-=(const polynomial& other) {
     return *this;
 }
 
+// Incomplete
+
 polynomial* univariate::operator*(const polynomial& other) const {
     // - This should return a univariate which is the result of multiplying the current object by the passed-in parameter.
     // - Note that the result might be an invalid univariate. This is fine as the return type is polynomial.
@@ -219,7 +221,7 @@ polynomial* univariate::operator*(const polynomial& other) const {
 }
 
 polynomial& univariate::operator*=(const polynomial& other) {
-    // - This operator might change the current object. If the result of multiplying the passedin parameter with the current object is a valid univariate, then the current object should change to the answer.
+    // - This operator might change the current object. If the result of multiplying the passed in parameter with the current object is a valid univariate, then the current object should change to the answer.
     // - If the result of multiplying them together is not univariate, then the current object should stay unchanged.
     // - Note that the same variable and degree should be used as the current object.
     polynomial result = *this * other;

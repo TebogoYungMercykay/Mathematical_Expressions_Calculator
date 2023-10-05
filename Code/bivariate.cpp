@@ -1,6 +1,10 @@
 // bivariate.cpp
 #include "bivariate.h"
 
+// Bivariate inherits publically from polynomial. This is a specialised version of polynomial, with 2 restrictions.
+// The first restriction is that the polynomial can have at most 2 types of variables.
+// The second restriction is a degree restriction. The bivariate class has a degree variable.
+// All terms in the bivariate must have a degree less than or equal to the degree variable.
 // - degree: int
 //     - This is the max degree for this bivariate.
 // - v1: char
@@ -12,135 +16,185 @@
 
 // Private:
 void bivariate::clearTerms() {
-    // If the 2 restrictions mentioned at the start of this subsection are true, then return true. If there are any invalid terms, return false.
+    for (int i = 0; i < this->getNumTerms(); i++) {
+        delete (*this)[i];
+        term* t = (*this)[i];
+        t = NULL;
+    }
+    delete[] this->terms;
+    this->terms = new term*[0];
+    this->numTerms = 0;
+}
+
+bool bivariate::isBivariate() const {
     for (int i = 0; i < this->getNumTerms(); i++) {
         term* t = (*this)[i];
-        // Check if the term contains the correct variables and has a degree within the allowed range
-        if (t->containsVariables(this->v1, this->v2) && t->getDegree() <= this->degree) {
-            continue;
-        } else {
+        if (t->getVarIndex(this->v1) == -1 || t->getVarIndex(this->v2) == -1 || t->getDegree() > this->degree || t->getNumVariables != 2) {
             return false;
         }
     }
     return true;
 }
 
-bool bivariate::isBivariate() const {
-    // - This should set the polynomial parameters to their default values.
-    // - Don't change the degree or variables.
-    return this->v1 != this->v2;
-}
-
 // Public
-bivariate::bivariate(int d, char c1, char c2) {
-    // - This is a parameterized constructor.
-    // - Call the default polynomial constructor, and then set the degree and variables to the passed-in parameters.
+bivariate::bivariate(int d, char c1, char c2) : polynomial() {
     this->degree = d;
     this->v1 = c1;
     this->v2 = c2;
 }
 
-bivariate::bivariate(term** t, int n) {
-    // - This is a parameterized constructor.
-    // - Call the corresponding polynomial constructor.
-    // - Set the v1 to x, v2 to y, and the degree to 2.
-    // - If the bivariate has terms, then set degree to the degree of the first term.
-    // - If the first term has a variable, set this object's v1 to the first variable of the first term.
-    // - Loop through all the variables in the polynomial and set v2 to the first variable which is not v1.
-    // - Use the isBivariate() function to check if the current object is a valid bivariate. If it is not a valid bivariate, then call clearTerms.
-    this->degree = 2; // Default degree
+bivariate::bivariate(term** t, int n) : polynomial(t, n) {
+    this->degree = 2;
     this->v1 = 'x';
     this->v2 = 'y';
 
-    // If the bivariate has terms, update degree, v1, and v2 based on the first term
-    if (n > 0) {
-        this->degree = (*t[0]).getDegree();
-        this->v1 = (*t[0]).getFirstVariable();
-        for (int i = 0; i < (*t[0]).getNumVariables(); i++) {
-            char var = (*t[0]).getVariable(i);
-            if (var != this->v1) {
-                this->v2 = var;
-                break;
+    if (this->numTerms > 0) {
+        this->degree = t[0]->getDegree();
+        if (this->terms[0]->getNumVariables() > 0) {
+            this->v1 = this->terms[0]->getVariables()[0];
+            bool exitBothLoops = false;
+            for (int k = 0; k < this->numTerms; k++) {
+                for (int i = 0; i < t[k]->getNumVariables(); i++) {
+                    char checkVariable = t[k]->getVariables()[i];
+                    if (checkVariable != this->v1) {
+                        this->v2 = checkVariable;
+                        exitBothLoops = true;
+                        break;
+                    }
+                }
+                if (exitBothLoops) {
+                    break;
+                }
             }
         }
     }
 
     // Check if the current object is a valid bivariate
-    if (!isBivariate()) {
-        clearTerms();
+    if (!this->isBivariate()) {
+        this->clearTerms();
     }
 }
 
-bivariate::bivariate(const char* input) {
-    // - Follow the same rules as the previous constructor.
-    this->degree = 2; // Default degree
+bivariate::bivariate(const char* input) : polynomial(input) {
+    this->degree = 2;
     this->v1 = 'x';
     this->v2 = 'y';
 
+    if (this->numTerms > 0) {
+        this->degree = t[0]->getDegree();
+        if (this->terms[0]->getNumVariables() > 0) {
+            this->v1 = this->terms[0]->getVariables()[0];
+            bool exitBothLoops = false;
+            for (int k = 0; k < this->numTerms; k++) {
+                for (int i = 0; i < t[k]->getNumVariables(); i++) {
+                    char checkVariable = t[k]->getVariables()[i];
+                    if (checkVariable != this->v1) {
+                        this->v2 = checkVariable;
+                        exitBothLoops = true;
+                        break;
+                    }
+                }
+                if (exitBothLoops) {
+                    break;
+                }
+            }
+        }
+    }
+
     // Check if the current object is a valid bivariate
-    if (!isBivariate()) {
-        clearTerms();
+    if (!this->isBivariate()) {
+        this->clearTerms();
     }
 }
 
-bivariate::bivariate(const bivariate& other) {
-    // - This is the copy constructor.
+bivariate::bivariate(const bivariate& other) : polynomial(other) {
     this->degree = other.degree;
     this->v1 = other.v1;
     this->v2 = other.v2;
 }
 
-bivariate::bivariate(const polynomial& other) {
-    // - Follow the same rules as the string constructor.
-    this->degree = 2; // Default degree
+bivariate::bivariate(const polynomial& other) : polynomial(other) {
+    this->degree = 2;
     this->v1 = 'x';
     this->v2 = 'y';
 
+    if (this->numTerms > 0) {
+        this->degree = t[0]->getDegree();
+        if (this->terms[0]->getNumVariables() > 0) {
+            this->v1 = this->terms[0]->getVariables()[0];
+            bool exitBothLoops = false;
+            for (int k = 0; k < this->numTerms; k++) {
+                for (int i = 0; i < t[k]->getNumVariables(); i++) {
+                    char checkVariable = t[k]->getVariables()[i];
+                    if (checkVariable != this->v1) {
+                        this->v2 = checkVariable;
+                        exitBothLoops = true;
+                        break;
+                    }
+                }
+                if (exitBothLoops) {
+                    break;
+                }
+            }
+        }
+    }
+
     // Check if the current object is a valid bivariate
-    if (!isBivariate()) {
-        clearTerms();
+    if (!this->isBivariate()) {
+        this->clearTerms();
     }
 }
-bivariate::bivariate(term t) {
-    // - Follow the same rules as the string constructor.
-    this->degree = 2; // Default degree
+
+bivariate::bivariate(term t) : polynomial(t) {
+    this->degree = 2;
     this->v1 = 'x';
     this->v2 = 'y';
 
+    if (this->numTerms > 0) {
+        this->degree = t[0]->getDegree();
+        if (this->terms[0]->getNumVariables() > 0) {
+            this->v1 = this->terms[0]->getVariables()[0];
+            bool exitBothLoops = false;
+            for (int k = 0; k < this->numTerms; k++) {
+                for (int i = 0; i < t[k]->getNumVariables(); i++) {
+                    char checkVariable = t[k]->getVariables()[i];
+                    if (checkVariable != this->v1) {
+                        this->v2 = checkVariable;
+                        exitBothLoops = true;
+                        break;
+                    }
+                }
+                if (exitBothLoops) {
+                    break;
+                }
+            }
+        }
+    }
+
     // Check if the current object is a valid bivariate
-    if (!isBivariate()) {
-        clearTerms();
+    if (!this->isBivariate()) {
+        this->clearTerms();
     }
 }
 
 bivariate& bivariate::operator=(const bivariate& other) {
     // - This is the assignment operator.
     if (this != &other) {
-        // Call the base class assignment operator
         polynomial::operator=(other);
         this->degree = other.degree;
         this->v1 = other.v1;
         this->v2 = other.v2;
     }
-    return *this;return *this;
+    return *this;
 }
 
 istream& operator>>(istream& is, bivariate& u) {
-    // - This will be used to set the member variables of the passed-in parameter.
-    // - Extract one line from the passed-in stream.
-    // - Use the string constructor to create a bivariate.
-    // - If the created bivariate is a valid bivariate, the passed-in parameter should be changed to this.
-    // - If the created bivariate is not a valid bivariate, the passed-in parameter should stay unchanged.
-    // - Note: if you called the constructor, the result will always be bivariate; thus, use the numTerms to see if clearTerms() was called.
     string line;
-    if (getline(is, line)) {
-        // Use the string constructor to create a bivariate
-        bivariate temp(line.c_str());
+    getline(is, line);
 
-        // If the created bivariate is valid, update the passed-in parameter
-        if (temp.isBivariate()) {
-            u = temp;
-        }
+    bivariate temp(line.c_str());
+    if (temp.isBivariate() && temp.numTerms != 0) {
+        u = temp;
     }
     return is;
 }
@@ -156,76 +210,83 @@ polynomial* bivariate::operator!() const {
 }
 
 polynomial* bivariate::operator()(char* vars, int* vals, int numVals) const {
-    // - This is the substitution operator.
-    // - The returned bivariate should be the result of calling the substitution operator on every term.
-    term** substitutedTerms = new term*[this->getNumTerms()];
+    term** negatedTerms = new term*[this->getNumTerms()];
     for (int i = 0; i < this->getNumTerms(); i++) {
-        substitutedTerms[i] = new term(*(*this)[i]);
-        substitutedTerms[i]->substitute(vars, vals, numVals);
+        negatedTerms[i] = new term((!(*(*this)[i])));
     }
-    return new bivariate(this->degree, this->v1, this->v2, substitutedTerms, this->getNumTerms());
+    return new bivariate(negatedTerms, this->getNumTerms());
 }
 
 polynomial* bivariate::operator()(string inp) const {
     // - This is the substitution operator.
-    // - This should follow the same rules as the previous operator.
-    // - You may assume that the passed-in parameter will be the same format as the term substitution operator
     term** substitutedTerms = new term*[this->getNumTerms()];
     for (int i = 0; i < this->getNumTerms(); i++) {
-        substitutedTerms[i] = new term(*(*this)[i]);
-        substitutedTerms[i]->substitute(inp);
+        substitutedTerms[i] = new term(this->terms[i]->operator()(inp));
     }
-    return new bivariate(this->degree, this->v1, this->v2, substitutedTerms, this->getNumTerms());
+    return new bivariate(substitutedTerms, this->getNumTerms());
 }
 
 polynomial* bivariate::operator+(const polynomial& other) const {
-    // - This should return a bivariate that is the result of adding (this will also be the correct mathematical addition meaning) the bivariate and polynomial together. Note that the result might be an invalid bivariate. This is fine as the return type is polynomial.
-    // - polynomial::addOrRemove() should be used to create a bivariate which is the result of adding all the terms together.
-    polynomial result = *this + other;
-    return new bivariate(result.getDegree(), this->v1, this->v2, result.getTerms(), result.getNumTerms());
+    // - This should return a bivariate that is the result of adding the bivariate and polynomial together.
+    bivariate* tempAdd = new bivariate(*this);
+    for (int i = 0; i < other.getNumTerms(); i++) {
+        tempAdd->addOrRemoveTerm(other[i]);
+    }
+
+    return tempAdd;
 }
 
 polynomial& bivariate::operator+=(const polynomial& other) {
-    // - This operator might change the current object. If the result of adding the current object and the passed-in parameter is a valid bivariate, then the current object should change to the result.
-    // - If the result of adding them together is not bivariate, then the current object should stay unchanged.
-    polynomial result = *this + other;
-    if (result.isBivariate()) {
-        *this = result;
+    bivariate* tempAdd = new bivariate(*this);
+    for (int i = 0; i < other.getNumTerms(); i++) {
+        tempAdd->addOrRemoveTerm(other[i]);
+    }
+
+    if (tempAdd->isBivariate()) {
+        *this = *tempAdd;
     }
     return *this;
 }
 
 polynomial* bivariate::operator-(const polynomial& other) const {
-    // - This should return a bivariate that is the result of subtracting the passed-in parameter from the current object. Note that the result might be an invalid bivariate. This is fine as the return type is polynomial.
-    // - Hint: Subtraction is just adding the negation.
-    polynomial result = *this - other;
-    return new bivariate(result.getDegree(), this->v1, this->v2, result.getTerms(), result.getNumTerms());
+    // - Subtraction is just adding the negation
+    bivariate* tempAdd = new bivariate((*this));
+    polynomial* negated = !other;
+    for (int i = 0; i < negated->getNumTerms(); i++) {
+        tempAdd->addOrRemoveTerm((*negated)[i]);
+    }
+
+    return tempAdd;
 }
 
 polynomial& bivariate::operator-=(const polynomial& other) {
-    // - This operator might change the current object. If the result of subtracting the passedin parameter from the current object is a valid bivariate, then the current object should change to the result.
-    // - If the result of subtracting them is not bivariate, then the current object should stay unchanged.
-    polynomial result = *this - other;
-    if (result.isBivariate()) {
-        *this = result;
+    bivariate* tempAdd = new bivariate(*this);
+    polynomial* negated = !other;
+    for (int i = 0; i < negated->getNumTerms(); i++) {
+        tempAdd->addOrRemoveTerm((*negated)[i]);
+    }
+
+    if (tempAdd->isBivariate()) {
+        *this = *tempAdd;
     }
     return *this;
 }
 
 polynomial* bivariate::operator*(const polynomial& other) const {
-    // - This should return a bivariate which is the result of multiplying the current object by the passed-in parameter. Note that the result might be an invalid bivariate. This is fine as the return type is polynomial.
-    // - The distributive property of polynomial multiplication should be used. This means that you must multiply every term in the first polynomial with every term in the second polynomial. The results of these multiplications should then be added together.
-    // - For another explanation, click here.
-    polynomial result = *this * other;
-    return new bivariate(result.getDegree(), this->v1, this->v2, result.getTerms(), result.getNumTerms());
+    // // - This should return a bivariate which is the result of multiplying the current object by the passed-in parameter. Note that the result might be an invalid bivariate. This is fine as the return type is polynomial.
+    // // - The distributive property of polynomial multiplication should be used. This means that you must multiply every term in the first polynomial with every term in the second polynomial. The results of these multiplications should then be added together.
+    // // - For another explanation, click here.
+    // polynomial result = *this * other;
+    // return new bivariate(result.getDegree(), this->v1, this->v2, result.getTerms(), result.getNumTerms());
+    return this;
 }
 
 polynomial& bivariate::operator*=(const polynomial& other) {
-    // - This operator might change the current object. If the result of multiplying the passedin parameter with the current object is a valid bivariate, then the current object should change to the result.
-    // - If the result of multiplying them together is not bivariate, then the current object should stay unchanged.
-    polynomial result = *this * other;
-    if (result.isBivariate()) {
-        *this = result;
-    }
+    // // - This operator might change the current object. If the result of multiplying the passedin parameter with the current object is a valid bivariate, then the current object should change to the result.
+    // // - If the result of multiplying them together is not bivariate, then the current object should stay unchanged.
+    // polynomial result = *this * other;
+    // if (result.isBivariate()) {
+    //     *this = result;
+    // }
     return *this;
 }
