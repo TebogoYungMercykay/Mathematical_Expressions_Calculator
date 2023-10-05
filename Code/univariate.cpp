@@ -210,23 +210,24 @@ polynomial& univariate::operator-=(const polynomial& other) {
 // Incomplete
 
 polynomial* univariate::operator*(const polynomial& other) const {
-    // - This should return a univariate which is the result of multiplying the current object by the passed-in parameter.
-    // - Note that the result might be an invalid univariate. This is fine as the return type is polynomial.
-    // - The distributive property of polynomial multiplication should be used.
-    // - This means that you must multiply every term in the first polynomial with every term in the second polynomial.
-    // - The results of these multiplications should then be added together.
-    // - For another explanation, click here.
-    polynomial result = *this * other;
-    return new univariate(result.getTerms(), result.getNumTerms());
+    // // - This should return a univariate which is the result of multiplying the current object by the passed-in parameter.
+    // // - Note that the result might be an invalid univariate. This is fine as the return type is polynomial.
+    // // - The distributive property of polynomial multiplication should be used.
+    // // - This means that you must multiply every term in the first polynomial with every term in the second polynomial.
+    // // - The results of these multiplications should then be added together.
+    // // - For another explanation, click here.
+    // polynomial result = *this * other;
+    // return new univariate(result.getTerms(), result.getNumTerms());
+    return this;
 }
 
 polynomial& univariate::operator*=(const polynomial& other) {
-    // - This operator might change the current object. If the result of multiplying the passed in parameter with the current object is a valid univariate, then the current object should change to the answer.
-    // - If the result of multiplying them together is not univariate, then the current object should stay unchanged.
-    // - Note that the same variable and degree should be used as the current object.
-    polynomial result = *this * other;
-    if (result.isUnivariate()) {
-        *this = result;
-    }
+    // // - This operator might change the current object. If the result of multiplying the passed in parameter with the current object is a valid univariate, then the current object should change to the answer.
+    // // - If the result of multiplying them together is not univariate, then the current object should stay unchanged.
+    // // - Note that the same variable and degree should be used as the current object.
+    // polynomial result = *this * other;
+    // if (result.isUnivariate()) {
+    //     *this = result;
+    // }
     return *this;
 }
