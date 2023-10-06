@@ -15,7 +15,7 @@
 bool univariate::isUnivariate() const {
     for (int i = 0; i < this->getNumTerms(); i++) {
         term* t = (*this)[i];
-        if (t->getVarIndex(this->variable) == -1 || t->getDegree() > this->degree || t->getNumVariables != 1) {
+        if (t->getVarIndex(this->variable) == -1 || t->getDegree() > this->degree || t->getNumVariables() != 1) {
             return false;
         }
     }
@@ -218,7 +218,9 @@ polynomial* univariate::operator*(const polynomial& other) const {
     // // - For another explanation, click here.
     // polynomial result = *this * other;
     // return new univariate(result.getTerms(), result.getNumTerms());
-    return this;
+
+    univariate* result = new univariate(*this);
+    return result;
 }
 
 polynomial& univariate::operator*=(const polynomial& other) {
@@ -229,5 +231,7 @@ polynomial& univariate::operator*=(const polynomial& other) {
     // if (result.isUnivariate()) {
     //     *this = result;
     // }
-    return *this;
+
+    univariate* result = new univariate(*this);
+    return *result;
 }
