@@ -205,7 +205,14 @@ polynomial* bivariate::operator!() const {
     for (int i = 0; i < this->getNumTerms(); i++) {
         negatedTerms[i] = new term((!(*(*this)[i])));
     }
-    return new bivariate(negatedTerms, this->getNumTerms());
+    polynomial* th = new univariate(negatedTerms, this->getNumTerms());
+    for (int i = 0; i < this->numTerms; i++) {
+        delete negatedTerms[i];
+        negatedTerms[i] = NULL;
+    }
+    delete[] negatedTerms;
+    negatedTerms = NULL;
+    return th;
 }
 
 polynomial* bivariate::operator()(char* vars, int* vals, int numVals) const {
@@ -213,7 +220,14 @@ polynomial* bivariate::operator()(char* vars, int* vals, int numVals) const {
     for (int i = 0; i < this->getNumTerms(); i++) {
         substitutedTerms[i] = new term(this->terms[i]->operator()(vars, vals, numVals));
     }
-    return new bivariate(substitutedTerms, this->getNumTerms());
+    polynomial* th = new bivariate(substitutedTerms, this->getNumTerms());
+    for (int i = 0; i < this->numTerms; i++) {
+        delete substitutedTerms[i];
+        substitutedTerms[i] = NULL;
+    }
+    delete[] substitutedTerms;
+    substitutedTerms = NULL;
+    return th;
 }
 
 polynomial* bivariate::operator()(string inp) const {
@@ -222,7 +236,14 @@ polynomial* bivariate::operator()(string inp) const {
     for (int i = 0; i < this->getNumTerms(); i++) {
         substitutedTerms[i] = new term(this->terms[i]->operator()(inp));
     }
-    return new bivariate(substitutedTerms, this->getNumTerms());
+    polynomial* th = new bivariate(substitutedTerms, this->getNumTerms());
+    for (int i = 0; i < this->numTerms; i++) {
+        delete substitutedTerms[i];
+        substitutedTerms[i] = NULL;
+    }
+    delete[] substitutedTerms;
+    substitutedTerms = NULL;
+    return th;
 }
 
 polynomial* bivariate::operator+(const polynomial& other) const {
@@ -244,6 +265,8 @@ polynomial& bivariate::operator+=(const polynomial& other) {
     if (tempAdd->isBivariate()) {
         *this = *tempAdd;
     }
+
+    delete tempAdd;
     return *this;
 }
 
@@ -255,6 +278,7 @@ polynomial* bivariate::operator-(const polynomial& other) const {
         tempAdd->addOrRemoveTerm((*negated)[i]);
     }
 
+    delete negated;
     return tempAdd;
 }
 
@@ -268,6 +292,8 @@ polynomial& bivariate::operator-=(const polynomial& other) {
     if (tempAdd->isBivariate()) {
         *this = *tempAdd;
     }
+
+    delete tempAdd;
     return *this;
 }
 
@@ -290,6 +316,6 @@ polynomial& bivariate::operator*=(const polynomial& other) {
     //     *this = result;
    // }
 
-    bivariate* result = new bivariate(*this);
-    return *result;
+    // bivariate* result = new bivariate(*this);
+    return *this;
 }

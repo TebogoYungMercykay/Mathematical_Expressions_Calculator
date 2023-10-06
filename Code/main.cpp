@@ -87,7 +87,7 @@ void testUnivariateClass() {
 
     // Test istream operator
     univariate u10(2, 'x');
-    cout << "Enter a univariate polynomial (e.g., 3x^2 + 2x - 5): ";
+    cout << "Enter a univariate polynomial (e.g., 3*x^2 + 2*x - 5): ";
     cin >> u10;
     cout << "User input: " << u10 << endl;
 
@@ -104,6 +104,15 @@ void testUnivariateClass() {
     univariate u13("x^2 - 2*x + 1");
     polynomial* sub_u13 = u13("x=3");
     cout << "u13(x=3): " << *sub_u13 << endl;
+
+    delete u5;
+    delete u6;
+    delete u7;
+    delete u8;
+    delete u9;
+    delete neg_u11;
+    delete sub_u12;
+    delete sub_u13;
 }
 
 void testBivariateClass() {
