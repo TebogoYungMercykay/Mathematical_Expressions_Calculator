@@ -18,11 +18,11 @@ int main() {
     // cout << "Testing Polynomial class:" << endl;
     // testPolynomialClass();
 
-    cout << "Testing univariate class:" << endl;
-    testUnivariateClass();
+    // cout << "Testing univariate class:" << endl;
+    // testUnivariateClass();
 
-    // cout << "\nTesting bivariate class:" << endl;
-    // testBivariateClass();
+    cout << "\nTesting bivariate class:" << endl;
+    testBivariateClass();
 
     cout << "\n\nTests Complete!" << endl;
     return 0;
@@ -116,69 +116,91 @@ void testUnivariateClass() {
 }
 
 void testBivariateClass() {
-    // Test default constructor
-//     bivariate b1;
-//     cout << "Default constructor: " << b1 << endl;
+// Test default constructor
+    bivariate u1(5, 'x', 'y');
+    cout << "Default constructor: " << u1 << endl;
 
-//     // Test parameterized constructor
-//     bivariate b2(2, 'x', 'y');
-//     cout << "Parameterized constructor: " << b2 << endl;
+    // Test parameterized constructor
+    bivariate u2(5, 'x', 'y');
+    cout << "Parameterized constructor: " << u2 << endl;
 
-//     // Test string constructor
-//     bivariate b3("3x^2 + 2xy - 5y^3");
-//     cout << "String constructor: " << b3 << endl;
+    // Test string constructor
+    bivariate u3("3*x^2 + 2*x - 5");
+    cout << "String constructor: " << u3 << endl;
 
-//     // Test copy constructor
-//     bivariate b4(b2);
-//     cout << "Copy constructor: " << b4 << endl;
+    // Test copy constructor
+    bivariate u4(u2);
+    cout << "Copy constructor: " << u4 << endl;
 
-//     // Test arithmetic operations
-//     bivariate b5 = b2 + b3;
-//     cout << "b2 + b3: " << b5 << endl;
+    bivariate u43(u2.getTerms(), u2.getNumTerms());
+    cout << "Constructor (term**, int): " << u43 << endl;
 
-//     b5 += b4;
-//     cout << "b5 += b4: " << b5 << endl;
+    term tr1("10*x^2*w^3*a^9");
+    bivariate u44(tr1);
+    cout << "Constructor (term): " << u44 << endl;
 
-//     bivariate b6 = b2 * b3;
-//     cout << "b2 * b3: " << b6 << endl;
+    term tr2("10*x^2*9");
+    bivariate u45(tr2);
+    cout << "Constructor (term): " << u45 << endl;
 
-//     b6 *= b3;
-//     cout << "b6 *= b3: " << b6 << endl;
+    // copy constructor
+    u44 = u45;
+    cout << "Copy Constructor: " << u44 << endl;
 
-//     // Test negation and substitution
-//     bivariate b7 = !b2;
-//     cout << "!b2: " << b7 << endl;
+    // Test arithmetic operations
+    polynomial* u5 = u2 + u3;
+    cout << "u2 + u3: " << *u5 << endl;
 
-//     char vars[] = { 'x', 'y' };
-//     int vals[] = { 2, 3 };
-//     bivariate b8 = b2(vars, vals, 2);
-//     cout << "b2(x=2, y=3): " << b8 << endl;
+    *u5 += u4;
+    cout << "u5 += u4: " << *u5 << endl;
 
-//     bivariate b9 = b3("x=3, y=1");
-//     cout << "b3(x=3, y=1): " << b9 << endl;
+    polynomial* u6 = u2 * u3;
+    cout << "u2 * u3: " << *u6 << endl;
 
-//     // Test istream operator
-//     bivariate b10;
-//     cout << "Enter a bivariate polynomial (e.g., 3x^2 + 2xy - 5y^3): ";
-//     cin >> b10;
-//     cout << "User input: " << b10 << endl;
+    *u6 *= u3;
+    cout << "u6 *= u3: " << *u6 << endl;
 
-//     // Test negation operator
-//     bivariate b11("2xy - 4y^2");
-//     bivariate neg_b11 = !b11;
-//     cout << "!b11: " << *neg_b11 << endl;
+    // Test negation and substitution
+    polynomial* u7 = !u2;
+    cout << "!u2: " << *u7 << endl;
 
-//     // Test substitution operator
-//     char vars[] = { 'x', 'y' };
-//     int vals[] = { 2, 3 };
-//     bivariate b12("3x^2 + 2xy - 5y^3");
-//     bivariate sub_b12 = b12(vars, vals, 2);
-//     cout << "b12(x=2, y=3): " << *sub_b12 << endl;
+    char vars[] = { 'x' };
+    int vals[] = { 2 };
+    polynomial* u8 = u2(vars, vals, 1);
+    cout << "u2(x=2): " << *u8 << endl;
 
-//     bivariate b13("x^2 - 2xy + y^2");
-//     bivariate sub_b13 = b13("x=3, y=1");
-//     cout << "b13(x=3, y=1): " << *sub_b13 << endl;
-// }
+    polynomial* u9 = u3("x=3");
+    cout << "u3(x=3): " << *u9 << endl;
+
+    // Test istream operator
+    bivariate u10(2, 'x', 'y');
+    cout << "Enter a bivariate polynomial (e.g., 3*x^2 + 2*x - 5): ";
+    cin >> u10;
+    cout << "User input: " << u10 << endl;
+
+    // Test negation operator
+    bivariate u11("2*x - 4");
+    polynomial* neg_u11 = !u11;
+    cout << "!u11: " << *neg_u11 << endl;
+
+    // Test substitution operator
+    bivariate u12("3*x^2 + 2*x - 5");
+    polynomial* sub_u12 = u12(vars, vals, 1);
+    cout << "u12(x=2): " << *sub_u12 << endl;
+
+    bivariate u13("x^2 - 2*x + 1");
+    polynomial* sub_u13 = u13("x=3");
+    cout << "u13(x=3): " << *sub_u13 << endl;
+
+    delete u5;
+    delete u6;
+    delete u7;
+    delete u8;
+    delete u9;
+    delete neg_u11;
+    delete sub_u12;
+    delete sub_u13;
+}
 
 // void testPolynomialClass() {
 //     // TODO: Make sure you Remove all the Pure Virtual methods before Doing This.
@@ -224,7 +246,7 @@ void testBivariateClass() {
 //     // cout << "\n\nTesting termIndex\n";
 //     // int ti = tempTerm16.termIndex(tempTerm14[2]);
 //     // cout << ti << endl;
-}
+// }
 
 void testTermClass() {
     cout << "\nTesting Constructors\n";
