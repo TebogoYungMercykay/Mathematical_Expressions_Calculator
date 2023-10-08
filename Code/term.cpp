@@ -142,7 +142,7 @@ term::term(const char* input) {
         this->variables = new char[this->numVariables];
         this->powers = new int[this->numVariables];
         std::string input_string(input);
-        if (input_string.length() == 1) {
+        if (input_string.length() == 1 && !(input_string[0] == '-' || input_string[0] == '+')) {
             if (isdigit(input_string[0])) {
                 stringstream coeff (input_string);
                 int coeff_conv = 0;
@@ -166,6 +166,23 @@ term::term(const char* input) {
                 this->addVariable(variable, 1);
             }
         } else if (input_string.length() > 1) {
+            if (input_string.length() >= 2 && (input_string[0] == '+' || input_string[0] == '-')) {
+                bool isDigit = true;
+                for (int i = 1; i < input_string.length(); i++) {
+                    if (!isdigit(input_string[i])) {
+                        isDigit = false;
+                        break;
+                    }
+                }
+                if (isDigit) {
+                    stringstream coeff (input_string);
+                    int coeff_conv = 0;
+                    coeff >> coeff_conv;
+                    this->coefficient *= coeff_conv;
+                    return;
+                }
+            }
+
             if (input_string[0] == '-') {
                 this->coefficient *= -1;
                 input_string = input_string.substr(1);
@@ -183,12 +200,10 @@ term::term(const char* input) {
                 this->coefficient *= coeff_conv;
                 input_string = input_string.substr(general_use_string.length() + 1);
             }
-            // std::cout << "Coeff: " << this->coefficient << " Other: " << input_string << std::endl;
             if (this->coefficient != 0 && input_string.length() > 0) {
                 general_use_string = "";
                 stringstream variables_and_powers (input_string);
                 while(getline(variables_and_powers, general_use_string, '*')) {
-                    // std::cout << "Printing: " << general_use_string << std::endl;
                     if (general_use_string.length() >= 3) {
                         stringstream variable_n_power (general_use_string);
                         general_use_string = "";

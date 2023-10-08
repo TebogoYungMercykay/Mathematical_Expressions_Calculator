@@ -70,10 +70,7 @@ univariate::univariate(const char* input) : polynomial(input) {
     // Check if the current object is a valid univariate
     if (!this->isUnivariate()) {
         this->clearTerms();
-        // std::cout << "Not Univariate Here" << std::endl;
-    } /* else {
-        std::cout << "Univariate Here" << std::endl;
-    } */
+    }
 }
 
 univariate::univariate(const univariate& other) : polynomial(other) {
@@ -196,15 +193,13 @@ polynomial* univariate::operator+(const polynomial& other) const {
 }
 
 polynomial& univariate::operator+=(const polynomial& other) {
-    univariate* tempAdd = new univariate(*this);
-    for (int i = 0; i < other.getNumTerms(); i++) {
-        tempAdd->addOrRemoveTerm(other[i]);
+    polynomial* myP = (*this + other);
+    univariate* result = new univariate(*myP);
+    if (result->isUnivariate()) {
+        *this = *result;
     }
-
-    if (tempAdd->isUnivariate()) {
-        *this = *tempAdd;
-    }
-    delete tempAdd;
+    delete myP;
+    delete result;
     return *this;
 }
 
@@ -220,44 +215,89 @@ polynomial* univariate::operator-(const polynomial& other) const {
 }
 
 polynomial& univariate::operator-=(const polynomial& other) {
-    univariate* tempAdd = new univariate(*this);
-    polynomial* negated = !other;
-    for (int i = 0; i < negated->getNumTerms(); i++) {
-        tempAdd->addOrRemoveTerm((*negated)[i]);
+    polynomial* myP = (*this - other);
+    univariate* result = new univariate(*myP);
+    if (result->isUnivariate()) {
+        *this = *result;
     }
-
-    if (tempAdd->isUnivariate()) {
-        *this = *tempAdd;
-    }
-    delete tempAdd;
+    delete myP;
+    delete result;
     return *this;
 }
 
-// Incomplete
+// polynomial* univariate::operator*(const polynomial& other) const {
+//     // - This should multiply the current object by the passed-in parameter.
+//     if (other.getNumTerms() == 1) {
+//         univariate* result = new univariate(*this);
+//         for (int i = 0; i < result->getNumTerms(); i++) {
+//             term* t = (*result)[i];
+//             (*t) *= *(other[0]);
+//         }
+//         return result;
+//     } else if (this->getNumTerms() == 1) {
+//         univariate* result = new univariate(other);
+//         for (int i = 0; i < result->getNumTerms(); i++) {
+//             term* t = (*result)[i];
+//             (*t) *= *(this->terms[0]);
+//         }
+//         return result;
+//     } else if (this->getNumTerms() == 2) {
+//         univariate* result = new univariate(*this);
+//         term* trm = new term(!(*result->getTerms()[1]));
+//         term* trm1 = new term(!(*result->getTerms()[0]));
+//         result->addOrRemoveTerm(trm);
+//         univariate* result_2 = new univariate(*this);
+//         result_2->addOrRemoveTerm(trm1);
+//         // std::cout << *result << std::endl;
+//         // std::cout << *result_2 << std::endl;
+//         univariate* final_result = new univariate(other);
+//         for (int i = 0; i < final_result->getNumTerms(); i++) {
+//             term* t = (*final_result)[i];
+//             (*t) *= *((*result)[0]);
+//         }
+//         univariate* final_result_2 = new univariate(other);
+//         for (int i = 0; i < final_result_2->getNumTerms(); i++) {
+//             term* t = (*final_result_2)[i];
+//             (*t) *= *((*result_2)[0]);
+//         }
+
+//         for (int k = 0; k < final_result->getNumTerms(); k++) {
+//             final_result_2->addOrRemoveTerm((*final_result)[k]);
+//         }
+
+//         delete trm;
+//         delete trm1;
+//         delete result;
+//         delete result_2;
+//         delete final_result;
+//         return final_result_2;
+//     } else {
+//         univariate* result = new univariate(other);
+//         return result;
+//     }
+// }
 
 polynomial* univariate::operator*(const polynomial& other) const {
-    // // - This should return a univariate which is the result of multiplying the current object by the passed-in parameter.
-    // // - Note that the result might be an invalid univariate. This is fine as the return type is polynomial.
-    // // - The distributive property of polynomial multiplication should be used.
-    // // - This means that you must multiply every term in the first polynomial with every term in the second polynomial.
-    // // - The results of these multiplications should then be added together.
-    // // - For another explanation, click here.
-    // polynomial result = *this * other;
-    // return new univariate(result.getTerms(), result.getNumTerms());
-
-    univariate* result = new univariate(*this);
+    univariate* result = new univariate(this->degree, 'x');
+    for (int i = 0; i < this->getNumTerms(); i++) {
+        for (int j = 0; j < other.getNumTerms(); j++) {
+            term* t1 = (*this)[i];
+            term* t2 = other[j];
+            term* t_product = new term((*t1) * (*t2));
+            result->addOrRemoveTerm(t_product);
+            delete t_product;
+        }
+    }
     return result;
 }
 
 polynomial& univariate::operator*=(const polynomial& other) {
-    // // - This operator might change the current object. If the result of multiplying the passed in parameter with the current object is a valid univariate, then the current object should change to the answer.
-    // // - If the result of multiplying them together is not univariate, then the current object should stay unchanged.
-    // // - Note that the same variable and degree should be used as the current object.
-    // polynomial result = *this * other;
-    // if (result.isUnivariate()) {
-    //     *this = result;
-    // }
-
-    // univariate* result = new univariate(*this);
+    polynomial* myP = (*this * other);
+    univariate* result = new univariate(*myP);
+    if (result->isUnivariate()) {
+        *this = *result;
+    }
+    delete myP;
+    delete result;
     return *this;
 }

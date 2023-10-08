@@ -272,74 +272,75 @@ polynomial* bivariate::operator()(string inp) const {
 
 polynomial* bivariate::operator+(const polynomial& other) const {
     // - This should return a bivariate that is the result of adding the bivariate and polynomial together.
-    bivariate* tempAdd = new bivariate(*this);
+    bivariate* result = new bivariate(*this);
     for (int i = 0; i < other.getNumTerms(); i++) {
-        tempAdd->addOrRemoveTerm(other[i]);
+        result->addOrRemoveTerm(other[i]);
     }
 
-    return tempAdd;
+    return result;
 }
 
 polynomial& bivariate::operator+=(const polynomial& other) {
-    bivariate* tempAdd = new bivariate(*this);
-    for (int i = 0; i < other.getNumTerms(); i++) {
-        tempAdd->addOrRemoveTerm(other[i]);
+    polynomial* myP = (*this + other);
+    bivariate* result = new bivariate(*myP);
+
+    if (result->isBivariate()) {
+        *this = *result;
     }
 
-    if (tempAdd->isBivariate()) {
-        *this = *tempAdd;
-    }
-
-    delete tempAdd;
+    delete myP;
+    delete result;
     return *this;
 }
 
 polynomial* bivariate::operator-(const polynomial& other) const {
     // - Subtraction is just adding the negation
-    bivariate* tempAdd = new bivariate((*this));
+    bivariate* result = new bivariate((*this));
     polynomial* negated = !other;
     for (int i = 0; i < negated->getNumTerms(); i++) {
-        tempAdd->addOrRemoveTerm((*negated)[i]);
+        result->addOrRemoveTerm((*negated)[i]);
     }
 
     delete negated;
-    return tempAdd;
+    return result;
 }
 
 polynomial& bivariate::operator-=(const polynomial& other) {
-    bivariate* tempAdd = new bivariate(*this);
-    polynomial* negated = !other;
-    for (int i = 0; i < negated->getNumTerms(); i++) {
-        tempAdd->addOrRemoveTerm((*negated)[i]);
+    polynomial* myP = (*this - other);
+    bivariate* result = new bivariate(*myP);
+
+    if (result->isBivariate()) {
+        *this = *result;
     }
 
-    if (tempAdd->isBivariate()) {
-        *this = *tempAdd;
-    }
-
-    delete tempAdd;
+    delete myP;
+    delete result;
     return *this;
 }
 
 polynomial* bivariate::operator*(const polynomial& other) const {
-    // // - This should return a bivariate which is the result of multiplying the current object by the passed-in parameter. Note that the result might be an invalid bivariate. This is fine as the return type is polynomial.
-    // // - The distributive property of polynomial multiplication should be used. This means that you must multiply every term in the first polynomial with every term in the second polynomial. The results of these multiplications should then be added together.
-    // // - For another explanation, click here.
-    // polynomial result = *this * other;
-    // return new bivariate(result.getDegree(), this->v1, this->v2, result.getTerms(), result.getNumTerms());
-
-    bivariate* result = new bivariate(*this);
+    bivariate* result = new bivariate(this->degree, 'x', 'y');
+    for (int i = 0; i < this->getNumTerms(); i++) {
+        for (int j = 0; j < other.getNumTerms(); j++) {
+            term* t1 = (*this)[i];
+            term* t2 = other[j];
+            term* t_product = new term((*t1) * (*t2));
+            result->addOrRemoveTerm(t_product);
+            delete t_product;
+        }
+    }
     return result;
 }
 
 polynomial& bivariate::operator*=(const polynomial& other) {
-    // // - This operator might change the current object. If the result of multiplying the passedin parameter with the current object is a valid bivariate, then the current object should change to the result.
-    // // - If the result of multiplying them together is not bivariate, then the current object should stay unchanged.
-    // polynomial result = *this * other;
-    // if (result.isBivariate()) {
-    //     *this = result;
-   // }
+    polynomial* myP = (*this * other);
+    bivariate* result = new bivariate(*myP);
 
-    // bivariate* result = new bivariate(*this);
+    if (result->isBivariate()) {
+        *this = *result;
+    }
+
+    delete myP;
+    delete result;
     return *this;
 }
