@@ -281,15 +281,14 @@ polynomial* bivariate::operator+(const polynomial& other) const {
 }
 
 polynomial& bivariate::operator+=(const polynomial& other) {
-    bivariate* tempAdd = new bivariate(*this);
-    for (int i = 0; i < other.getNumTerms(); i++) {
-        tempAdd->addOrRemoveTerm(other[i]);
-    }
+    polynomial* myP = (*this + other);
+    bivariate* result = new bivariate(*myP);
 
     if (tempAdd->isBivariate()) {
         *this = *tempAdd;
     }
 
+    delete myP;
     delete tempAdd;
     return *this;
 }
@@ -307,16 +306,14 @@ polynomial* bivariate::operator-(const polynomial& other) const {
 }
 
 polynomial& bivariate::operator-=(const polynomial& other) {
-    bivariate* tempAdd = new bivariate(*this);
-    polynomial* negated = !other;
-    for (int i = 0; i < negated->getNumTerms(); i++) {
-        tempAdd->addOrRemoveTerm((*negated)[i]);
-    }
+    polynomial* myP = (*this - other);
+    bivariate* result = new bivariate(*myP);
 
     if (tempAdd->isBivariate()) {
         *this = *tempAdd;
     }
 
+    delete myP;
     delete tempAdd;
     return *this;
 }
@@ -333,13 +330,14 @@ polynomial* bivariate::operator*(const polynomial& other) const {
 }
 
 polynomial& bivariate::operator*=(const polynomial& other) {
-    // // - This operator might change the current object. If the result of multiplying the passedin parameter with the current object is a valid bivariate, then the current object should change to the result.
-    // // - If the result of multiplying them together is not bivariate, then the current object should stay unchanged.
-    // polynomial result = *this * other;
-    // if (result.isBivariate()) {
-    //     *this = result;
-   // }
+    polynomial* myP = (*this * other);
+    bivariate* result = new bivariate(*myP);
 
-    // bivariate* result = new bivariate(*this);
+    if (tempAdd->isBivariate()) {
+        *this = *tempAdd;
+    }
+
+    delete myP;
+    delete tempAdd;
     return *this;
 }
