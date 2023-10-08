@@ -23,30 +23,30 @@ void testEllipse();
 
 int main() {
     // cout << "\n\nTesting Term class:" << endl;
-    // testTermClass();
+    testTermClass();
 
     // cout << "\n\nTesting Polynomial class:" << endl;
-    // testPolynomialClass();
-
-    // cout << "\n\nTesting linear class:" << endl;
-    // testLinear();
-
-    // cout << "\n\nTesting Quadratic class:" << endl;
-    // testQuadratic();
-
-    // cout << "\n\nTesting Circle class:" << endl;
-    // testCircle();
-
-    // cout << "\n\nTesting Ellipse class:" << endl;
-    // testEllipse();
+    testPolynomialClass();
 
     // cout << "\n\nTesting univariate class:" << endl;
-    // testUnivariateClass();
-    // testUnivariateClass22();
+    testUnivariateClass();
+    testUnivariateClass22();
 
     cout << "\n\nTesting bivariate class:" << endl;
     testBivariateClass();
     testBivariateClass22();
+
+    // cout << "\n\nTesting linear class:" << endl;
+    testLinear();
+
+    // cout << "\n\nTesting Quadratic class:" << endl;
+    testQuadratic();
+
+    // cout << "\n\nTesting Circle class:" << endl;
+    testCircle();
+
+    // cout << "\n\nTesting Ellipse class:" << endl;
+    testEllipse();
 
     cout << "\n\nTests Complete!" << endl;
     return 0;
@@ -486,51 +486,50 @@ void testUnivariateClass22() {
     delete ud_10;
 }
 
-// void testPolynomialClass() {
-//     // TODO: Make sure you Remove all the Pure Virtual methods before Doing This.
-//     // cout << "\n\nTesting Inputs Constructor\n";
-//     // const char* inputs[] = {
-//     //     "x^2*y^2 + 2*x*y + 1 + x^-3",
-//     //     "- -a^2*y^2 - -2*a*y - -1",
-//     //     "-x^2*b^1 - 2*x*b^5 - 1 + b^-5",
-//     //     "- +c*y^2 - +2*c^3*y - +1",
-//     //     "+ -c^2*y^2 + -2*c*y + -1",
-//     //     "e^-3 + f^-2"
-//     // };
+void testPolynomialClass() {
+    cout << "\n\nTesting Inputs Constructor\n";
+    const char* inputs[] = {
+        "x^2*y^2 + 2*x*y + 1 + x^-3",
+        "- -a^2*y^2 - -2*a*y - -1",
+        "-x^2*b^1 - 2*x*b^5 - 1 + b^-5",
+        "- +c*y^2 - +2*c^3*y - +1",
+        "+ -c^2*y^2 + -2*c*y + -1",
+        "e^-3 + f^-2"
+    };
 
-//     // // string s = "";
-//     // // polynomial tempTerm11(s.c_str());
-//     // // cout << tempTerm11;
+    string s = "";
+    univariate tempTerm11(s.c_str());
+    cout << tempTerm11;
 
-//     // // std::string myS = "-x";
-//     // // term tr(myS.c_str());
-//     // // std::cout << tr;
+    std::string myS = "-x";
+    term tr(myS.c_str());
+    std::cout << tr;
 
-//     // polynomial tempTerm14;
-//     // for (int k = 0; k < 6; k++) {
-//     //     polynomial tempTerm12(inputs[k]);
-//     //     if (k == 2) {
-//     //         tempTerm14 = tempTerm12;
-//     //     }
-//     //     cout << tempTerm12;
-//     //     cout << endl;
-//     // }
+    univariate tempTerm14(2, 'x');
+    for (int k = 0; k < 6; k++) {
+        univariate tempTerm12(inputs[k]);
+        if (k == 2) {
+            tempTerm14 = tempTerm12;
+        }
+        cout << tempTerm12;
+        cout << endl;
+    }
 
-//     // cout << "\n\nTesting Operator=\n";
-//     // cout << tempTerm14;
+    cout << "\n\nTesting Operator=\n";
+    cout << tempTerm14;
 
-//     // cout << "\n\nTesting Copy Constructor\n";
-//     // polynomial tempTerm15(tempTerm14);
-//     // cout << tempTerm15;
+    cout << "\n\nTesting Copy Constructor\n";
+    univariate tempTerm15(tempTerm14);
+    cout << tempTerm15;
 
-//     // cout << "\n\nTesting Param Constructor\n";
-//     // polynomial tempTerm16(tempTerm14.getTerms(), tempTerm14.getNumTerms());
-//     // cout << tempTerm16;
+    cout << "\n\nTesting Param Constructor\n";
+    univariate tempTerm16(tempTerm14.getTerms(), tempTerm14.getNumTerms());
+    cout << tempTerm16;
 
-//     // cout << "\n\nTesting termIndex\n";
-//     // int ti = tempTerm16.termIndex(tempTerm14[2]);
-//     // cout << ti << endl;
-// }
+    // cout << "\n\nTesting termIndex\n";
+    // int ti = tempTerm16.termIndex(tempTerm14[2]);
+    // cout << ti << endl;
+}
 
 void testTermClass() {
     cout << "\nTesting Constructors\n";
