@@ -40,25 +40,13 @@ int main() {
     // testEllipse();
 
     cout << "\n\nTesting univariate class:" << endl;
+    testUnivariateClass();
     testUnivariateClass22();
-    // testUnivariateClass();
     // cout << "\n\nTesting bivariate class:" << endl;
     // testBivariateClass();
 
     cout << "\n\nTests Complete!" << endl;
     return 0;
-}
-
-void testUnivariateClass22() {
-    // Test arithmetic operations
-    univariate u3("3*x^2 + 15*x + 18");
-    univariate u4("2*x^2 + 10*x + 12");
-    polynomial* ud_5 = u4 - u3;
-    cout << "Addition | u4 - u3: " << *(ud_5) << endl;
-    polynomial* ud_6 = !u4;
-    cout << "Negation | !u4: " << *(ud_6) << endl;
-    delete ud_5;
-    delete ud_6;
 }
 
 void testCircle() {
@@ -288,8 +276,8 @@ void testUnivariateClass() {
 
     // Test istream operator
     univariate u10(2, 'x');
-    cout << "Enter a univariate polynomial (e.g., 3*x^2 + 2*x - 5): ";
-    cin >> u10;
+    std::istringstream testInput("3*x^2 + 2*x - 5");
+    testInput >> u10;
     cout << "User input: " << u10 << endl;
 
     // Test negation operator
@@ -314,6 +302,52 @@ void testUnivariateClass() {
     delete neg_u11;
     delete sub_u12;
     delete sub_u13;
+}
+
+void testUnivariateClass22() {
+    // Test arithmetic operations
+    univariate u3("3*x^2 + 15*x + 18");
+    univariate u4("2*x^2 + 10*x + 12");
+    univariate u5("2*x^2");
+    univariate u6("3*x - 1");
+    univariate u7("2*x + 5");
+
+    univariate u8(u6);
+    polynomial* ud_8 = u6 + u7;
+    u8 += u7;
+    cout << "Addition | u6 + u7: " << *(ud_8) << endl;
+    cout << "Addition | u8 += u7: " << u8 << endl;
+    polynomial* ud_4 = u4 + u3;
+    cout << "Subtraction | u4 + u3: " << *(ud_4) << endl;
+
+    univariate u9(u6);
+    polynomial* ud_9 = u6 - u7;
+    u9 -= u7;
+    cout << "Subtraction | u6 - u7: " << *(ud_9) << endl;
+    cout << "Subtraction | u9 -= u7: " << u9 << endl;
+    polynomial* ud_5 = u4 - u3;
+    cout << "Subtraction | u4 - u3: " << *(ud_5) << endl;
+
+    polynomial* ud_6 = !u4;
+    cout << "Negation | !u4: " << *(ud_6) << endl;
+
+    univariate u10(u6);
+    polynomial* ud_10 = u6 * u7;
+    u10 *= u7;
+    cout << "Multiplication | u6 * u7: " << *(ud_10) << endl;
+    cout << "Multiplication | u10 *= u7: " << u10 << endl;
+
+    polynomial* ud_7 = u6 * u3;
+    cout << "Multiplication | u3: " << u3 << endl;
+    cout << "Multiplication | u6 * u3: " << *(ud_7) << endl;
+
+    delete ud_4;
+    delete ud_5;
+    delete ud_6;
+    delete ud_7;
+    delete ud_8;
+    delete ud_9;
+    delete ud_10;
 }
 
 void testBivariateClass() {
