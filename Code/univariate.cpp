@@ -70,10 +70,10 @@ univariate::univariate(const char* input) : polynomial(input) {
     // Check if the current object is a valid univariate
     if (!this->isUnivariate()) {
         this->clearTerms();
-        std::cout << "Not Univariate Here" << std::endl;
-    } else {
+        // std::cout << "Not Univariate Here" << std::endl;
+    } /* else {
         std::cout << "Univariate Here" << std::endl;
-    }
+    } */
 }
 
 univariate::univariate(const univariate& other) : polynomial(other) {
