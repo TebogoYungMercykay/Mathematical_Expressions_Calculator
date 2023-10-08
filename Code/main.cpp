@@ -17,22 +17,22 @@ void testLinear();
 void testQuadratic();
 
 int main() {
-    // cout << "Testing Term class:" << endl;
+    // cout << "\n\nTesting Term class:" << endl;
     // testTermClass();
 
-    // cout << "Testing Polynomial class:" << endl;
+    // cout << "\n\nTesting Polynomial class:" << endl;
     // testPolynomialClass();
 
-    // cout << "Testing univariate class:" << endl;
+    // cout << "\n\nTesting univariate class:" << endl;
     // testUnivariateClass();
 
-    // cout << "Testing linear class:" << endl;
+    // cout << "\n\nTesting linear class:" << endl;
     // testLinear();
 
-    cout << "Testing Quadratic class:" << endl;
+    cout << "\n\nTesting Quadratic class:" << endl;
     testQuadratic();
 
-    // cout << "\nTesting bivariate class:" << endl;
+    // cout << "\n\nTesting bivariate class:" << endl;
     // testBivariateClass();
 
     cout << "\n\nTests Complete!" << endl;
@@ -74,35 +74,47 @@ void testLinear() {
 
 void testQuadratic() {
     // Test default constructor
-    linear u1('x');
+    quadratic u1('x');
     u1.printRoots();
 
     // Test parameterized constructor
-    linear u2('y');
+    quadratic u2('y');
     u2.printRoots();
 
     // Test string constructor
-    linear u3("3*y + 3");
+    quadratic u3("y^2 + 5*y + 6");
     u3.printRoots();
 
     // Test copy constructor
-    linear u4(u2);
+    quadratic u4(u2);
     u4.printRoots();
 
-    linear u43(u2.getTerms(), u2.getNumTerms());
+    quadratic u43(u2.getTerms(), u2.getNumTerms());
     u43.printRoots();
 
     term tr1("10*x^2*w^3*a^9");
-    linear u44(tr1);
+    quadratic u44(tr1);
     u44.printRoots();
+    term** t = new term*[3];
+    t[0] = new term("2*x^2");
+    t[1] = new term("7*x");
+    t[2] = new term("6");
 
-    term tr2("10*x^2*9");
-    linear u45(tr2);
+    // Test copy constructor
+    quadratic u45(t, 3);
     u45.printRoots();
 
     // copy constructor
     u44 = u45;
     u44.printRoots();
+
+    // Deallocating Memory
+    for (int i = 0; i < 3; i++) {
+        delete t[i];
+        t[i] = NULL;
+    }
+    delete[] t;
+    t = NULL;
 }
 
 
