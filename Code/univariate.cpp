@@ -15,7 +15,7 @@
 bool univariate::isUnivariate() const {
     for (int i = 0; i < this->getNumTerms(); i++) {
         term* t = (*this)[i];
-        if (t->getVarIndex(this->variable) == -1 || t->getDegree() > this->degree || t->getNumVariables() != 1) {
+        if ((t->getNumVariables() > 0 && t->getVarIndex(this->variable) == -1) || t->getDegree() > this->degree) {
             return false;
         }
     }
@@ -70,6 +70,9 @@ univariate::univariate(const char* input) : polynomial(input) {
     // Check if the current object is a valid univariate
     if (!this->isUnivariate()) {
         this->clearTerms();
+        std::cout << "Not Univariate Here" << std::endl;
+    } else {
+        std::cout << "Univariate Here" << std::endl;
     }
 }
 

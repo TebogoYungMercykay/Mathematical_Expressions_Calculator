@@ -27,14 +27,40 @@ void bivariate::clearTerms() {
 }
 
 bool bivariate::isBivariate() const {
+    if (this->v1 == this->v2) {
+        return false;
+    }
+    bool existsV1 = false;
+    bool existsV2 = false;
     for (int i = 0; i < this->getNumTerms(); i++) {
         term* t = (*this)[i];
-        if (t->getVarIndex(this->v1) == -1 || t->getVarIndex(this->v2) == -1 || t->getDegree() > this->degree || t->getNumVariables() != 2) {
+        int varIndexV1 = t->getVarIndex(this->v1);
+        int varIndexV2 = t->getVarIndex(this->v2);
+        if (t->getNumVariables() != 2) {
+            return false;
+        }
+        if (t->getNumVariables() == 2 && (varIndexV1 == -1 || varIndexV2 == -1)) {
+            return false;
+        }
+        if (varIndexV1 == -1 && varIndexV2 == -1) {
+            return false;
+        }
+        if (varIndexV1 != -1) {
+            existsV1 = true;
+        }
+        if (varIndexV2 != -1) {
+            existsV2 = true;
+        }
+        if (t->getDegree() > this->degree) {
             return false;
         }
     }
+    if ((existsV1 && !existsV2) || (!existsV1 && existsV2)) {
+        return false;
+    }
     return true;
 }
+
 
 // Public
 bivariate::bivariate(int d, char c1, char c2) : polynomial() {

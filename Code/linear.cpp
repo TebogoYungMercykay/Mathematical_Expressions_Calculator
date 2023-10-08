@@ -51,14 +51,17 @@ linear::linear(term t) : univariate(t) {
 }
 
 void linear::printRoots() const {
-    // - This function should print out the roots of the object.
-    // - The explanation will assume the polynomial has the form mx + c.
-    // - Note that the x can be any variable.
-    // - Extract the values of m and c from the linear polynomial.
-    // - If m is 0, then print out the following on its own line.
-    //     No roots 1
-    // - If m is not 0, then print out the following on its own line, with the root displayed to 2 decimal values.
-    // - Note that values in curly braces should be evaluated, and _ indicates spaces.
-    //     Roots_ : _ { variable } _ = _ { - c/ m }
+    int m = 0;
+    int c = 0;
+    if (this->numTerms >= 2) {
+        m = (*(this->getTerms()[0]))[6];
+        c = (*(this->getTerms()[1]))[6];
+        if (m == 0) {
+            std::cout << "No roots" << std::endl;
+        } else {
+            std::cout << "Roots : " << this->variable << " = " << (-c/m) << std::endl;
+        }
+    } else {
+        std::cout << "No roots" << std::endl;
+    }
 }
-

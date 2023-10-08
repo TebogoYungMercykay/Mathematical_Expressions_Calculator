@@ -9,11 +9,11 @@ bool ellipse::isEllipse() const {
     ellipse myEllipse = (*this);
     if (myEllipse.getNumTerms() == 3 && myEllipse[2]->getDegree() == 0) {
         if (myEllipse[1]->getDegree() == 2 && myEllipse[0]->getDegree() == myEllipse[1]->getDegree()) {
-            delete myEllipse;
+            // delete myEllipse;
             return true;
         }
     }
-    delete myEllipse;
+    // delete myEllipse;
     return false;
 }
 
