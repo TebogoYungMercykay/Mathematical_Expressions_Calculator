@@ -229,7 +229,7 @@ polynomial* bivariate::operator!() const {
     for (int i = 0; i < this->getNumTerms(); i++) {
         negatedTerms[i] = new term((!(*(*this)[i])));
     }
-    polynomial* th = new univariate(negatedTerms, this->getNumTerms());
+    polynomial* th = new bivariate(negatedTerms, this->getNumTerms());
     for (int i = 0; i < this->numTerms; i++) {
         delete negatedTerms[i];
         negatedTerms[i] = NULL;
