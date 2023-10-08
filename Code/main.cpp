@@ -10,6 +10,7 @@
 
 using namespace std;
 
+void testUnivariateClass22();
 void testUnivariateClass();
 void testBivariateClass();
 void testTermClass();
@@ -39,13 +40,25 @@ int main() {
     // testEllipse();
 
     cout << "\n\nTesting univariate class:" << endl;
-    testUnivariateClass();
-
+    testUnivariateClass22();
+    // testUnivariateClass();
     // cout << "\n\nTesting bivariate class:" << endl;
     // testBivariateClass();
 
     cout << "\n\nTests Complete!" << endl;
     return 0;
+}
+
+void testUnivariateClass22() {
+    // Test arithmetic operations
+    univariate u3("3*x^2 + 15*x + 18");
+    univariate u4("2*x^2 + 10*x + 12");
+    polynomial* ud_5 = u4 - u3;
+    cout << "Addition | u4 - u3: " << *(ud_5) << endl;
+    polynomial* ud_6 = !u4;
+    cout << "Negation | !u4: " << *(ud_6) << endl;
+    delete ud_5;
+    delete ud_6;
 }
 
 void testCircle() {
@@ -230,45 +243,45 @@ void testUnivariateClass() {
     cout << "String constructor: " << u3 << endl;
 
     // Test copy constructor
-    univariate u4(u2);
+    univariate u4(u3);
     cout << "Copy constructor: " << u4 << endl;
 
-    univariate u43(u2.getTerms(), u2.getNumTerms());
+    univariate u43(u3.getTerms(), u3.getNumTerms());
     cout << "Constructor (term**, int): " << u43 << endl;
 
     term tr1("10*x^2*w^3*a^9");
     univariate u44(tr1);
     cout << "Constructor (term): " << u44 << endl;
 
-    term tr2("10*x^2*9");
+    term tr2("10*x^2");
     univariate u45(tr2);
     cout << "Constructor (term): " << u45 << endl;
 
-    // copy constructor
+    // Assignment Operator
     u44 = u45;
-    cout << "Copy Constructor: " << u44 << endl;
+    cout << "Assignment Operator: " << u44 << endl;
 
     // Test arithmetic operations
-    polynomial* u5 = u2 + u3;
-    cout << "u2 + u3: " << *u5 << endl;
+    polynomial* u5 = u44 + u3;
+    cout << "u44 + u3: " << *u5 << endl;
 
     *u5 += u4;
     cout << "u5 += u4: " << *u5 << endl;
 
-    polynomial* u6 = u2 * u3;
-    cout << "u2 * u3: " << *u6 << endl;
+    polynomial* u6 = u44 * u3;
+    cout << "u44 * u3: " << *u6 << endl;
 
     *u6 *= u3;
     cout << "u6 *= u3: " << *u6 << endl;
 
     // Test negation and substitution
-    polynomial* u7 = !u2;
-    cout << "!u2: " << *u7 << endl;
+    polynomial* u7 = !u44;
+    cout << "!u44: " << *u7 << endl;
 
     char vars[] = { 'x' };
     int vals[] = { 2 };
-    polynomial* u8 = u2(vars, vals, 1);
-    cout << "u2(x=2): " << *u8 << endl;
+    polynomial* u8 = u44(vars, vals, 1);
+    cout << "u44(x=2): " << *u8 << endl;
 
     polynomial* u9 = u3("x=3");
     cout << "u3(x=3): " << *u9 << endl;
@@ -317,7 +330,7 @@ void testBivariateClass() {
     cout << "String constructor: " << u3 << endl;
 
     // Test copy constructor
-    bivariate u4(u2);
+    bivariate u4(u3);
     cout << "Copy constructor: " << u4 << endl;
 
     bivariate u43(u2.getTerms(), u2.getNumTerms());

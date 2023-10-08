@@ -142,7 +142,7 @@ term::term(const char* input) {
         this->variables = new char[this->numVariables];
         this->powers = new int[this->numVariables];
         std::string input_string(input);
-        if (input_string.length() == 1) {
+        if (input_string.length() == 1 && !(input_string[0] == '-' || input_string[0] == '+')) {
             if (isdigit(input_string[0])) {
                 stringstream coeff (input_string);
                 int coeff_conv = 0;
@@ -166,6 +166,23 @@ term::term(const char* input) {
                 this->addVariable(variable, 1);
             }
         } else if (input_string.length() > 1) {
+            if (input_string.length() >= 2 && (input_string[0] == '+' || input_string[0] == '-')) {
+                bool isDigit = true;
+                for (int i = 1; i < input_string.length(); i++) {
+                    if (!isdigit(input_string[i])) {
+                        isDigit = false;
+                        break;
+                    }
+                }
+                if (isDigit) {
+                    stringstream coeff (input_string);
+                    int coeff_conv = 0;
+                    coeff >> coeff_conv;
+                    this->coefficient *= coeff_conv;
+                    return;
+                }
+            }
+
             if (input_string[0] == '-') {
                 this->coefficient *= -1;
                 input_string = input_string.substr(1);
