@@ -26,9 +26,6 @@ int main() {
     // cout << "\n\nTesting Polynomial class:" << endl;
     // testPolynomialClass();
 
-    // cout << "\n\nTesting univariate class:" << endl;
-    // testUnivariateClass();
-
     // cout << "\n\nTesting linear class:" << endl;
     // testLinear();
 
@@ -38,8 +35,11 @@ int main() {
     // cout << "\n\nTesting Circle class:" << endl;
     // testCircle();
 
-    cout << "\n\nTesting Ellipse class:" << endl;
-    testEllipse();
+    // cout << "\n\nTesting Ellipse class:" << endl;
+    // testEllipse();
+
+    cout << "\n\nTesting univariate class:" << endl;
+    testUnivariateClass();
 
     // cout << "\n\nTesting bivariate class:" << endl;
     // testBivariateClass();
