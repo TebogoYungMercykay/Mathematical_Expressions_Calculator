@@ -5,4 +5,7 @@ coverage_report
 *.gcda
 *.gcno
 *.gcov
+*.zip
+*.tar.gz
+*.tar
 main
