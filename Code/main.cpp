@@ -3,6 +3,9 @@
 #include "polynomial.h"
 #include "univariate.h"
 #include "bivariate.h"
+#include "linear.h"
+#include "quadratic.h"
+
 
 using namespace std;
 
@@ -10,6 +13,8 @@ void testUnivariateClass();
 void testBivariateClass();
 void testTermClass();
 void testPolynomialClass();
+void testLinear();
+void testQuadratic();
 
 int main() {
     // cout << "Testing Term class:" << endl;
@@ -21,12 +26,85 @@ int main() {
     // cout << "Testing univariate class:" << endl;
     // testUnivariateClass();
 
-    cout << "\nTesting bivariate class:" << endl;
-    testBivariateClass();
+    // cout << "Testing linear class:" << endl;
+    // testLinear();
+
+    cout << "Testing Quadratic class:" << endl;
+    testQuadratic();
+
+    // cout << "\nTesting bivariate class:" << endl;
+    // testBivariateClass();
 
     cout << "\n\nTests Complete!" << endl;
     return 0;
 }
+
+void testLinear() {
+    // Test default constructor
+    linear u1('x');
+    u1.printRoots();
+
+    // Test parameterized constructor
+    linear u2('y');
+    u2.printRoots();
+
+    // Test string constructor
+    linear u3("3*y + 3");
+    u3.printRoots();
+
+    // Test copy constructor
+    linear u4(u2);
+    u4.printRoots();
+
+    linear u43(u2.getTerms(), u2.getNumTerms());
+    u43.printRoots();
+
+    term tr1("10*x^2*w^3*a^9");
+    linear u44(tr1);
+    u44.printRoots();
+
+    term tr2("10*x^2*9");
+    linear u45(tr2);
+    u45.printRoots();
+
+    // copy constructor
+    u44 = u45;
+    u44.printRoots();
+}
+
+void testQuadratic() {
+    // Test default constructor
+    linear u1('x');
+    u1.printRoots();
+
+    // Test parameterized constructor
+    linear u2('y');
+    u2.printRoots();
+
+    // Test string constructor
+    linear u3("3*y + 3");
+    u3.printRoots();
+
+    // Test copy constructor
+    linear u4(u2);
+    u4.printRoots();
+
+    linear u43(u2.getTerms(), u2.getNumTerms());
+    u43.printRoots();
+
+    term tr1("10*x^2*w^3*a^9");
+    linear u44(tr1);
+    u44.printRoots();
+
+    term tr2("10*x^2*9");
+    linear u45(tr2);
+    u45.printRoots();
+
+    // copy constructor
+    u44 = u45;
+    u44.printRoots();
+}
+
 
 void testUnivariateClass() {
     // Test default constructor
@@ -296,10 +374,11 @@ void testTermClass() {
         "1*x^2",
         "-x^2",
         "0*x^2",
-        "+z^-3"
+        "+z^-3",
+        "3*x"
     };
 
-    for (int k = 0; k < 6; k++) {
+    for (int k = 0; k < 7; k++) {
         term tempTerm12(inputs[k]);
         cout << "Parsed Term: " << tempTerm12;
         cout << "Negation: " << tempTerm12.operator!() << endl;

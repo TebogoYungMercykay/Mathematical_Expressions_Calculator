@@ -184,7 +184,7 @@ term::term(const char* input) {
                 input_string = input_string.substr(general_use_string.length() + 1);
             }
             // std::cout << "Coeff: " << this->coefficient << " Other: " << input_string << std::endl;
-            if (this->coefficient != 0 && input_string.length() > 1) {
+            if (this->coefficient != 0 && input_string.length() > 0) {
                 general_use_string = "";
                 stringstream variables_and_powers (input_string);
                 while(getline(variables_and_powers, general_use_string, '*')) {

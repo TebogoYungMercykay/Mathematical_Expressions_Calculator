@@ -11,12 +11,12 @@ bool circle::isCircle() const {
     if (myCircle.getNumTerms() == 3 && myCircle[2]->getDegree() == 0) {
         if (myCircle[0]->getDegree() == myCircle[1]->getDegree()) {
             if (myCircle[1]->getDegree() == 2 && (myCircle[0])[6] == (myCircle[1])[6]) {
-                delete myCircle;
+                // delete myCircle;
                 return true;
             }
         }
     }
-    delete myCircle;
+    // delete myCircle;
     return false;
 }
 

@@ -61,7 +61,7 @@ void quadratic::printRoots() const {
     // - If the discriminant is negative, then print the following on its own line
     //     No roots
     // - If d is positive, then print out the following on its own line, with the roots displayed to 2 decimal values.
-    // - Note that values in curly braces should be evaluated, and _ indicates spaces. Note that you should still use this format even if the roots are the same. 
+    // - Note that values in curly braces should be evaluated, and _ indicates spaces. Note that you should still use this format even if the roots are the same.
     //         variable has been shortened to var to allow the line to fit.
     // - Roots_:_{var}_=_{(-b+sqrt(d))/(2a)}_,_{var}_=_{(-b-sqrt(d))/(2a)}
 
