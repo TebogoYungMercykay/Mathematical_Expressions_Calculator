@@ -200,12 +200,10 @@ term::term(const char* input) {
                 this->coefficient *= coeff_conv;
                 input_string = input_string.substr(general_use_string.length() + 1);
             }
-            // std::cout << "Coeff: " << this->coefficient << " Other: " << input_string << std::endl;
             if (this->coefficient != 0 && input_string.length() > 0) {
                 general_use_string = "";
                 stringstream variables_and_powers (input_string);
                 while(getline(variables_and_powers, general_use_string, '*')) {
-                    // std::cout << "Printing: " << general_use_string << std::endl;
                     if (general_use_string.length() >= 3) {
                         stringstream variable_n_power (general_use_string);
                         general_use_string = "";
