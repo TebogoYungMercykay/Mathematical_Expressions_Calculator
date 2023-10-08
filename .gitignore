@@ -4,4 +4,5 @@ coverage_report
 *.info
 *.gcda
 *.gcno
+*.gcov
 main
