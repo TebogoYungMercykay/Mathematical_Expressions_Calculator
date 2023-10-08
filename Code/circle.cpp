@@ -7,20 +7,19 @@
 
 // Private:
 bool circle::isCircle() const {
-    circle myCircle = (*this);
-    if (myCircle.getNumTerms() == 3 && myCircle[2]->getDegree() == 0) {
-        if (myCircle[0]->getDegree() == myCircle[1]->getDegree()) {
-            if (myCircle[1]->getDegree() == 2 && (myCircle[0])[6] == (myCircle[1])[6]) {
-                // delete myCircle;
-                return true;
+    if (this->getNumTerms() == 3) {
+        if ((this->getTerms()[2])->getDegree() == 0) {
+            if ((this->getTerms()[0])->getDegree() == (this->getTerms()[1])->getDegree()) {
+                if ((this->getTerms()[1])->getDegree() == 2 && (*(this->getTerms()[0]))[6] == (*(this->getTerms()[1]))[6]) {
+                    return true;
+                }
             }
         }
     }
-    // delete myCircle;
     return false;
 }
 
-// Public
+// Public:
 circle::circle(char c1, char c2) : bivariate(2, c1, c2) {}
 
 circle::circle(term** t, int n) : bivariate(t, n) {
@@ -70,16 +69,19 @@ circle::circle(term t) : bivariate(t)  {
 
 void circle::printStats() const {
     // - This function will print statistics about the circle.
-    // - The explanation will assume our circle has the equation: cx2 + dy2 + f.
-    // - Note that the x, y can be any variables.
-    // - Start by extracting the values for c, d and f.
-    // - If f is not negative or the circle is invalid, then print out the following on its own line:
-    //     Not a real circle
-    // - Calculate the radius of the circle using r = sqrt((−f)/c).
-    // - Look at the two character member variables. Save the smallest of these two in c1 and the larger in c2.
-    // - Print out the following on its own line. Note that everything should be on one line, even though the spec shows multiple lines. All values should be displayed to 2 decimal values. Note that values in curly braces should be evaluated, and _ indicates spaces.
-    //     Area_=_{pi*r*r}_units^2.Perimeter_=_{2*pi*r}_units.1
-    //     Intercepts_:_{c1}_=_{r}_,_{c1}_=_{-r}_,_{c2}_=_{r}_,_{c2}_=_{-r}
-    //     - Example
-    //         Area = 28.27 units^2. Perimeter = 18.85 units .Intercepts : a = 3 , a = -3 , b = 3 , b = -3
+    if (this->isCircle()) {
+        double c = (*(this->getTerms()[0]))[6];
+        double d = (*(this->getTerms()[1]))[6];
+        double f = (*(this->getTerms()[2]))[6];
+        char c1 = std::min(v1, v2);
+        char c2 = std::max(v1, v2);
+        if (f < 0) {
+            double r = sqrt((-1 * f)/c);
+            std::cout << std::fixed << std::setprecision(2) << "Area = " << (M_PI * r * r) << " units^2.Perimeter = " << (2 * M_PI * r) << " units.Intercepts : " << c1 << " = " << r << " , " << c1 << " = " << -1 * r << " , " << c2 << " = " << r << " , " << c2 << " = " << -1 * r << std::endl;
+        } else {
+            std::cout << "Not a real circle" << std::endl;
+        }
+    } else {
+        std::cout << "Not a real circle" << std::endl;
+    }
 }

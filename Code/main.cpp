@@ -5,7 +5,8 @@
 #include "bivariate.h"
 #include "linear.h"
 #include "quadratic.h"
-
+#include "circle.h"
+#include "ellipse.h"
 
 using namespace std;
 
@@ -15,6 +16,8 @@ void testTermClass();
 void testPolynomialClass();
 void testLinear();
 void testQuadratic();
+void testCircle();
+void testEllipse();
 
 int main() {
     // cout << "\n\nTesting Term class:" << endl;
@@ -29,14 +32,110 @@ int main() {
     // cout << "\n\nTesting linear class:" << endl;
     // testLinear();
 
-    cout << "\n\nTesting Quadratic class:" << endl;
-    testQuadratic();
+    // cout << "\n\nTesting Quadratic class:" << endl;
+    // testQuadratic();
+
+    // cout << "\n\nTesting Circle class:" << endl;
+    // testCircle();
+
+    cout << "\n\nTesting Ellipse class:" << endl;
+    testEllipse();
 
     // cout << "\n\nTesting bivariate class:" << endl;
     // testBivariateClass();
 
     cout << "\n\nTests Complete!" << endl;
     return 0;
+}
+
+void testCircle() {
+    // Test default constructor
+    circle u1('x', 'y');
+    u1.printStats();
+
+    // Test parameterized constructor
+    circle u2('y', 'p');
+    u2.printStats();
+
+    // Test string constructor
+    circle u3("3*y^2 + 3*x^2 - 6");
+    u3.printStats();
+
+    // Test copy constructor
+    circle u4(u2);
+    u4.printStats();
+
+    circle u43(u2.getTerms(), u2.getNumTerms());
+    u43.printStats();
+
+    term tr1("10*x^2*w^3*a^9");
+    circle u44(tr1);
+    u44.printStats();
+    term** t = new term*[3];
+    t[0] = new term("4*x^2");
+    t[1] = new term("4*y^2");
+    t[2] = new term("-5");
+
+    // Test copy constructor
+    circle u45(t, 3);
+    u45.printStats();
+
+    // copy constructor
+    u44 = u45;
+    u44.printStats();
+
+    // Deallocating Memory
+    for (int i = 0; i < 3; i++) {
+        delete t[i];
+        t[i] = NULL;
+    }
+    delete[] t;
+    t = NULL;
+}
+
+void testEllipse() {
+    // Test default constructor
+    ellipse u1('x', 'y');
+    u1.printStats();
+
+    // Test parameterized constructor
+    ellipse u2('y', 'p');
+    u2.printStats();
+
+    // Test string constructor
+    ellipse u3("2*y^2 + 5*x^2 - 6");
+    u3.printStats();
+
+    // Test copy constructor
+    ellipse u4(u2);
+    u4.printStats();
+
+    ellipse u43(u2.getTerms(), u2.getNumTerms());
+    u43.printStats();
+
+    term tr1("10*x^2*w^3*a^9");
+    ellipse u44(tr1);
+    u44.printStats();
+    term** t = new term*[3];
+    t[0] = new term("2*x^2");
+    t[1] = new term("3*y^2");
+    t[2] = new term("-6");
+
+    // Test copy constructor
+    ellipse u45(t, 3);
+    u45.printStats();
+
+    // copy constructor
+    u44 = u45;
+    u44.printStats();
+
+    // Deallocating Memory
+    for (int i = 0; i < 3; i++) {
+        delete t[i];
+        t[i] = NULL;
+    }
+    delete[] t;
+    t = NULL;
 }
 
 void testLinear() {
@@ -116,7 +215,6 @@ void testQuadratic() {
     delete[] t;
     t = NULL;
 }
-
 
 void testUnivariateClass() {
     // Test default constructor

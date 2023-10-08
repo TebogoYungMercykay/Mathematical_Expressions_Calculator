@@ -27,22 +27,18 @@ void bivariate::clearTerms() {
 }
 
 bool bivariate::isBivariate() const {
-    if (this->v1 == this->v2) {
+    if (this->v1 == this->v2 || this->numTerms != 3) {
         return false;
     }
+
     bool existsV1 = false;
     bool existsV2 = false;
+
     for (int i = 0; i < this->getNumTerms(); i++) {
         term* t = (*this)[i];
         int varIndexV1 = t->getVarIndex(this->v1);
         int varIndexV2 = t->getVarIndex(this->v2);
-        if (t->getNumVariables() != 2) {
-            return false;
-        }
-        if (t->getNumVariables() == 2 && (varIndexV1 == -1 || varIndexV2 == -1)) {
-            return false;
-        }
-        if (varIndexV1 == -1 && varIndexV2 == -1) {
+        if (varIndexV1 == -1 && varIndexV2 == -1 && (t->getNumVariables() != 0)) {
             return false;
         }
         if (varIndexV1 != -1) {
@@ -55,9 +51,11 @@ bool bivariate::isBivariate() const {
             return false;
         }
     }
-    if ((existsV1 && !existsV2) || (!existsV1 && existsV2)) {
+
+    if ((existsV1 == false) || (existsV2 == false)) {
         return false;
     }
+
     return true;
 }
 
