@@ -225,58 +225,70 @@ polynomial& univariate::operator-=(const polynomial& other) {
     return *this;
 }
 
-// Incomplete
+// polynomial* univariate::operator*(const polynomial& other) const {
+//     // - This should multiply the current object by the passed-in parameter.
+//     if (other.getNumTerms() == 1) {
+//         univariate* result = new univariate(*this);
+//         for (int i = 0; i < result->getNumTerms(); i++) {
+//             term* t = (*result)[i];
+//             (*t) *= *(other[0]);
+//         }
+//         return result;
+//     } else if (this->getNumTerms() == 1) {
+//         univariate* result = new univariate(other);
+//         for (int i = 0; i < result->getNumTerms(); i++) {
+//             term* t = (*result)[i];
+//             (*t) *= *(this->terms[0]);
+//         }
+//         return result;
+//     } else if (this->getNumTerms() == 2) {
+//         univariate* result = new univariate(*this);
+//         term* trm = new term(!(*result->getTerms()[1]));
+//         term* trm1 = new term(!(*result->getTerms()[0]));
+//         result->addOrRemoveTerm(trm);
+//         univariate* result_2 = new univariate(*this);
+//         result_2->addOrRemoveTerm(trm1);
+//         // std::cout << *result << std::endl;
+//         // std::cout << *result_2 << std::endl;
+//         univariate* final_result = new univariate(other);
+//         for (int i = 0; i < final_result->getNumTerms(); i++) {
+//             term* t = (*final_result)[i];
+//             (*t) *= *((*result)[0]);
+//         }
+//         univariate* final_result_2 = new univariate(other);
+//         for (int i = 0; i < final_result_2->getNumTerms(); i++) {
+//             term* t = (*final_result_2)[i];
+//             (*t) *= *((*result_2)[0]);
+//         }
+
+//         for (int k = 0; k < final_result->getNumTerms(); k++) {
+//             final_result_2->addOrRemoveTerm((*final_result)[k]);
+//         }
+
+//         delete trm;
+//         delete trm1;
+//         delete result;
+//         delete result_2;
+//         delete final_result;
+//         return final_result_2;
+//     } else {
+//         univariate* result = new univariate(other);
+//         return result;
+//     }
+// }
 
 polynomial* univariate::operator*(const polynomial& other) const {
-    // - This should multiply the current object by the passed-in parameter.
-    if (other.getNumTerms() == 1) {
-        univariate* result = new univariate(*this);
-        for (int i = 0; i < result->getNumTerms(); i++) {
-            term* t = (*result)[i];
-            (*t) *= *(other[0]);
+    univariate* result = new univariate(this->degree, 'x');
+    for (int i = 0; i < this->getNumTerms(); i++) {
+        for (int j = 0; j < other.getNumTerms(); j++) {
+            term* t1 = (*this)[i];
+            term* t2 = other[j];
+            term* t_product = new term((*t1) * (*t2));
+            result->addOrRemoveTerm(t_product);
+            delete t_product;
         }
-        return result;
-    } else if (this->getNumTerms() == 1) {
-        univariate* result = new univariate(other);
-        for (int i = 0; i < result->getNumTerms(); i++) {
-            term* t = (*result)[i];
-            (*t) *= *(this->terms[0]);
-        }
-        return result;
-    } else if (this->getNumTerms() == 2) {
-        univariate* result = new univariate(*this);
-        term* trm = new term(!(*result->getTerms()[1]));
-        term* trm1 = new term(!(*result->getTerms()[0]));
-        result->addOrRemoveTerm(trm);
-        univariate* result_2 = new univariate(*this);
-        result_2->addOrRemoveTerm(trm1);
-        // std::cout << *result << std::endl;
-        // std::cout << *result_2 << std::endl;
-        univariate* final_result = new univariate(other);
-        for (int i = 0; i < final_result->getNumTerms(); i++) {
-            term* t = (*final_result)[i];
-            (*t) *= *((*result)[0]);
-        }
-        univariate* final_result_2 = new univariate(other);
-        for (int i = 0; i < final_result_2->getNumTerms(); i++) {
-            term* t = (*final_result_2)[i];
-            (*t) *= *((*result_2)[0]);
-        }
-
-        for (int k = 0; k < final_result->getNumTerms(); k++) {
-            final_result_2->addOrRemoveTerm((*final_result)[k]);
-        }
-
-        delete trm;
-        delete trm1;
-        delete result;
-        delete result_2;
-        delete final_result;
-        return final_result_2;
-    } else {
-        univariate* result = new univariate(other);
-        return result;
     }
+    return result;
 }
 
 polynomial& univariate::operator*=(const polynomial& other) {
