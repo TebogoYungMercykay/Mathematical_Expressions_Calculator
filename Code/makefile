@@ -2,7 +2,7 @@ main:
 	g++ -g *.cpp -std=c++98 -pedantic -o main
 
 clean:
-	rm -f *.o *.tar.gz main
+	rm -f *.o *.tar.gz *.info *.gcda *.gcno *.gcov main
 	reset
 	clear
 
