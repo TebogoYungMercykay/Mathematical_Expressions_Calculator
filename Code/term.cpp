@@ -142,82 +142,66 @@ term::term(const char* input) {
         this->variables = new char[this->numVariables];
         this->powers = new int[this->numVariables];
         std::string input_string(input);
-        if (input_string.length() == 1 && !(input_string[0] == '-' || input_string[0] == '+')) {
-            if (isdigit(input_string[0])) {
-                stringstream coeff (input_string);
-                int coeff_conv = 0;
-                coeff >> coeff_conv;
-                this->coefficient *= coeff_conv;
-            } else {
-                char variable = input_string[0];
-                this->addVariable(variable, 1);
+        std::string trim_string = "";
+        for (int i = 0; i < input_string.length(); i++) {
+            if (input_string[i] != ' ') {
+                trim_string += input_string[i];
             }
-        } else if (input_string.length() == 2 && (input_string[0] == '-' || input_string[0] == '+')) {
-            if (isdigit(input_string[1])) {
-                stringstream coeff (input_string);
-                int coeff_conv = 0;
-                coeff >> coeff_conv;
-                this->coefficient *= coeff_conv;
-            } else {
-                if (input_string[0] == '-') {
-                    this->coefficient = -1;
+        }
+        input_string = trim_string;
+        bool isDigit = true;
+        if (input_string[0] == '+' || input_string[0] == '-') {
+            if (input_string[0] == '-') {
+                this->coefficient = -1;
+            }
+            input_string = input_string.substr(1, (input_string.length() - 1));
+        }
+        if (input_string.length() >= 1) {
+            for (int i = 0; i < input_string.length(); i++) {
+                if (!isdigit(input_string[i])) {
+                    isDigit = false;
+                    break;
                 }
-                char variable = input_string[1];
-                this->addVariable(variable, 1);
             }
-        } else if (input_string.length() > 1) {
-            if (input_string.length() >= 2 && (input_string[0] == '+' || input_string[0] == '-')) {
-                bool isDigit = true;
-                for (int i = 1; i < input_string.length(); i++) {
-                    if (!isdigit(input_string[i])) {
-                        isDigit = false;
-                        break;
+            if (isDigit) {
+                stringstream temp_coefficient (input_string);
+                int coefficient_convert = 0;
+                temp_coefficient >> coefficient_convert;
+                this->coefficient *= coefficient_convert;
+                return;
+            } else {
+                trim_string = "";
+                stringstream coefficient_full (input_string);
+                getline(coefficient_full, trim_string, '*');
+                if (isdigit(trim_string[0])) {
+                    stringstream temp_coefficient (trim_string);
+                    int coefficient_convert = 0;
+                    temp_coefficient >> coefficient_convert;
+                    this->coefficient *= coefficient_convert;
+                    input_string = input_string.substr(trim_string.length(), (input_string.length() - 1));
+                    if (input_string.length() >= 1 && input_string[0] == '*') {
+                        input_string = input_string.substr(1, (input_string.length() - 1));
                     }
                 }
-                if (isDigit) {
-                    stringstream coeff (input_string);
-                    int coeff_conv = 0;
-                    coeff >> coeff_conv;
-                    this->coefficient *= coeff_conv;
-                    return;
-                }
-            }
-
-            if (input_string[0] == '-') {
-                this->coefficient *= -1;
-                input_string = input_string.substr(1);
-            } else if (input_string[0] == '+') {
-                input_string = input_string.substr(1);
-            }
-
-            stringstream coeff_full (input_string);
-            string general_use_string = "";
-            getline(coeff_full, general_use_string, '*');
-            if (isdigit(general_use_string[0])) {
-                stringstream coeff (general_use_string);
-                int coeff_conv = 0;
-                coeff >> coeff_conv;
-                this->coefficient *= coeff_conv;
-                input_string = input_string.substr(general_use_string.length() + 1);
-            }
-            if (this->coefficient != 0 && input_string.length() > 0) {
-                general_use_string = "";
-                stringstream variables_and_powers (input_string);
-                while(getline(variables_and_powers, general_use_string, '*')) {
-                    if (general_use_string.length() >= 3) {
-                        stringstream variable_n_power (general_use_string);
-                        general_use_string = "";
-                        getline(variable_n_power, general_use_string, '^');
-                        char variable = general_use_string[0];
-                        general_use_string = "";
-                        getline(variable_n_power, general_use_string);
-                        stringstream conv (general_use_string);
-                        int power = 0;
-                        conv >> power;
-                        this->addVariable(variable, power);
-                    } else if (general_use_string.length() == 1) {
-                        char variable = general_use_string[0];
-                        this->addVariable(variable, 1);
+                if (this->coefficient != 0 && input_string.length() >= 1) {
+                    trim_string = "";
+                    stringstream variables_and_powers (input_string);
+                    while(getline(variables_and_powers, trim_string, '*')) {
+                        if (trim_string.length() >= 3) {
+                            stringstream variable_n_power (trim_string);
+                            trim_string = "";
+                            getline(variable_n_power, trim_string, '^');
+                            char variable = trim_string[0];
+                            trim_string = "";
+                            getline(variable_n_power, trim_string);
+                            stringstream converter (trim_string);
+                            int power = 0;
+                            converter >> power;
+                            this->addVariable(variable, power);
+                        } else if (trim_string.length() == 1) {
+                            char variable = trim_string[0];
+                            this->addVariable(variable, 1);
+                        }
                     }
                 }
             }
