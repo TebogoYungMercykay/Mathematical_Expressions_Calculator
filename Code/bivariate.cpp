@@ -33,7 +33,6 @@ bool bivariate::isBivariate() const {
 
     bool existsV1 = false;
     bool existsV2 = false;
-
     for (int i = 0; i < this->getNumTerms(); i++) {
         term* t = (*this)[i];
         int varIndexV1 = t->getVarIndex(this->v1);
@@ -55,7 +54,6 @@ bool bivariate::isBivariate() const {
     if ((existsV1 == false) || (existsV2 == false)) {
         return false;
     }
-
     return true;
 }
 
@@ -212,15 +210,15 @@ bivariate& bivariate::operator=(const bivariate& other) {
     return *this;
 }
 
-istream& operator>>(istream& is, bivariate& u) {
+istream& operator>>(istream& input_string, bivariate& u) {
     string line;
-    getline(is, line);
+    getline(input_string, line);
 
     bivariate temp(line.c_str());
     if (temp.isBivariate() && temp.numTerms != 0) {
         u = temp;
     }
-    return is;
+    return input_string;
 }
 
 polynomial* bivariate::operator!() const {
@@ -281,14 +279,14 @@ polynomial* bivariate::operator+(const polynomial& other) const {
 }
 
 polynomial& bivariate::operator+=(const polynomial& other) {
-    polynomial* myP = (*this + other);
-    bivariate* result = new bivariate(*myP);
+    polynomial* tempPolynomial = (*this + other);
+    bivariate* result = new bivariate(*tempPolynomial);
 
     if (result->isBivariate()) {
         *this = *result;
     }
 
-    delete myP;
+    delete tempPolynomial;
     delete result;
     return *this;
 }
@@ -306,14 +304,14 @@ polynomial* bivariate::operator-(const polynomial& other) const {
 }
 
 polynomial& bivariate::operator-=(const polynomial& other) {
-    polynomial* myP = (*this - other);
-    bivariate* result = new bivariate(*myP);
+    polynomial* tempPolynomial = (*this - other);
+    bivariate* result = new bivariate(*tempPolynomial);
 
     if (result->isBivariate()) {
         *this = *result;
     }
 
-    delete myP;
+    delete tempPolynomial;
     delete result;
     return *this;
 }
@@ -333,14 +331,14 @@ polynomial* bivariate::operator*(const polynomial& other) const {
 }
 
 polynomial& bivariate::operator*=(const polynomial& other) {
-    polynomial* myP = (*this * other);
-    bivariate* result = new bivariate(*myP);
+    polynomial* tempPolynomial = (*this * other);
+    bivariate* result = new bivariate(*tempPolynomial);
 
     if (result->isBivariate()) {
         *this = *result;
     }
 
-    delete myP;
+    delete tempPolynomial;
     delete result;
     return *this;
 }
