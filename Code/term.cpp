@@ -59,7 +59,7 @@ void term::addVariable(char var, int pow) {
             this->variables = NULL;
         }
         if (this->powers != NULL) {
-            delete[] this->powers;
+            delete [] this->powers;
             this->powers = NULL;
         }
 
@@ -95,8 +95,8 @@ void term::removeVariable(char var) {
             newPowers[i] = this->powers[i];
         }
 
-        delete[] this->variables;
-        delete[] this->powers;
+        delete [] this->variables;
+        delete [] this->powers;
 
         this->variables = newVariables;
         this->powers = newPowers;
@@ -223,8 +223,8 @@ term::term(const char* input) {
 
 term& term::operator=(const term& other) {
     if (this != &other) {
-        delete[] this->variables;
-        delete[] this->powers;
+        delete [] this->variables;
+        delete [] this->powers;
 
         this->coefficient = other.coefficient;
         if (this->coefficient != 0) {
@@ -246,9 +246,9 @@ term& term::operator=(const term& other) {
 }
 
 term::~term() {
-    delete[] this->variables;
+    delete [] this->variables;
     this->variables = NULL;
-    delete[] this->powers;
+    delete [] this->powers;
     this->powers = NULL;
 }
 
@@ -325,16 +325,12 @@ istream& operator>>(istream& input_string, term& t) {
 }
 
 const term term::operator*(const term& other) const {
-    term newTerm(*this);
-    newTerm.coefficient *= other.coefficient;
+    term newTerm;
+    newTerm.coefficient = this->coefficient * other.coefficient;
     if (newTerm.coefficient != 0) {
         for (int i = 0; i < other.numVariables; i++) {
             newTerm.addVariable(other.variables[i], other.powers[i]);
         }
-    } else {
-        newTerm.numVariables = 0;
-        newTerm.variables = new char[newTerm.numVariables];
-        newTerm.powers = new int[newTerm.numVariables];
     }
     return newTerm;
 }
@@ -347,6 +343,8 @@ term& term::operator*=(const term& other) {
         }
     } else {
         this->numVariables = 0;
+        delete [] this->variables;
+        delete [] this->powers;
         this->variables = new char[this->numVariables];
         this->powers = new int[this->numVariables];
     }
@@ -395,8 +393,8 @@ const term term::operator()(string inp) const {
     }
     term temp(*this);
     temp = temp(vars, vals, equalsCount);
-    delete[] vars;
-    delete[] vals;
+    delete [] vars;
+    delete [] vals;
     return temp;
 }
 
