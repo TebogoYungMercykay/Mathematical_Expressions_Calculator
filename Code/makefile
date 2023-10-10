@@ -10,7 +10,7 @@ run:
 	valgrind --leak-check=full ./main
 
 tar:
-	tar -cvz *.* -f COS110_Assignment.tar.gz
+	tar -cvz *.cpp -f Code.tar.gz
 
 untar:
 	tar -zxvf *.tar.gz
