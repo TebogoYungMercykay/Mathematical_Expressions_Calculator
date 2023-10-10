@@ -8,7 +8,7 @@ linear::linear(char c) : univariate(1, c) {}
 linear::linear(term** t, int n) : univariate(t, n) {
     this->degree = 1;
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isUnivariate()) {
         this->clearTerms();
     }
@@ -17,7 +17,7 @@ linear::linear(term** t, int n) : univariate(t, n) {
 linear::linear(const char* input) : univariate(input) {
     this->degree = 1;
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isUnivariate()) {
         this->clearTerms();
     }
@@ -26,7 +26,7 @@ linear::linear(const char* input) : univariate(input) {
 linear::linear(const linear& other) : univariate(other) {
     this->degree = 1;
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isUnivariate()) {
         this->clearTerms();
     }
@@ -35,7 +35,7 @@ linear::linear(const linear& other) : univariate(other) {
 linear::linear(const polynomial& other) : univariate(other) {
     this->degree = 1;
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isUnivariate()) {
         this->clearTerms();
     }
@@ -44,24 +44,26 @@ linear::linear(const polynomial& other) : univariate(other) {
 linear::linear(term t) : univariate(t) {
     this->degree = 1;
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isUnivariate()) {
         this->clearTerms();
     }
 }
 
 void linear::printRoots() const {
-    double m = 0;
-    int c = 0;
-    if (this->numTerms == 2) {
-        m = (*(this->getTerms()[0]))[6];
-        c = (*(this->getTerms()[1]))[6];
-        if (m == 0) {
-            std::cout << "No roots" << std::endl;
+    if (this->isUnivariate()) {
+        double m = 0;
+        int c = 0;
+        if (this->numTerms == 2) {
+            m = (*(this->getTerms()[0]))[6];
+            c = (*(this->getTerms()[1]))[6];
+            if (m == 0) {
+                std::cout << "No roots" << std::endl;
+            } else {
+                std::cout << std::fixed << std::setprecision(2) << "Roots : " << this->variable << " = " << (-c/m) << std::endl;
+            }
         } else {
-            std::cout << std::fixed << std::setprecision(2) << "Roots : " << this->variable << " = " << (-c/m) << std::endl;
+            std::cout << "No roots" << std::endl;
         }
-    } else {
-        std::cout << "No roots" << std::endl;
     }
 }

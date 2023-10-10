@@ -12,14 +12,14 @@
 using namespace std;
 
 class linear : public univariate {
-   public:
-    linear(char c);
-    linear(term** t, int n);
-    linear(const char* input);
-    linear(const linear& other);
-    linear(const polynomial& other);
-    linear(term t);
-    void printRoots() const;
+    public:
+        linear(char c);
+        linear(term** t, int n);
+        linear(const char* input);
+        linear(const linear& other);
+        linear(const polynomial& other);
+        linear(term t);
+        void printRoots() const;
 };
 
 #endif

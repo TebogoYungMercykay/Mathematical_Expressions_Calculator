@@ -12,17 +12,17 @@
 using namespace std;
 
 class circle : public bivariate {
-   private:
-    bool isCircle() const;
+    private:
+        bool isCircle() const;
 
-   public:
-    circle(char c1, char c2);
-    circle(term** t, int n);
-    circle(const char* input);
-    circle(const circle& other);
-    circle(const polynomial& other);
-    circle(term t);
-    void printStats() const;
-};
+    public:
+        circle(char c1, char c2);
+        circle(term** t, int n);
+        circle(const char* input);
+        circle(const circle& other);
+        circle(const polynomial& other);
+        circle(term t);
+        void printStats() const;
+    };
 
 #endif
