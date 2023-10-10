@@ -124,15 +124,15 @@ univariate& univariate::operator=(const univariate& other) {
     return *this;
 }
 
-istream& operator>>(istream& is, univariate& u) {
+istream& operator>>(istream& input_string, univariate& u) {
     string line;
-    getline(is, line);
+    getline(input_string, line);
 
     univariate temp(line.c_str());
     if (temp.isUnivariate() && temp.numTerms != 0) {
         u = temp;
     }
-    return is;
+    return input_string;
 }
 
 polynomial* univariate::operator!() const {
@@ -193,12 +193,12 @@ polynomial* univariate::operator+(const polynomial& other) const {
 }
 
 polynomial& univariate::operator+=(const polynomial& other) {
-    polynomial* myP = (*this + other);
-    univariate* result = new univariate(*myP);
+    polynomial* tempPolynomial = (*this + other);
+    univariate* result = new univariate(*tempPolynomial);
     if (result->isUnivariate()) {
         *this = *result;
     }
-    delete myP;
+    delete tempPolynomial;
     delete result;
     return *this;
 }
@@ -215,12 +215,12 @@ polynomial* univariate::operator-(const polynomial& other) const {
 }
 
 polynomial& univariate::operator-=(const polynomial& other) {
-    polynomial* myP = (*this - other);
-    univariate* result = new univariate(*myP);
+    polynomial* tempPolynomial = (*this - other);
+    univariate* result = new univariate(*tempPolynomial);
     if (result->isUnivariate()) {
         *this = *result;
     }
-    delete myP;
+    delete tempPolynomial;
     delete result;
     return *this;
 }
@@ -292,12 +292,12 @@ polynomial* univariate::operator*(const polynomial& other) const {
 }
 
 polynomial& univariate::operator*=(const polynomial& other) {
-    polynomial* myP = (*this * other);
-    univariate* result = new univariate(*myP);
+    polynomial* tempPolynomial = (*this * other);
+    univariate* result = new univariate(*tempPolynomial);
     if (result->isUnivariate()) {
         *this = *result;
     }
-    delete myP;
+    delete tempPolynomial;
     delete result;
     return *this;
 }
