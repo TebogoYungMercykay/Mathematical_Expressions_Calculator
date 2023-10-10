@@ -615,6 +615,20 @@ void testTermClass() {
     term tr10;
     term tr11;
     term tr5("5*x^2*y^3*z^4");
+
+    char* ArrV7 = new char[0];
+    int* ArrP7 = new int[0];
+    // ArrV7[0]='\0';
+    term myTerm(0, 0, ArrV7, ArrP7);
+    myTerm = myTerm * tr5;
+    cout << "Multiply By 0: " << myTerm << endl;
+    myTerm *= tr5;
+    cout << "Multiply By 0: " << myTerm << endl;
+    myTerm = tr5;
+    delete[] ArrV7;
+    delete[] ArrP7;
+    // // Param Constructor
+    // term tempTerm6(tempTerm2);
     cout << "Comparison (tr10 < tr11): " << (tr10 < tr11) << endl;
     cout << "Comparison (tr9 < tr8): " << (tr9 < tr8) << endl;
     cout << "Comparison (tr6 < tr5): " << (tr6 < tr5) << endl;
@@ -625,4 +639,6 @@ void testTermClass() {
     cout << "Comparison (tr6 > tr5): " << (tr6 > tr5) << endl;
     cout << "Comparison (tr6 > tr8): " << (tr6 > tr8) << endl;
     cout << "Comparison (tr5 > tr11): " << (tr5 > tr11) << endl;
+
+    // delete myTerm;
 }
