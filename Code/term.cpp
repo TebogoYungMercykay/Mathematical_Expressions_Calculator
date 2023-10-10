@@ -263,47 +263,47 @@ int term::getVarIndex(char var) const {
 std::string term::operator~() const {
     std::stringstream int_to_string;
     int_to_string << this->coefficient;
-    std::string myStr = int_to_string.str();
+    std::string printing_string = int_to_string.str();
     if (this->numVariables > 0) {
         if (this->coefficient == 1) {
-            myStr = "";
+            printing_string = "";
         } else if (this->coefficient == -1) {
-            myStr = "-";
+            printing_string = "-";
         } else {
-            myStr += "*";
+            printing_string += "*";
         }
-        std::ostringstream os;
+        std::ostringstream output_string;
         for (int i = 0; i < this->numVariables; i++) {
             if (this->powers[i] != 0) {
-                os << "*" << this->variables[i];
+                output_string << "*" << this->variables[i];
                 if (this->powers[i] != 1) {
-                    os << "^" << this->powers[i];
+                    output_string << "^" << this->powers[i];
                 }
             }
         }
 
-        std::string str = os.str();
-        if (str[0] == '*') {
-            str.erase(0, 1);
-        } else if (str[0] == '-' && str[1] == '*') {
-            str.erase(1, 1);
+        std::string combined_string = output_string.combined_string();
+        if (combined_string[0] == '*') {
+            combined_string.erase(0, 1);
+        } else if (combined_string[0] == '-' && combined_string[1] == '*') {
+            combined_string.erase(1, 1);
         }
-        myStr += str;
+        printing_string += combined_string;
     }
-    return myStr;
+    return printing_string;
 }
 
-std::ostream& operator<<(std::ostream& os, const term& t) {
-    os << ~t << std::endl;
-    return os;
+std::ostream& operator<<(std::ostream& output_string, const term& t) {
+    output_string << ~t << std::endl;
+    return output_string;
 }
 
-istream& operator>>(istream& is, term& t) {
+istream& operator>>(istream& input_string, term& t) {
     std::string input = "";
-    is >> input;
+    input_string >> input;
     t = term(input.c_str());
     // std::cout << t << std::endl;
-    return is;
+    return input_string;
 }
 
 const term term::operator*(const term& other) const {
@@ -359,8 +359,8 @@ const term term::operator()(string inp) const {
             getline(get_values, substitution, '=');
             vars[k] = substitution[0];
             getline(get_values, substitution);
-            stringstream conv (substitution);
-            conv >> vals[k];
+            stringstream converter (substitution);
+            converter >> vals[k];
         }
     }
     term temp(*this);
