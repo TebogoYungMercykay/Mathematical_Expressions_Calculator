@@ -282,7 +282,7 @@ std::string term::operator~() const {
             }
         }
 
-        std::string combined_string = output_string.combined_string();
+        std::string combined_string = output_string.str();
         if (combined_string[0] == '*') {
             combined_string.erase(0, 1);
         } else if (combined_string[0] == '-' && combined_string[1] == '*') {
