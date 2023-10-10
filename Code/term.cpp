@@ -114,24 +114,36 @@ term::term() {
 
 term::term(const term& other) {
     this->coefficient = other.coefficient;
-    this->numVariables = other.numVariables;
-    this->variables = new char[this->numVariables];
-    this->powers = new int[this->numVariables];
-    for (int i = 0; i < this->numVariables; i++) {
-        this->variables[i] = other.variables[i];
-        this->powers[i] = other.powers[i];
+    if (this->coefficient != 0) {
+        this->numVariables = other.numVariables;
+        this->variables = new char[this->numVariables];
+        this->powers = new int[this->numVariables];
+        for (int i = 0; i < this->numVariables; i++) {
+            this->variables[i] = other.variables[i];
+            this->powers[i] = other.powers[i];
+        }
+    } else {
+        this->numVariables = 0;
+        this->variables = new char[this->numVariables];
+        this->powers = new int[this->numVariables];
     }
 }
 
 term::term(int c, int n, char* v, int* p) {
     this->coefficient = c;
-    this->numVariables = 0;
-    this->variables = new char[this->numVariables];
-    this->powers = new int[this->numVariables];
-    if (v != NULL && p != NULL) {
-        for (int i = 0; i < n; i++) {
-            this->addVariable(v[i], p[i]);
+    if (this->coefficient != 0) {
+        this->numVariables = 0;
+        this->variables = new char[this->numVariables];
+        this->powers = new int[this->numVariables];
+        if (v != NULL && p != NULL) {
+            for (int i = 0; i < n; i++) {
+                this->addVariable(v[i], p[i]);
+            }
         }
+    } else {
+        this->numVariables = 0;
+        this->variables = new char[this->numVariables];
+        this->powers = new int[this->numVariables];
     }
 }
 
@@ -215,13 +227,19 @@ term& term::operator=(const term& other) {
         delete[] this->powers;
 
         this->coefficient = other.coefficient;
-        this->numVariables = other.numVariables;
-        this->variables = new char[this->numVariables];
-        this->powers = new int[this->numVariables];
+        if (this->coefficient != 0) {
+            this->numVariables = other.numVariables;
+            this->variables = new char[this->numVariables];
+            this->powers = new int[this->numVariables];
 
-        for (int i = 0; i < this->numVariables; i++) {
-            this->variables[i] = other.variables[i];
-            this->powers[i] = other.powers[i];
+            for (int i = 0; i < this->numVariables; i++) {
+                this->variables[i] = other.variables[i];
+                this->powers[i] = other.powers[i];
+            }
+        } else {
+            this->numVariables = 0;
+            this->variables = new char[this->numVariables];
+            this->powers = new int[this->numVariables];
         }
     }
     return *this;
@@ -309,16 +327,28 @@ istream& operator>>(istream& input_string, term& t) {
 const term term::operator*(const term& other) const {
     term newTerm(*this);
     newTerm.coefficient *= other.coefficient;
-    for (int i = 0; i < other.numVariables; i++) {
-        newTerm.addVariable(other.variables[i], other.powers[i]);
+    if (newTerm.coefficient != 0) {
+        for (int i = 0; i < other.numVariables; i++) {
+            newTerm.addVariable(other.variables[i], other.powers[i]);
+        }
+    } else {
+        newTerm.numVariables = 0;
+        newTerm.variables = new char[newTerm.numVariables];
+        newTerm.powers = new int[newTerm.numVariables];
     }
     return newTerm;
 }
 
 term& term::operator*=(const term& other) {
     this->coefficient *= other.coefficient;
-    for (int i = 0; i < other.numVariables; i++) {
-        this->addVariable(other.variables[i], other.powers[i]);
+    if (this->coefficient != 0) {
+        for (int i = 0; i < other.numVariables; i++) {
+            this->addVariable(other.variables[i], other.powers[i]);
+        }
+    } else {
+        this->numVariables = 0;
+        this->variables = new char[this->numVariables];
+        this->powers = new int[this->numVariables];
     }
     return *this;
 }
