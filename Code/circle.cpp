@@ -25,7 +25,7 @@ circle::circle(char c1, char c2) : bivariate(2, c1, c2) {}
 circle::circle(term** t, int n) : bivariate(t, n) {
     this->degree = 2;
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isCircle()) {
         this->clearTerms();
     }
@@ -34,7 +34,7 @@ circle::circle(term** t, int n) : bivariate(t, n) {
 circle::circle(const char* input) : bivariate(input) {
     this->degree = 2;
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isCircle()) {
         this->clearTerms();
     }
@@ -43,7 +43,7 @@ circle::circle(const char* input) : bivariate(input) {
 circle::circle(const circle& other) : bivariate(other.getTerms(), other.getNumTerms()) {
     this->degree = 2;
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isCircle()) {
         this->clearTerms();
     }
@@ -52,7 +52,7 @@ circle::circle(const circle& other) : bivariate(other.getTerms(), other.getNumTe
 circle::circle(const polynomial &other) : bivariate(other.getTerms(), other.getNumTerms())  {
     this->degree = 2;
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isCircle()) {
         this->clearTerms();
     }
@@ -61,7 +61,7 @@ circle::circle(const polynomial &other) : bivariate(other.getTerms(), other.getN
 circle::circle(term t) : bivariate(t)  {
     this->degree = 2;
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isCircle()) {
         this->clearTerms();
     }

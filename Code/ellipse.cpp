@@ -24,7 +24,7 @@ ellipse::ellipse(char c1, char c2) : bivariate(2, c1, c2) {}
 ellipse::ellipse(term** t, int n) : bivariate(t, n) {
     this->degree = 2;
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isEllipse()) {
         this->clearTerms();
     }
@@ -34,7 +34,7 @@ ellipse::ellipse(term** t, int n) : bivariate(t, n) {
 ellipse::ellipse(const char* input) : bivariate(input) {
     this->degree = 2;
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isEllipse()) {
         this->clearTerms();
     }
@@ -43,7 +43,7 @@ ellipse::ellipse(const char* input) : bivariate(input) {
 ellipse::ellipse(const ellipse& other) : bivariate(other.getTerms(), other.getNumTerms()) {
     this->degree = 2;
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isEllipse()) {
         this->clearTerms();
     }
@@ -52,17 +52,17 @@ ellipse::ellipse(const ellipse& other) : bivariate(other.getTerms(), other.getNu
 ellipse::ellipse(const polynomial& other) : bivariate(other.getTerms(), other.getNumTerms()) {
     this->degree = 2;
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isEllipse()) {
         this->clearTerms();
-    }// - Follow the same rules as the string constructor.
+    }
 
 }
 
 ellipse::ellipse(term t) : bivariate(t) {
     this->degree = 2;
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isEllipse()) {
         this->clearTerms();
     }
@@ -70,7 +70,7 @@ ellipse::ellipse(term t) : bivariate(t) {
 
 void ellipse::printStats() const {
     // - This function will print statistics about the ellipse.
-    if (isEllipse()) {
+    if (this->isEllipse()) {
         double c = (*(this->getTerms()[0]))[6];
         double d = (*(this->getTerms()[1]))[6];
         double f = (*(this->getTerms()[2]))[6];
