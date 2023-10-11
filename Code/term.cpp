@@ -218,6 +218,11 @@ term::term(const char* input) {
                 }
             }
         }
+    } else {
+        this->coefficient = 1;
+        this->numVariables = 0;
+        this->variables = new char[this->numVariables];
+        this->powers = new int[this->numVariables];
     }
 }
 
@@ -331,6 +336,9 @@ const term term::operator*(const term& other) const {
         for (int i = 0; i < other.numVariables; i++) {
             newTerm.addVariable(other.variables[i], other.powers[i]);
         }
+        for (int i = 0; i < this->numVariables; i++) {
+            newTerm.addVariable(this->variables[i], this->powers[i]);
+        }
     }
     return newTerm;
 }
@@ -359,10 +367,8 @@ const term term::operator()(char* vars, int* vals, int numVals) const {
         for (int i = 0; i < numVals; i++) {
             int index = temp.getVarIndex(vars[i]);
             if (index != -1) {
-                int power = temp.powers[index];
-                power -= vals[i];
+                temp.coefficient *= pow(vals[i], temp.powers[index]);
                 temp.removeVariable(temp.variables[index]);
-                temp.addVariable(vars[i], power);
             }
         }
         return temp;

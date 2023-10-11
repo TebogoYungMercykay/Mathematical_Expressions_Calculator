@@ -15,6 +15,7 @@ void testUnivariateClass();
 void testBivariateClass();
 void testBivariateClass22();
 void testTermClass();
+void testTermClass22();
 void testPolynomialClass();
 void testLinear();
 void testQuadratic();
@@ -23,33 +24,68 @@ void testEllipse();
 
 int main() {
     cout << "\n\nTesting Term class:" << endl;
-    testTermClass();
+    // testTermClass();
+    testTermClass22();
 
-    cout << "\n\nTesting Polynomial class:" << endl;
-    testPolynomialClass();
+    // cout << "\n\nTesting Polynomial class:" << endl;
+    // testPolynomialClass();
 
-    cout << "\n\nTesting univariate class:" << endl;
-    testUnivariateClass();
-    testUnivariateClass22();
+    // cout << "\n\nTesting univariate class:" << endl;
+    // testUnivariateClass();
+    // testUnivariateClass22();
 
-    cout << "\n\nTesting bivariate class:" << endl;
-    testBivariateClass();
-    testBivariateClass22();
+    // cout << "\n\nTesting bivariate class:" << endl;
+    // testBivariateClass();
+    // testBivariateClass22();
 
-    cout << "\n\nTesting linear class:" << endl;
-    testLinear();
+    // cout << "\n\nTesting linear class:" << endl;
+    // testLinear();
 
-    cout << "\n\nTesting Quadratic class:" << endl;
-    testQuadratic();
+    // cout << "\n\nTesting Quadratic class:" << endl;
+    // testQuadratic();
 
-    cout << "\n\nTesting Circle class:" << endl;
-    testCircle();
+    // cout << "\n\nTesting Circle class:" << endl;
+    // testCircle();
 
-    cout << "\n\nTesting Ellipse class:" << endl;
-    testEllipse();
+    // cout << "\n\nTesting Ellipse class:" << endl;
+    // testEllipse();
 
     cout << "\n\nTests Complete!" << endl;
     return 0;
+}
+
+void testTermClass22() {
+    // cout << "\n\nTesting User Inputs\n";
+    const char* inputs[] = {
+        "10*x^2*w^3*a^1",
+        "+8*x*x^1*x^0*x^-1",
+        "+1b^8000*r^5*b^-2988",
+        "1*x^2",
+        "-x^2",
+        "",
+        "0*x^2",
+        "-1",
+        "+3000",
+        "+x",
+        "+1",
+        "+z^-3",
+        "2*x^2*y^3*z^4"
+    };
+
+    for (int k = 0; k < sizeof(inputs) / sizeof(inputs[0]); k++) {
+        term tempTerm12(inputs[k]);
+        std::cout << "Parsed Term: " << tempTerm12;
+        std::cout << "Multiplication R1: " << tempTerm12 * tempTerm12;
+        std::cout << "Parsed Term: " << tempTerm12;
+        char vars[] = { 'x', 'a' };
+        int vals[] = { 2, 0 };
+        std::cout << "Substitution S1: " << tempTerm12(vars, vals, 2);
+        tempTerm12 *= tempTerm12;
+        std::cout << "Multiplication R2: " << tempTerm12;
+        std::cout << "------------------------------" << endl;
+
+
+    }
 }
 
 void testBivariateClass() {
