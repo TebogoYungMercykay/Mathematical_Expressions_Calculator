@@ -9,6 +9,7 @@
 //     - This will store the terms in the polynomial.
 //     - This array will always be sorted ascending using the term relational operators.
 //     - The default value for this is an array of size 0.
+
 // Private
 void polynomial::addOrRemoveTerm(term* t) {
     if (t != NULL) {
@@ -81,7 +82,6 @@ polynomial::polynomial(term** t, int n) {
     }
 }
 
-// TODO: Must Check Again
 polynomial::polynomial(const char* input) {
     this->numTerms = 0;
     this->terms = new term*[this->numTerms];

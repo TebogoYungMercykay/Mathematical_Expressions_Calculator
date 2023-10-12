@@ -51,15 +51,17 @@ linear::linear(term t) : univariate(t) {
 }
 
 void linear::printRoots() const {
-    double m = 0;
-    int c = 0;
-    if (this->numTerms >= 2) {
-        m = (*(this->getTerms()[0]))[this->getTerms()[0]->getNumVariables() + 1];
-        c = (*(this->getTerms()[1]))[this->getTerms()[1]->getNumVariables() + 1];
-        if (m == 0) {
-            std::cout << "No roots" << std::endl;
+    if (this->isUnivariate()) {
+        if (this->numTerms >= 2) {
+            double m = (*(this->getTerms()[0]))[6];
+            int c = (*(this->getTerms()[1]))[6];
+            if (m == 0) {
+                std::cout << "No roots" << std::endl;
+            } else {
+                std::cout << std::fixed << std::setprecision(2) << "Roots : " << this->variable << " = " << ((-1 * c)/m) << std::endl;
+            }
         } else {
-            std::cout << std::fixed << std::setprecision(2) << "Roots : " << this->variable << " = " << (-c/m) << std::endl;
+            std::cout << "No roots" << std::endl;
         }
     } else {
         std::cout << "No roots" << std::endl;

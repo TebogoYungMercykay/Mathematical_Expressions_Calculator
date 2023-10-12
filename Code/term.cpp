@@ -147,7 +147,6 @@ term::term(int c, int n, char* v, int* p) {
     }
 }
 
-// TODO: Must Check Again
 term::term(const char* input) {
     if (input != NULL && input[0] != '\0') {
         this->coefficient = 1;
@@ -375,7 +374,15 @@ const term term::operator()(char* vars, int* vals, int numVals) const {
             int index = temp.getVarIndex(vars[i]);
             if (index != -1) {
                 temp.coefficient *= pow(vals[i], temp.powers[index]);
-                temp.removeVariable(temp.variables[index]);
+                if (temp.coefficient == 0) {
+                    temp.numVariables = 0;
+                    delete [] temp.powers;
+                    temp.powers = new int[0];
+                    delete [] temp.variables;
+                    temp.variables = new char[0];
+                } else {
+                    temp.removeVariable(temp.variables[index]);
+                }
             }
         }
         return temp;
@@ -383,7 +390,7 @@ const term term::operator()(char* vars, int* vals, int numVals) const {
 }
 
 const term term::operator()(string inp) const {
-    std::stringstream input_stream(inp);
+    std::stringstream input_stream (inp);
     string substitution;
     int equalsCount = 0;
     for (int k = 0; k < inp.length(); k++) {
@@ -452,26 +459,9 @@ bool term::operator<(const term& other) const {
 bool term::operator>(const term& other) const {
     if (*this == other) {
         return false;
+    } else {
+        return !(*this < other);
     }
-    if (this->numVariables == 0) {
-        return !false;
-    }
-    if (other.numVariables == 0) {
-        return !true;
-    }
-
-    int minimum = std::min(this->numVariables, other.numVariables);
-    for (int i = 0; i < minimum; i++) {
-        if (this->variables[i] == other.variables[i]) {
-            if (this->powers[i] != other.powers[i]) {
-                return !(this->powers[i] > other.powers[i]);
-            }
-        } else {
-            return (this->variables[i] > other.variables[i]);
-        }
-    }
-
-    return !(this->numVariables < other.numVariables);
 }
 
 int& term::operator[](int idx) {

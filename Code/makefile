@@ -3,6 +3,7 @@ main:
 
 clean:
 	rm -f *.o *.tar.gz *.info *.gcda *.gcno *.gcov main
+	rm -rf coverage_report
 	reset
 	clear
 

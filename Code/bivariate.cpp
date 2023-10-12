@@ -15,40 +15,6 @@
 //     - Note that there is no restriction about which variable is v1 and v2, other than that v2 cannot be the same as v1.
 
 // Private:
-bool bivariate::isBivariate() const {
-    if (this->numTerms > 0) {
-        if (this->v1 == this->v2 || this->numTerms != 3) {
-            return false;
-        }
-
-        bool existsV1 = false;
-        bool existsV2 = false;
-        for (int i = 0; i < this->getNumTerms(); i++) {
-            term* t = this->terms[i];
-            int varIndexV1 = t->getVarIndex(this->v1);
-            int varIndexV2 = t->getVarIndex(this->v2);
-            if (varIndexV1 == -1 && varIndexV2 == -1 && (t->getNumVariables() != 0)) {
-                return false;
-            }
-            if (varIndexV1 != -1) {
-                existsV1 = true;
-            }
-            if (varIndexV2 != -1) {
-                existsV2 = true;
-            }
-            if (t->getDegree() > this->degree) {
-                return false;
-            }
-        }
-
-        if ((existsV1 == false) || (existsV2 == false)) {
-            return false;
-        }
-        return true;
-    }
-    return false;
-}
-
 void bivariate::clearTerms() {
     for (int i = 0; i < this->getNumTerms(); i++) {
         delete this->terms[i];
@@ -60,6 +26,40 @@ void bivariate::clearTerms() {
 
     this->numTerms = 0;
     this->terms = new term*[this->numTerms];
+}
+
+bool bivariate::isBivariate() const {
+    if (this->numTerms > 0) {
+        char variableTest[2] = {'9', '9'};
+        int variableCount = 0;
+        for (int i = 0; i < this->getNumTerms(); i++) {
+            term* t = this->terms[i];
+            if (t->getDegree() > this->degree) {
+                return false;
+            }
+            if (t->getNumVariables() > 0) {
+                for(int j = 0; j < t->getNumVariables(); j++) {
+                    if (variableCount < 2) {
+                        if (variableTest[0] == '9') {
+                            variableTest[0] = t->getVariables()[j];
+                            variableCount++;
+                        } else if (variableTest[0] != t->getVariables()[j]) {
+                            if (variableTest[1] == '9') {
+                                variableTest[1] = t->getVariables()[j];
+                                variableCount++;
+                            } else if (variableTest[1] != t->getVariables()[j]) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if(variableCount == 2) {
+            return true;
+        }
+    }
+    return false;
 }
 
 // Public
@@ -95,7 +95,7 @@ bivariate::bivariate(term** t, int n) : polynomial(t, n) {
         }
     }
 
-    // Checking if the current object is a valid bivariate
+    // Check if the current object is a valid bivariate
     if (!this->isBivariate()) {
         this->clearTerms();
     }
@@ -127,13 +127,14 @@ bivariate::bivariate(const char* input) : polynomial(input) {
         }
     }
 
-    // Checking if the current object is a valid bivariate
+    // Check if the current object is a valid bivariate
     if (!this->isBivariate()) {
         this->clearTerms();
     }
 }
 
 bivariate::bivariate(const bivariate& other) : polynomial(other) {
+    // - This is the copy constructor.
     this->degree = other.degree;
     this->v1 = other.v1;
     this->v2 = other.v2;
@@ -165,7 +166,7 @@ bivariate::bivariate(const polynomial& other) : polynomial(other) {
         }
     }
 
-    // Checking if the current object is a valid bivariate
+    // Check if the current object is a valid bivariate
     if (!this->isBivariate()) {
         this->clearTerms();
     }
@@ -197,7 +198,7 @@ bivariate::bivariate(term t) : polynomial(t) {
         }
     }
 
-    // Checking if the current object is a valid bivariate
+    // Check if the current object is a valid bivariate
     if (!this->isBivariate()) {
         this->clearTerms();
     }
@@ -229,14 +230,14 @@ polynomial* bivariate::operator!() const {
     // - This is the negation operator.
     term** negatedTerms = new term*[this->getNumTerms()];
     for (int i = 0; i < this->getNumTerms(); i++) {
-        negatedTerms[i] = new term(this->terms[i]->operator!());
+        negatedTerms[i] = new term((!(*this->terms[i])));
     }
     polynomial* th = new bivariate(negatedTerms, this->getNumTerms());
     for (int i = 0; i < this->numTerms; i++) {
         delete negatedTerms[i];
         negatedTerms[i] = NULL;
     }
-    delete [] negatedTerms;
+    delete[] negatedTerms;
     negatedTerms = NULL;
     return th;
 }
@@ -251,7 +252,7 @@ polynomial* bivariate::operator()(char* vars, int* vals, int numVals) const {
         delete substitutedTerms[i];
         substitutedTerms[i] = NULL;
     }
-    delete [] substitutedTerms;
+    delete[] substitutedTerms;
     substitutedTerms = NULL;
     return th;
 }
@@ -267,7 +268,7 @@ polynomial* bivariate::operator()(string inp) const {
         delete substitutedTerms[i];
         substitutedTerms[i] = NULL;
     }
-    delete [] substitutedTerms;
+    delete[] substitutedTerms;
     substitutedTerms = NULL;
     return th;
 }
@@ -283,14 +284,13 @@ polynomial* bivariate::operator+(const polynomial& other) const {
 }
 
 polynomial& bivariate::operator+=(const polynomial& other) {
-    polynomial* tempPolynomial = (*this + other);
-    bivariate* result = new bivariate(*tempPolynomial);
+    polynomial* result = ((*this) + other);
+    bivariate tempBivariate(*result);
 
-    if (result->isBivariate()) {
-        *this = *result;
+    if (tempBivariate.numTerms != 0) {
+        *this = tempBivariate;
     }
 
-    delete tempPolynomial;
     delete result;
     return *this;
 }
@@ -299,8 +299,9 @@ polynomial* bivariate::operator-(const polynomial& other) const {
     // - Subtraction is just adding the negation
     bivariate* result = new bivariate(*this);
     polynomial* negated = !other;
+
     for (int i = 0; i < negated->getNumTerms(); i++) {
-        result->addOrRemoveTerm(negated->getTerms()[i]);
+        result->addOrRemoveTerm((*negated)[i]);
     }
 
     delete negated;
@@ -308,14 +309,13 @@ polynomial* bivariate::operator-(const polynomial& other) const {
 }
 
 polynomial& bivariate::operator-=(const polynomial& other) {
-    polynomial* tempPolynomial = (*this - other);
-    bivariate* result = new bivariate(*tempPolynomial);
+    polynomial* result = ((*this) - other);
+    bivariate tempBivariate(*result);
 
-    if (result->isBivariate()) {
-        *this = *result;
+    if (tempBivariate.numTerms != 0) {
+        *this = tempBivariate;
     }
 
-    delete tempPolynomial;
     delete result;
     return *this;
 }
@@ -335,14 +335,13 @@ polynomial* bivariate::operator*(const polynomial& other) const {
 }
 
 polynomial& bivariate::operator*=(const polynomial& other) {
-    polynomial* tempPolynomial = (*this * other);
-    bivariate* result = new bivariate(*tempPolynomial);
+    polynomial* result = ((*this) * other);
+    bivariate tempBivariate(*result);
 
-    if (result->isBivariate()) {
-        *this = *result;
+    if (tempBivariate.numTerms != 0) {
+        *this = tempBivariate;
     }
 
-    delete tempPolynomial;
     delete result;
     return *this;
 }
