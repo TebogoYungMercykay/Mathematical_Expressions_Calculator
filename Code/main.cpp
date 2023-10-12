@@ -26,19 +26,19 @@ void testEllipse();
 int main() {
     // cout << "\n\nTesting Term class:" << endl;
     // testTermClass();
-    // testTermClass22();
+    testTermClass22();
 
     // cout << "\n\nTesting Polynomial class:" << endl;
     // testPolynomialClass();
 
     // cout << "\n\nTesting univariate class:" << endl;
-    testUnivariateClass();
-    testUnivariateClass22();
-    testUnivariateClass23();
+    // testUnivariateClass();
+    // testUnivariateClass22();
+    // testUnivariateClass23();
 
     // cout << "\n\nTesting bivariate class:" << endl;
-    testBivariateClass();
-    testBivariateClass22();
+    // testBivariateClass();
+    // testBivariateClass22();
 
     // cout << "\n\nTesting linear class:" << endl;
     // testLinear();
@@ -79,9 +79,15 @@ void testTermClass22() {
         std::cout << "Parsed Term: " << tempTerm12;
         std::cout << "Multiplication R1: " << tempTerm12 * tempTerm12;
         std::cout << "Parsed Term: " << tempTerm12;
-        char vars[] = { 'x', 'a' };
-        int vals[] = { 2, 0 };
+        char vars[] = { 'x', 'y' };
+        int vals[] = { 2, 1 };
         std::cout << "Substitution S1: " << tempTerm12(vars, vals, 2);
+        char vars1[] = { 'x', 'y', 'z' };
+        int vals1[] = { 2, 1, 5 };
+        std::cout << "Substitution S2: " << tempTerm12(vars1, vals1, 3);
+        char vars2[] = { 'x', 'y', 'z' };
+        int vals2[] = { 0, 1, 5 };
+        std::cout << "Substitution S2: " << tempTerm12(vars2, vals2, 3);
         tempTerm12 *= tempTerm12;
         std::cout << "Multiplication R2: " << tempTerm12;
         std::cout << "------------------------------" << endl;

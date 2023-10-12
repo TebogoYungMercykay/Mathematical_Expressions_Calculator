@@ -81,7 +81,6 @@ polynomial::polynomial(term** t, int n) {
     }
 }
 
-// TODO: Must Check Again
 polynomial::polynomial(const char* input) {
     this->numTerms = 0;
     this->terms = new term*[this->numTerms];
@@ -128,11 +127,13 @@ polynomial::polynomial(const char* input) {
         general_use_string = "";
         while (getline(separate, general_use_string, ',')) {
             term* t = new term(general_use_string.c_str());
+            // std::cout << *t << " - " << general_use_string << "\n";
             this->addOrRemoveTerm(t);
             delete t;
             general_use_string = "";
         }
     }
+    // std::cout << *this << "\n";
 }
 
 polynomial::polynomial(const polynomial& other) {
