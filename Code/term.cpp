@@ -224,6 +224,13 @@ term::term(const char* input) {
         this->variables = new char[this->numVariables];
         this->powers = new int[this->numVariables];
     }
+    if (this->coefficient == 0) {
+        this->numVariables = 0;
+        delete [] this->variables;
+        delete [] this->powers;
+        this->variables = new char[this->numVariables];
+        this->powers = new int[this->numVariables];
+    }
 }
 
 term& term::operator=(const term& other) {
@@ -325,7 +332,6 @@ istream& operator>>(istream& input_string, term& t) {
     std::string input = "";
     input_string >> input;
     t = term(input.c_str());
-    // std::cout << t << std::endl;
     return input_string;
 }
 
