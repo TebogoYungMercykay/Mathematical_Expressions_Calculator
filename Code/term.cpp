@@ -147,6 +147,7 @@ term::term(int c, int n, char* v, int* p) {
     }
 }
 
+// TODO: Must Check Again
 term::term(const char* input) {
     if (input != NULL && input[0] != '\0') {
         this->coefficient = 1;
@@ -382,7 +383,7 @@ const term term::operator()(char* vars, int* vals, int numVals) const {
 }
 
 const term term::operator()(string inp) const {
-    std::stringstream ss(inp);
+    std::stringstream input_stream(inp);
     string substitution;
     int equalsCount = 0;
     for (int k = 0; k < inp.length(); k++) {
@@ -394,7 +395,7 @@ const term term::operator()(string inp) const {
     int* vals = new int[equalsCount];
     int i = 0;
     for (int k = 0; k < equalsCount; k++) {
-        if (getline(ss, substitution, ' ')) {
+        if (getline(input_stream, substitution, ' ')) {
             stringstream get_values (substitution);
             getline(get_values, substitution, '=');
             vars[k] = substitution[0];

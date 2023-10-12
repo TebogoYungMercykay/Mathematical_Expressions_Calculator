@@ -81,6 +81,7 @@ polynomial::polynomial(term** t, int n) {
     }
 }
 
+// TODO: Must Check Again
 polynomial::polynomial(const char* input) {
     this->numTerms = 0;
     this->terms = new term*[this->numTerms];
@@ -109,7 +110,6 @@ polynomial::polynomial(const char* input) {
                 general_use_string2 += general_use_string[i];
             }
         }
-        std::cout << general_use_string2 << std::endl;
         std::string delimiter = "";
         size_t pos = 0;
         while ((pos = general_use_string2.find_first_of("+-", pos)) != std::string::npos) {
@@ -128,18 +128,17 @@ polynomial::polynomial(const char* input) {
         general_use_string = "";
         while (getline(separate, general_use_string, ',')) {
             term* t = new term(general_use_string.c_str());
-            // std::cout << *t << " - " << general_use_string << "\n";
             this->addOrRemoveTerm(t);
             delete t;
             general_use_string = "";
         }
     }
-    // std::cout << *this << "\n";
 }
 
 polynomial::polynomial(const polynomial& other) {
     this->numTerms = other.numTerms;
     this->terms = new term*[this->numTerms];
+
     for (int i = 0; i < this->numTerms; i++) {
         this->terms[i] = new term(*other.terms[i]);
     }
@@ -161,18 +160,9 @@ polynomial& polynomial::operator=(const polynomial& other) {
 
         this->numTerms = other.numTerms;
         this->terms = new term*[this->numTerms];
-        try {
-            for (int i = 0; i < this->numTerms; i++) {
-                this->terms[i] = new term(*other.terms[i]);
-            }
-        } catch (...) {
-            for (int i = 0; i < this->numTerms; i++) {
-                delete this->terms[i];
-            }
-            delete[] this->terms;
-            this->terms = new term*[0];
-            this->numTerms = 0;
-            throw;
+
+        for (int i = 0; i < this->numTerms; i++) {
+            this->terms[i] = new term(*other.terms[i]);
         }
     }
     return *this;
@@ -201,7 +191,7 @@ ostream& operator<<(ostream& output_string, const polynomial& p) {
         return output_string;
     } else {
         for (int i = 0; i < p.numTerms; i++) {
-            output_string << ~(*p.terms[i]);
+            output_string << ~(*p[i]);
             if (i < p.numTerms - 1) {
                 output_string << " + ";
             }
