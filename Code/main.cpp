@@ -41,9 +41,9 @@ int main() {
     // testUnivariateClass24();
 
     // cout << "\n\nTesting bivariate class:" << endl;
-    // testBivariateClass();
-    // testBivariateClass22();
-    // testBivariateClass23();
+    testBivariateClass();
+    testBivariateClass22();
+    testBivariateClass23();
     testBivariateClass24();
 
     // cout << "\n\nTesting linear class:" << endl;
@@ -637,7 +637,7 @@ void testUnivariateClass24() {
     printPolynomial(u3);
     univariate u9(u3);
     printPolynomial(u9);
-    univariate u4("2*x^2 + 10 + 12");
+    univariate u4("2*x^2 + 10*x^3 + 7*x^1 + 12");
     printPolynomial(u4);
     univariate u8(u4);
     printPolynomial(u8);
@@ -645,7 +645,7 @@ void testUnivariateClass24() {
     printPolynomial(u5);
     univariate u6("3*x - 1");
     printPolynomial(u6);
-    univariate u7("2*x + 5");
+    univariate u7("2*x + 5*t");
     printPolynomial(u7);
 }
 

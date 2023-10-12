@@ -38,21 +38,20 @@ bool bivariate::isBivariate() const {
                 return false;
             }
             if (t->getNumVariables() > 0) {
-                if (variableCount < 2) {
-                    if (variableTest[0] == '9') {
-                        variableTest[0] = t->getVariables()[0];
-                        variableCount++;
-                    } else if (variableTest[0] != t->getVariables()[0]) {
-                        if (variableTest[1] == '9') {
-                            variableTest[1] = t->getVariables()[0];
+                for(int j = 0; j < t->getNumVariables(); j++) {
+                    if (variableCount < 2) {
+                        if (variableTest[0] == '9') {
+                            variableTest[0] = t->getVariables()[j];
                             variableCount++;
-                        } else if (variableTest[1] != t->getVariables()[0]) {
-                            return false;
+                        } else if (variableTest[0] != t->getVariables()[j]) {
+                            if (variableTest[1] == '9') {
+                                variableTest[1] = t->getVariables()[j];
+                                variableCount++;
+                            } else if (variableTest[1] != t->getVariables()[j]) {
+                                return false;
+                            }
                         }
                     }
-                }
-                if (t->getNumVariables() != 1 || (variableTest[0] != t->getVariables()[0] && variableTest[1] != t->getVariables()[0])) {
-                    return false;
                 }
             }
         }
