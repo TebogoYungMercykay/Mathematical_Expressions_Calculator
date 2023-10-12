@@ -9,6 +9,7 @@
 //     - This will store the terms in the polynomial.
 //     - This array will always be sorted ascending using the term relational operators.
 //     - The default value for this is an array of size 0.
+
 // Private
 void polynomial::addOrRemoveTerm(term* t) {
     if (t != NULL) {
@@ -127,13 +128,11 @@ polynomial::polynomial(const char* input) {
         general_use_string = "";
         while (getline(separate, general_use_string, ',')) {
             term* t = new term(general_use_string.c_str());
-            // std::cout << *t << " - " << general_use_string << "\n";
             this->addOrRemoveTerm(t);
             delete t;
             general_use_string = "";
         }
     }
-    // std::cout << *this << "\n";
 }
 
 polynomial::polynomial(const polynomial& other) {
