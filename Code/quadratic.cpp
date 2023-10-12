@@ -51,17 +51,15 @@ quadratic::quadratic(term t) : univariate(t) {
 }
 
 void quadratic::printRoots() const {
-    if (this->numTerms >= 3) {
-        double a = (*(this->getTerms()[0]))[this->getTerms()[0]->getNumVariables() + 1];
-        double b = (*(this->getTerms()[1]))[this->getTerms()[1]->getNumVariables() + 1];
-        double c = (*(this->getTerms()[2]))[this->getTerms()[2]->getNumVariables() + 1];
+    if (this->isUnivariate()) {
+        double a = (*(this->getTerms()[0]))[6];
+        double b = (*(this->getTerms()[1]))[6];
+        double c = (*(this->getTerms()[2]))[6];
 
-        if (a == 0) {
-            if (b == 0) {
-                std::cout << "No roots" << std::endl;
-            } else {
-                std::cout << "Roots : " << this->variable << " = " << (-c/b) << std::endl;
-            }
+        if (a == 0 && b == 0) {
+            std::cout << "No roots" << std::endl;
+        } else if (a == 0) {
+            std::cout << "Roots : " << this->variable << " = " << ((-1 * c)/b) << std::endl;
         } else {
             double discriminant = (b * b) - (4 * a * c);
             if (discriminant >= 0) {
