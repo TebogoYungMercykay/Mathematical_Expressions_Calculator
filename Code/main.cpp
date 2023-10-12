@@ -28,17 +28,17 @@ void testEllipse();
 
 int main() {
     // cout << "\n\nTesting Term class:" << endl;
-    // testTermClass();
-    // testTermClass22();
+    testTermClass();
+    testTermClass22();
 
     // cout << "\n\nTesting Polynomial class:" << endl;
-    // testPolynomialClass();
+    testPolynomialClass();
 
     // cout << "\n\nTesting univariate class:" << endl;
-    // testUnivariateClass();
-    // testUnivariateClass22();
-    // testUnivariateClass23();
-    // testUnivariateClass24();
+    testUnivariateClass();
+    testUnivariateClass22();
+    testUnivariateClass23();
+    testUnivariateClass24();
 
     // cout << "\n\nTesting bivariate class:" << endl;
     testBivariateClass();
@@ -47,16 +47,16 @@ int main() {
     testBivariateClass24();
 
     // cout << "\n\nTesting linear class:" << endl;
-    // testLinear();
+    testLinear();
 
     // cout << "\n\nTesting Quadratic class:" << endl;
-    // testQuadratic();
+    testQuadratic();
 
     // cout << "\n\nTesting Circle class:" << endl;
-    // testCircle();
+    testCircle();
 
     // cout << "\n\nTesting Ellipse class:" << endl;
-    // testEllipse();
+    testEllipse();
 
     cout << "\n\nTests Complete!" << endl;
     return 0;
