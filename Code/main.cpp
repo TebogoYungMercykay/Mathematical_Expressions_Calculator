@@ -10,11 +10,14 @@
 
 using namespace std;
 
+void testUnivariateClass();
 void testUnivariateClass22();
 void testUnivariateClass23();
-void testUnivariateClass();
+void testUnivariateClass24();
 void testBivariateClass();
 void testBivariateClass22();
+void testBivariateClass23();
+void testBivariateClass24();
 void testTermClass();
 void testTermClass22();
 void testPolynomialClass();
@@ -26,7 +29,7 @@ void testEllipse();
 int main() {
     // cout << "\n\nTesting Term class:" << endl;
     // testTermClass();
-    testTermClass22();
+    // testTermClass22();
 
     // cout << "\n\nTesting Polynomial class:" << endl;
     // testPolynomialClass();
@@ -35,10 +38,13 @@ int main() {
     // testUnivariateClass();
     // testUnivariateClass22();
     // testUnivariateClass23();
+    // testUnivariateClass24();
 
     // cout << "\n\nTesting bivariate class:" << endl;
     // testBivariateClass();
     // testBivariateClass22();
+    // testBivariateClass23();
+    testBivariateClass24();
 
     // cout << "\n\nTesting linear class:" << endl;
     // testLinear();
@@ -227,6 +233,31 @@ void testBivariateClass22() {
     delete ud_8;
     delete ud_9;
     delete ud_10;
+}
+
+void testBivariateClass23() {
+    // Test arithmetic operations
+    bivariate u3("3*x^2 + 15*y^2 - 18");
+    bivariate u4("2*x^2 + 10*y^2 - 12");
+    bivariate u5("2*x^2 + 5*y^2 - 3");
+    bivariate u6("3*x^2 + 1*y^2 - 2");
+    cout << "u3: " << u3 << endl;
+    cout << "u4: " << u4 << endl;
+    cout << "u5: " << u5 << endl;
+    cout << "u6: " << u6 << endl;
+
+    polynomial* u1 = u3 * u4;
+    cout << "Multiplication | u3 * u4: " << *u1 << endl;
+    u3 *= u4;
+    cout << "Multiplication | u3 *= u4: " << u3 << endl;
+
+    polynomial* u2 = u5 * u6;
+    cout << "Multiplication | u5 * u6: " << *u2 << endl;
+    u5 *= u6;
+    cout << "Multiplication | u5 *= u6: " << u5 << endl;
+
+    delete u1;
+    delete u2;
 }
 
 void testCircle() {
@@ -587,6 +618,64 @@ void testUnivariateClass23() {
     delete u17;
     delete u18;
     delete u19;
+}
+
+void printPolynomial(univariate u) {
+    // cout << "Variable: " << u.variable << " - Degree: " << u.degree << endl;
+    cout << "NumTerms: " << u.getNumTerms() << endl;
+    for (int k = 0; k < u.getNumTerms(); k++) {
+        cout << "Equation " << k << ": " << ~(*(u.getTerms()[k])) << " - Degree: " << u.getTerms()[k]->getDegree() << endl;
+    }
+    cout << "---------------------" << endl;
+}
+
+void testUnivariateClass24() {
+    // Test arithmetic operations
+    univariate u1(1, 'y');
+    printPolynomial(u1);
+    univariate u3("3*x^2");
+    printPolynomial(u3);
+    univariate u9(u3);
+    printPolynomial(u9);
+    univariate u4("2*x^2 + 10 + 12");
+    printPolynomial(u4);
+    univariate u8(u4);
+    printPolynomial(u8);
+    univariate u5("2*x^2");
+    printPolynomial(u5);
+    univariate u6("3*x - 1");
+    printPolynomial(u6);
+    univariate u7("2*x + 5");
+    printPolynomial(u7);
+}
+
+void printPolynomial_2(bivariate u) {
+    // cout << "Variable: " << u.variable << " - Degree: " << u.degree << endl;
+    cout << "NumTerms: " << u.getNumTerms() << endl;
+    for (int k = 0; k < u.getNumTerms(); k++) {
+        cout << "Equation " << k << ": " << ~(*(u.getTerms()[k])) << " - Degree: " << u.getTerms()[k]->getDegree() << endl;
+    }
+    cout << "---------------------" << endl;
+}
+
+void testBivariateClass24() {
+    // Test arithmetic operations
+    bivariate u1(1, 'x', 'y');
+    printPolynomial_2(u1);
+    bivariate u3("3*x^2 - 4*y^2 - 4");
+    printPolynomial_2(u3);
+    bivariate u9(u3);
+    printPolynomial_2(u9);
+    bivariate u4("2*x^2 + 10*t^3 + 12");
+    printPolynomial_2(u4);
+    bivariate u8(u4);
+    printPolynomial_2(u8);
+    bivariate u5("2*x^2");
+    printPolynomial_2(u5);
+    bivariate u6("3*x + 3*g");
+    printPolynomial_2(u6);
+    bivariate u7("2*x + 5*t + u");
+    printPolynomial_2(u7);
 }
 
 void testPolynomialClass() {

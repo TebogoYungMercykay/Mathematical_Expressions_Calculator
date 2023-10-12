@@ -52,23 +52,27 @@ quadratic::quadratic(term t) : univariate(t) {
 
 void quadratic::printRoots() const {
     if (this->isUnivariate()) {
-        double a = (*(this->getTerms()[0]))[6];
-        double b = (*(this->getTerms()[1]))[6];
-        double c = (*(this->getTerms()[2]))[6];
+        if (this->numTerms >= 3) {
+            double a = (*(this->getTerms()[0]))[6];
+            double b = (*(this->getTerms()[1]))[6];
+            double c = (*(this->getTerms()[2]))[6];
 
-        if (a == 0 && b == 0) {
-            std::cout << "No roots" << std::endl;
-        } else if (a == 0) {
-            std::cout << "Roots : " << this->variable << " = " << ((-1 * c)/b) << std::endl;
-        } else {
-            double discriminant = (b * b) - (4 * a * c);
-            if (discriminant >= 0) {
-                double root1 = (-b + sqrt(discriminant)) / (2 * a);
-                double root2 = (-b - sqrt(discriminant)) / (2 * a);
-                cout << std::fixed << std::setprecision(2) << "Roots : " << this->variable << " = " << root1 << " , "  << this->variable << " = " << root2 << endl;
-            } else {
+            if (a == 0 && b == 0) {
                 std::cout << "No roots" << std::endl;
+            } else if (a == 0) {
+                std::cout << "Roots : " << this->variable << " = " << ((-1 * c)/b) << std::endl;
+            } else {
+                double discriminant = (b * b) - (4 * a * c);
+                if (discriminant >= 0) {
+                    double root1 = (-b + sqrt(discriminant)) / (2 * a);
+                    double root2 = (-b - sqrt(discriminant)) / (2 * a);
+                    cout << std::fixed << std::setprecision(2) << "Roots : " << this->variable << " = " << root1 << " , "  << this->variable << " = " << root2 << endl;
+                } else {
+                    std::cout << "No roots" << std::endl;
+                }
             }
+        } else {
+            std::cout << "No roots" << std::endl;
         }
     } else {
         std::cout << "No roots" << std::endl;

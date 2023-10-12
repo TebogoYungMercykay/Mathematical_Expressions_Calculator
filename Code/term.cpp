@@ -459,26 +459,9 @@ bool term::operator<(const term& other) const {
 bool term::operator>(const term& other) const {
     if (*this == other) {
         return false;
+    } else {
+        return !(*this < other);
     }
-    if (this->numVariables == 0) {
-        return !false;
-    }
-    if (other.numVariables == 0) {
-        return !true;
-    }
-
-    int minimum = std::min(this->numVariables, other.numVariables);
-    for (int i = 0; i < minimum; i++) {
-        if (this->variables[i] == other.variables[i]) {
-            if (this->powers[i] != other.powers[i]) {
-                return !(this->powers[i] > other.powers[i]);
-            }
-        } else {
-            return (this->variables[i] > other.variables[i]);
-        }
-    }
-
-    return !(this->numVariables < other.numVariables);
 }
 
 int& term::operator[](int idx) {
