@@ -11,10 +11,12 @@
 using namespace std;
 
 void testUnivariateClass22();
+void testUnivariateClass23();
 void testUnivariateClass();
 void testBivariateClass();
 void testBivariateClass22();
 void testTermClass();
+void testTermClass22();
 void testPolynomialClass();
 void testLinear();
 void testQuadratic();
@@ -22,34 +24,70 @@ void testCircle();
 void testEllipse();
 
 int main() {
-    cout << "\n\nTesting Term class:" << endl;
-    testTermClass();
+    // cout << "\n\nTesting Term class:" << endl;
+    // testTermClass();
+    // testTermClass22();
 
-    cout << "\n\nTesting Polynomial class:" << endl;
-    testPolynomialClass();
+    // cout << "\n\nTesting Polynomial class:" << endl;
+    // testPolynomialClass();
 
-    cout << "\n\nTesting univariate class:" << endl;
+    // cout << "\n\nTesting univariate class:" << endl;
     testUnivariateClass();
     testUnivariateClass22();
+    testUnivariateClass23();
 
-    cout << "\n\nTesting bivariate class:" << endl;
+    // cout << "\n\nTesting bivariate class:" << endl;
     testBivariateClass();
     testBivariateClass22();
 
-    cout << "\n\nTesting linear class:" << endl;
-    testLinear();
+    // cout << "\n\nTesting linear class:" << endl;
+    // testLinear();
 
-    cout << "\n\nTesting Quadratic class:" << endl;
-    testQuadratic();
+    // cout << "\n\nTesting Quadratic class:" << endl;
+    // testQuadratic();
 
-    cout << "\n\nTesting Circle class:" << endl;
-    testCircle();
+    // cout << "\n\nTesting Circle class:" << endl;
+    // testCircle();
 
-    cout << "\n\nTesting Ellipse class:" << endl;
-    testEllipse();
+    // cout << "\n\nTesting Ellipse class:" << endl;
+    // testEllipse();
 
     cout << "\n\nTests Complete!" << endl;
     return 0;
+}
+
+void testTermClass22() {
+    // cout << "\n\nTesting User Inputs\n";
+    const char* inputs[] = {
+        "10*x^2*w^3*a^1",
+        "+8*x*x^1*x^0*x^-1",
+        "+1b^8000*r^5*b^-2988",
+        "1*x^2",
+        "-x^2",
+        "",
+        "0*x^2",
+        "-1",
+        "+3000",
+        "+x",
+        "+1",
+        "+z^-3",
+        "2*x^2*y^3*z^4"
+    };
+
+    for (int k = 0; k < sizeof(inputs) / sizeof(inputs[0]); k++) {
+        term tempTerm12(inputs[k]);
+        std::cout << "Parsed Term: " << tempTerm12;
+        std::cout << "Multiplication R1: " << tempTerm12 * tempTerm12;
+        std::cout << "Parsed Term: " << tempTerm12;
+        char vars[] = { 'x', 'a' };
+        int vals[] = { 2, 0 };
+        std::cout << "Substitution S1: " << tempTerm12(vars, vals, 2);
+        tempTerm12 *= tempTerm12;
+        std::cout << "Multiplication R2: " << tempTerm12;
+        std::cout << "------------------------------" << endl;
+
+
+    }
 }
 
 void testBivariateClass() {
@@ -486,14 +524,73 @@ void testUnivariateClass22() {
     delete ud_10;
 }
 
+void testUnivariateClass23() {
+    // Test arithmetic operations
+    univariate u1(1, 'y');
+    cout << u1;
+    univariate u2(u1.getTerms(), u1.getNumTerms());
+    cout << u2;
+    univariate u3("3*x^2");
+    cout << u3;
+    univariate u9(u3);
+    cout << u9;
+    univariate u11(u3.getTerms(), u3.getNumTerms());
+    cout << u11;
+    univariate u4("2*x^2 + 10*x + 12");
+    cout << u4;
+    univariate u8(u4);
+    cout << u8;
+    univariate u12(u4.getTerms(), u4.getNumTerms());
+    cout << u12;
+    univariate u5("2*x^2");
+    cout << u5;
+    univariate u6("3*x - 1");
+    cout << u6;
+    univariate u10(u6);
+    cout << u10;
+    univariate u13(u5.getTerms(), u5.getNumTerms());
+    cout << u13;
+    univariate u7("2*x + 5");
+    cout << u7;
+    term tr1("10*x^2");
+    univariate u14(tr1);
+    cout << u14;
+
+    univariate u15(NULL);
+    cout << u15;
+
+    polynomial* u16 = !u4;
+    cout << *u16;
+    polynomial* u17 = !u6;
+    cout << *u17;
+    polynomial* u18 = !u15;
+    cout << *u18;
+    polynomial* u19 = !u8;
+    cout << *u19;
+
+    univariate u20(*u16);
+    cout << u20;
+    univariate u21(*u17);
+    cout << u21;
+    univariate u22(*u18);
+    cout << u22;
+    univariate u23(*u19);
+    cout << u23;
+
+    delete u16;
+    delete u17;
+    delete u18;
+    delete u19;
+}
+
 void testPolynomialClass() {
-    cout << "\n\nTesting Inputs Constructor\n";
+    cout << "Testing Inputs Constructor\n";
     const char* inputs[] = {
         "x^2*y^2 + 2*x*y + 1 + x^-3",
         "- -a^2*y^2 - -2*a*y - -1",
         "-x^2*b^1 - 2*x*b^5 - 1 + b^-5",
         "- +c*y^2 - +2*c^3*y - +1",
-        "+ -c^2*y^2 + -2*c*y + -1",
+        "+ -c^2*y^2 + 0*c*y + -1",
         "e^-3 + f^-2"
     };
 

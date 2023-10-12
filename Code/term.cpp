@@ -147,6 +147,7 @@ term::term(int c, int n, char* v, int* p) {
     }
 }
 
+// TODO: Must Check Again
 term::term(const char* input) {
     if (input != NULL && input[0] != '\0') {
         this->coefficient = 1;
@@ -218,6 +219,18 @@ term::term(const char* input) {
                 }
             }
         }
+    } else {
+        this->coefficient = 1;
+        this->numVariables = 0;
+        this->variables = new char[this->numVariables];
+        this->powers = new int[this->numVariables];
+    }
+    if (this->coefficient == 0) {
+        this->numVariables = 0;
+        delete [] this->variables;
+        delete [] this->powers;
+        this->variables = new char[this->numVariables];
+        this->powers = new int[this->numVariables];
     }
 }
 
@@ -320,7 +333,6 @@ istream& operator>>(istream& input_string, term& t) {
     std::string input = "";
     input_string >> input;
     t = term(input.c_str());
-    // std::cout << t << std::endl;
     return input_string;
 }
 
@@ -330,6 +342,9 @@ const term term::operator*(const term& other) const {
     if (newTerm.coefficient != 0) {
         for (int i = 0; i < other.numVariables; i++) {
             newTerm.addVariable(other.variables[i], other.powers[i]);
+        }
+        for (int i = 0; i < this->numVariables; i++) {
+            newTerm.addVariable(this->variables[i], this->powers[i]);
         }
     }
     return newTerm;
@@ -359,10 +374,8 @@ const term term::operator()(char* vars, int* vals, int numVals) const {
         for (int i = 0; i < numVals; i++) {
             int index = temp.getVarIndex(vars[i]);
             if (index != -1) {
-                int power = temp.powers[index];
-                power -= vals[i];
+                temp.coefficient *= pow(vals[i], temp.powers[index]);
                 temp.removeVariable(temp.variables[index]);
-                temp.addVariable(vars[i], power);
             }
         }
         return temp;
@@ -370,7 +383,7 @@ const term term::operator()(char* vars, int* vals, int numVals) const {
 }
 
 const term term::operator()(string inp) const {
-    std::stringstream ss(inp);
+    std::stringstream input_stream(inp);
     string substitution;
     int equalsCount = 0;
     for (int k = 0; k < inp.length(); k++) {
@@ -382,7 +395,7 @@ const term term::operator()(string inp) const {
     int* vals = new int[equalsCount];
     int i = 0;
     for (int k = 0; k < equalsCount; k++) {
-        if (getline(ss, substitution, ' ')) {
+        if (getline(input_stream, substitution, ' ')) {
             stringstream get_values (substitution);
             getline(get_values, substitution, '=');
             vars[k] = substitution[0];

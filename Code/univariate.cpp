@@ -13,24 +13,29 @@
 
 // Private
 bool univariate::isUnivariate() const {
-    for (int i = 0; i < this->getNumTerms(); i++) {
-        term* t = (*this)[i];
-        if ((t->getNumVariables() > 0 && t->getVarIndex(this->variable) == -1) || t->getDegree() > this->degree) {
-            return false;
+    if (this->numTerms > 0) {
+        for (int i = 0; i < this->getNumTerms(); i++) {
+            term* t = this->terms[i];
+            if ((t->getNumVariables() > 0 && (t->getNumVariables() != 1  || t->getVarIndex(this->variable) == -1)) || t->getDegree() > this->degree) {
+                return false;
+            }
         }
+        return true;
     }
-    return true;
+    return false;
 }
 
 void univariate::clearTerms() {
     for (int i = 0; i < this->getNumTerms(); i++) {
-        delete (*this)[i];
-        term* t = (*this)[i];
-        t = NULL;
+        delete this->terms[i];
+        this->terms[i] = NULL;
     }
-    delete[] this->terms;
-    this->terms = new term*[0];
+
+    delete [] this->terms;
+    this->terms = NULL;
+
     this->numTerms = 0;
+    this->terms = new term*[this->numTerms];
 }
 
 // Public
@@ -50,7 +55,7 @@ univariate::univariate(term** t, int n) : polynomial(t, n) {
         }
     }
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isUnivariate()) {
         this->clearTerms();
     }
@@ -67,7 +72,7 @@ univariate::univariate(const char* input) : polynomial(input) {
         }
     }
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isUnivariate()) {
         this->clearTerms();
     }
@@ -90,7 +95,7 @@ univariate::univariate(const polynomial& other) : polynomial(other) {
         }
     }
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isUnivariate()) {
         this->clearTerms();
     }
@@ -100,7 +105,7 @@ univariate::univariate(term t) : polynomial(t) {
     this->degree = 2;
     this->variable = 'x';
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (this->numTerms > 0) {
         this->degree = this->terms[0]->getDegree();
         if (this->terms[0]->getNumVariables() > 0) {
@@ -108,7 +113,7 @@ univariate::univariate(term t) : polynomial(t) {
         }
     }
 
-    // Check if the current object is a valid univariate
+    // Checking if the current object is a valid univariate
     if (!this->isUnivariate()) {
         this->clearTerms();
     }
@@ -138,14 +143,14 @@ istream& operator>>(istream& input_string, univariate& u) {
 polynomial* univariate::operator!() const {
     term** negatedTerms = new term*[this->getNumTerms()];
     for (int i = 0; i < this->getNumTerms(); i++) {
-        negatedTerms[i] = new term((!(*(*this)[i])));
+        negatedTerms[i] = new term(this->terms[i]->operator!());
     }
     polynomial* th = new univariate(negatedTerms, this->getNumTerms());
     for (int i = 0; i < this->numTerms; i++) {
         delete negatedTerms[i];
         negatedTerms[i] = NULL;
     }
-    delete[] negatedTerms;
+    delete [] negatedTerms;
     negatedTerms = NULL;
     return th;
 }
@@ -161,7 +166,7 @@ polynomial* univariate::operator()(char* vars, int* vals, int numVals) const {
         delete substitutedTerms[i];
         substitutedTerms[i] = NULL;
     }
-    delete[] substitutedTerms;
+    delete [] substitutedTerms;
     substitutedTerms = NULL;
     return th;
 }
@@ -177,19 +182,19 @@ polynomial* univariate::operator()(string inp) const {
         delete substitutedTerms[i];
         substitutedTerms[i] = NULL;
     }
-    delete[] substitutedTerms;
+    delete [] substitutedTerms;
     substitutedTerms = NULL;
     return th;
 }
 
 polynomial* univariate::operator+(const polynomial& other) const {
     // - This should return a univariate that is the result of adding the univariate and polynomial together.
-    univariate* tempAdd = new univariate(*this);
+    univariate* result = new univariate(*this);
     for (int i = 0; i < other.getNumTerms(); i++) {
-        tempAdd->addOrRemoveTerm(other[i]);
+        result->addOrRemoveTerm(other[i]);
     }
 
-    return tempAdd;
+    return result;
 }
 
 polynomial& univariate::operator+=(const polynomial& other) {
@@ -205,13 +210,13 @@ polynomial& univariate::operator+=(const polynomial& other) {
 
 polynomial* univariate::operator-(const polynomial& other) const {
     // - Subtraction is just adding the negation
-    univariate* tempAdd = new univariate((*this));
+    univariate* result = new univariate(*this);
     polynomial* negated = !other;
     for (int i = 0; i < negated->getNumTerms(); i++) {
-        tempAdd->addOrRemoveTerm((*negated)[i]);
+        result->addOrRemoveTerm(negated->getTerms()[i]);
     }
     delete negated;
-    return tempAdd;
+    return result;
 }
 
 polynomial& univariate::operator-=(const polynomial& other) {
@@ -281,7 +286,7 @@ polynomial* univariate::operator*(const polynomial& other) const {
     univariate* result = new univariate(this->degree, 'x');
     for (int i = 0; i < this->getNumTerms(); i++) {
         for (int j = 0; j < other.getNumTerms(); j++) {
-            term* t1 = (*this)[i];
+            term* t1 = this->terms[i];
             term* t2 = other[j];
             term* t_product = new term((*t1) * (*t2));
             result->addOrRemoveTerm(t_product);
